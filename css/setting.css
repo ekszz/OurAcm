@@ -1,0 +1,237 @@
+.message {
+    left: 0;
+	right: 0;
+    position: fixed;
+    top: 50px;
+    z-index: 7000;
+	max-width: 500px;
+	text-align: center;
+}
+.center {
+    float: none !important;
+    margin: 0 auto !important;
+}
+.loading{
+	left:0;
+	right:0; 
+	top:0; 
+	bottom:0; 
+}
+
+table label{
+	margin-bottom: 0px;
+}
+
+td select, td textarea, td input[type="text"], td input[type="password"]{
+ margin-bottom: 0px;
+}
+.breadcrumb{
+	margin: 0 0 10px;
+}
+
+.btn-large,.pagination-large ul > li > a{
+	padding: 8px 16px;
+	font-size: 17.5px;
+}
+table{
+	width: 100%;
+	overflow:hidden;
+}
+th{
+	text-align: center!important;
+	font-weight: bold;
+	background-color: #F5F5F5;
+    background-image: -moz-linear-gradient(center top , #FFFFFF, #E6E6E6);
+    background-repeat: repeat-x;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+}
+tr.selected,tr.selected th,tr.selected td{
+	background-color: #08c!important;
+}
+td{
+	text-align: center !important;
+	word-break: break-all; 
+	word-wrap:break-word;
+	vertical-align:middle !important;
+}
+td label{
+
+    word-break: break-all; 
+	word-wrap:break-word;
+
+	overflow:hidden; 
+	text-overflow:ellipsis;
+}
+
+
+.loading-bg{
+	background: #fffffe;
+	float: left;
+	position:fixed; 
+	z-index:1000;
+	left:0;
+	right:0; 
+	top:0; 
+	bottom:0; 
+	-moz-opacity:0.168;
+	-khtml-opacity: 0.168;
+	opacity: 0.168;
+}
+.loading-icon{
+	width:64px;
+	height:64px;
+	-webkit-transform:scale(0.6);
+	-moz-transform:scale(0.6);
+	-o-transform:scale(0.6);
+	-ms-transform:scale(0.6);
+	top:48%;
+	left:48%;
+	position:fixed;
+	z-index:1001;
+}
+
+.f_circleG{
+	position:absolute;
+	background-color:#FFFFFF;
+	height:12px;
+	width:12px;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	-webkit-animation-name:f_fadeG;
+	-webkit-animation-duration:0.72s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-direction:linear;
+	-moz-animation-name:f_fadeG;
+	-moz-animation-duration:0.72s;
+	-moz-animation-iteration-count:infinite;
+	-moz-animation-direction:linear;
+	-o-animation-name:f_fadeG;
+	-o-animation-duration:0.72s;
+	-o-animation-iteration-count:infinite;
+	-o-animation-direction:linear;
+	-ms-animation-name:f_fadeG;
+	-ms-animation-duration:0.72s;
+	-ms-animation-iteration-count:infinite;
+	-ms-animation-direction:linear;
+}
+
+#frotateG_01{
+	left:0;
+	top:27px;
+	-webkit-animation-delay:0.27s;
+	-moz-animation-delay:0.27s;
+	-o-animation-delay:0.27s;
+	-ms-animation-delay:0.27s
+}
+
+#frotateG_02{
+	left:9px;
+	top:9px;
+	-webkit-animation-delay:0.36s;
+	-moz-animation-delay:0.36s;
+	-o-animation-delay:0.36s;
+	-ms-animation-delay:0.36s
+}
+
+#frotateG_03{
+	left:27px;
+	top:0;
+	-webkit-animation-delay:0.45s;
+	-moz-animation-delay:0.45s;
+	-o-animation-delay:0.45s;
+	-ms-animation-delay:0.45s;
+}
+
+#frotateG_04{
+	right:9px;
+	top:9px;
+	-webkit-animation-delay:0.54s;
+	-moz-animation-delay:0.54s;
+	-o-animation-delay:0.54s;
+	-ms-animation-delay:0.54s;
+}
+
+#frotateG_05{
+	right:0;
+	top:27px;
+	-webkit-animation-delay:0.63s;
+	-moz-animation-delay:0.63s;
+	-o-animation-delay:0.63s;
+	-ms-animation-delay:0.63s;
+}
+
+#frotateG_06{
+	right:9px;
+	bottom:9px;
+	-webkit-animation-delay:0.72s;
+	-moz-animation-delay:0.72s;
+	-o-animation-delay:0.72s;
+	-ms-animation-delay:0.72s;
+}
+
+#frotateG_07{
+	left:27px;
+	bottom:0;
+	-webkit-animation-delay:0.81s;
+	-moz-animation-delay:0.81s;
+	-o-animation-delay:0.81s;
+	-ms-animation-delay:0.81s;
+}
+
+#frotateG_08{
+	left:9px;
+	bottom:9px;
+	-webkit-animation-delay:0.9s;
+	-moz-animation-delay:0.9s;
+	-o-animation-delay:0.9s;
+	-ms-animation-delay:0.9s;
+}
+
+@-webkit-keyframes f_fadeG{
+	0%{background-color:#000000}
+	100%{background-color:#FFFFFF}
+}
+
+@-moz-keyframes f_fadeG{
+	0%{background-color:#000000}
+	100%{background-color:#FFFFFF}
+}
+
+@-o-keyframes f_fadeG{
+	0%{background-color:#000000}
+	100%{background-color:#FFFFFF}
+}
+
+@-ms-keyframes f_fadeG{
+	0%{background-color:#000000}
+	100%{background-color:#FFFFFF}
+}
+
+#person-modal label {
+	width:80px;
+	margin-left:50px;
+	margin-bottom:15px;
+}
+#person-modal textarea {
+	margin-bottom:15px;
+	margin-left:-4px;
+}
+#person-modal {
+	width:800px;
+	margin:0 0 0 -400px; 
+}
+#contest-modal label {
+	width:80px;
+	margin-left:50px;
+	margin-bottom:15px;
+}
+#contest-modal textarea {
+	margin-bottom:15px;
+	margin-left:-4px;
+}
+#contest-modal {
+	width:800px;
+	margin:0 0 0 -400px; 
+}

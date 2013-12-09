@@ -1,0 +1,48 @@
+<!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+		<p>Powered by <a href="http://github.com/ekszz/ouracm/">OURACM</a> version 0.1.0 BETA</p>
+        <p>Designed and built with all the love in the world by <a href="http://ekszz.com" target="_blank">@Ekszz</a>.</p>
+        <p>Code licensed under <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">GNU GPL v3</a>, source code hosting at <a href="http://github.com/ekszz/ouracm/" target="_blank">GitHub</a>.</p>
+        <ul class="footer-links">
+          <li><a href="http://ekszz.com">Blog</a></li>
+          <li class="muted">&middot;</li>
+		  <li><a href="http://weibo.com/ekszz">Weibo</a></li>
+          <li class="muted">&middot;</li>
+		  <li><a href="http://github.com/ekszz/ouracm/">Project</a></li>
+          <li class="muted">&middot;</li>
+          <li><a href="https://github.com/ekszz/ouracm/issues?state=open">Issues</a></li>
+          <li class="muted">&middot;</li>
+          <li><a href="https://github.com/ekszz/ouracm/releases">Changelog</a></li>
+        </ul>
+      </div>
+    </footer>
+    <div class="loading hide" id="loading">
+        <div class="loading-bg"></div>
+        <div class="loading-icon">
+            <div id="frotateG_01" class="f_circleG"> </div>
+            <div id="frotateG_02" class="f_circleG"> </div>
+            <div id="frotateG_03" class="f_circleG"> </div>
+            <div id="frotateG_04" class="f_circleG"> </div>
+            <div id="frotateG_05" class="f_circleG"> </div>
+            <div id="frotateG_06" class="f_circleG"> </div>
+            <div id="frotateG_07" class="f_circleG"> </div>
+            <div id="frotateG_08" class="f_circleG"> </div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	var strcookie=document.cookie;
+	var arrcookie=strcookie.split("; ");
+	var iealert;
+	for(var i=0;i<arrcookie.length;i++){
+		var arr=arrcookie[i].split("=");
+		if("iealert"==arr[0]){
+			iealert=arr[1];
+			break;
+		}
+	}
+	if(iealert!="killie" && (!-[1,])) { alert("[提示]你可能正在使用IE浏览器，访问效果很差，赶紧换掉吧~,~"); var date=new Date(); var expireDays=1; date.setTime(date.getTime()+expireDays*24*3600*1000); document.cookie="iealert=killie;expires="+date.toGMTString(); }
+	</script>
+  </body><?php echo $footer_additional_code == null ? "" : $footer_additional_code; ?>
+</html>

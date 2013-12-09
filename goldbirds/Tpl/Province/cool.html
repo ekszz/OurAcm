@@ -1,0 +1,101 @@
+<include file="Base:header" />
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    
+    <!-- Le javascript -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$(function(){ $("#navbar li:nth-child(4)").addClass("active"); });
+		var $window = $(window);
+			$('.bs-docs-sidenav').affix({
+		        offset: {
+		            top: function () { return $window.width() <= 980 ? 290 : 210 }
+		          , bottom: 270
+		          }
+		        });
+			$("span[data-toggle=popover]")
+      			.popover()
+      			.click(function(e) {
+        			e.preventDefault()
+      		});
+	});
+	</script>
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <include file="Base:navbar" />
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>ACM-ICPC 省赛</h1>
+    <p class="lead">ACM-ICPC Province</p>
+    <div id="carbonads-container"></div>
+  </div>
+</header>
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list bs-docs-sidenav">
+       	  <li class="selected"><a href="<?php echo U('Province/cool'); ?>"><i class="icon-chevron-right"></i> 酷炫版</a></li>
+          <?php foreach($y as $vo) {
+          	if($vo['y'] == $year) echo '<li class="active"><a><i class="icon-chevron-right"></i> -- '.$vo['y'].'年</a></li>';
+          	else echo '<li><a href="'.U('Province/cool?y='.$vo['y']).'#top"><i class="icon-chevron-right"></i> -- '.$vo['y'].'年</a></li>';
+		  } ?>
+          <li><a href="<?php echo U('Province/data'); ?>"><i class="icon-chevron-right"></i> 表单版</a></li>
+        </ul>
+      </div>
+      <div class="span9">
+      	<section id="top">
+      	<?php foreach($data as $d) { ?>
+          <div class="page-header">
+            <h1><?php if($year) { echo 'Year '.$year; $year = 0; } else echo ' '; ?></h1>
+          </div>
+          <div class="row">
+            <div class="span4">
+              <p class="text-success"><font size="14px"><img src="<?php switch($d['medal']) { case 0: echo 'img/golden.jpg'; break; case 1: echo 'img/silver.jpg'; break; case 2: echo 'img/bronze.jpg'; break; default: echo 'img/honorable.jpg'; } ?>" /> <strong><?php echo $d['team']; ?></strong></font></p>
+            </div>
+            <div class="span5 text-right">
+              <p><span class="alert alert-info"><i class="icon-map-marker"></i> <?php echo $d['university'].', '.$d['site'].' @ '.$d['y'].'.'.$d['m']; ?></span></p>
+              <Br />
+              <p><?php $temp = ''; if($d['medal'] == 0) $temp = '金牌'; else if($d['medal'] == 1) $temp = '银牌'; else if($d['medal'] == 2) $temp = '铜牌'; if($d['title']) { if($temp) $temp = $temp.', '.$d['title']; else $temp = $d['title']; } if($temp) echo '<span class="alert alert-warning"><strong>'.$temp.'</strong></span>'; if($d['ranking']) echo ' <span class="alert alert-success"><strong>第'.$d['ranking'].'名</strong></span>'; ?></p>
+            </div>
+          </div>
+          <hr class="soften" />
+          <div class="row">
+          	<div class="span3">
+          	  <p><span class="label label-warning">Leader</span> <?php if($d['leader_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <?php if($d['leader_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['leader_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['leader_detail']['chsname'].' '.$d['leader_detail']['engname'].'">'; ?><?php echo $d['leader_detail']['chsname'].' '.$d['leader_detail']['engname']; ?><?php if($d['leader_detail']['introduce']) echo '</span>'; ?></p>
+          	</div>
+          	<div class="span3">
+          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer1_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <?php if($d['teamer1_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer1_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname'].'">'; ?><?php echo $d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname']; ?><?php if($d['teamer1_detail']['introduce']) echo '</span>'; ?></p>
+          	</div>
+          	<div class="span3">
+          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer2_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <?php if($d['teamer2_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer2_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname'].'">'; ?><?php echo $d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname']; ?><?php if($d['teamer2_detail']['introduce']) echo '</span>'; ?></p>
+          	</div>
+          </div>
+          <hr class="soften" />
+          <div class="row">
+          	<div class="<?php if(!$d['pic2']) echo 'span6'; else echo 'span4'; ?>"><img src="<?php if($d['pic1']) echo $d['pic1']; else echo 'img/nopic.jpg'; ?>" class="img-polaroid" /></div>
+          	<?php if($d['pic2']) echo '<div class="span4"><img src="'.$d['pic2'].'" class="img-polaroid" /></div>'; ?>
+          </div>
+       <?php } ?>
+       </section>
+      </div>
+    </div>
+
+  </div>
+<include file="Base:footer" />

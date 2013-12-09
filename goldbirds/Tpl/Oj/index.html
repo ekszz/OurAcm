@@ -1,0 +1,121 @@
+<include file="Base:header" />
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    
+    <!-- Le javascript -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$(function(){ $("#navbar li:nth-child(6)").addClass("active"); });
+		var $window = $(window);
+			$('.bs-docs-sidenav').affix({
+		        offset: {
+		            top: function () { return $window.width() <= 980 ? 290 : 210 }
+		          , bottom: 270
+		          }
+		        });
+			$("span[data-toggle=popover]")
+      			.popover()
+      			.click(function(e) {
+        			e.preventDefault()
+      		});
+	});
+	</script>
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <include file="Base:navbar" />
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>OnlineJudge历史</h1>
+    <p class="lead">OnlineJudge History</p>
+    <div id="carbonads-container"></div>
+  </div>
+</header>
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list bs-docs-sidenav">
+          <?php foreach($data as $d) { ?>
+          <li><a href="#<?php echo $d['vid']; ?>"><i class="icon-chevron-right"></i> <?php echo $d['mainname']; if($d['devname']) echo ' - '.$d['devname']; ?></a></li>
+          <?php } ?>
+        </ul>
+      </div>
+      <div class="span9">
+
+
+        <!-- year2006
+        ================================================== -->
+        <?php foreach($data as $d) { ?>
+        <section id="<?php echo $d['vid']; ?>">
+          <div class="page-header">
+            <h1><?php echo $d['mainname']; if($d['devname']) echo ' - '.$d['devname']; ?></h1>
+          </div>
+			
+          <?php if(count($d['photo']) > 0) { ?>
+          <div class="row">
+            <div class="span8">
+                  <div id="myCarousel<?php echo $d['vid']; ?>" class="carousel slide">
+                    <ol class="carousel-indicators">
+                    	<?php for($i = 0; $i < count($d['photo']); $i++) {
+                        if($i == 0) echo '<li data-target="#myCarousel'.$d['vid'].'" data-slide-to="'.$i.'" class="active"></li>';
+                        else echo '<li data-target="#myCarousel'.$d['vid'].'" data-slide-to="'.$i.'"></li>';
+                        } ?>
+                    </ol>
+                    <!-- Carousel items -->
+                    <div class="carousel-inner">
+                    	<?php for($i = 0; $i < count($d['photo']); $i++) {
+                       	if($i == 0) { ?>
+                        <div class="active item">
+                        	<img src="<?php echo $d['photo'][$i]; ?>" alt="" width="100%">
+                    		<div class="carousel-caption">
+                      			<h4><?php echo $d['title'][$i]; ?></h4>
+                      			<p><?php echo $d['desc'][$i]; ?></p>
+                    		</div>
+                        </div>
+                        <?php } else { ?>
+                        <div class="item">
+                        	<img src="<?php echo $d['photo'][$i]; ?>" alt="" width="100%">
+                    		<div class="carousel-caption">
+                      			<h4><?php echo $d['title'][$i]; ?></h4>
+                      			<p><?php echo $d['desc'][$i]; ?></p>
+                    		</div>
+                        </div>
+                        <?php } 
+                        } ?>
+                    </div>
+                    <!-- Carousel nav -->
+                    <a class="carousel-control left" href="#myCarousel<?php echo $d['vid']; ?>" data-slide="prev">&lsaquo;</a>
+                    <a class="carousel-control right" href="#myCarousel<?php echo $d['vid']; ?>" data-slide="next">&rsaquo;</a>
+                  </div>
+            </div>
+          </div>
+          <?php } ?>
+          <div class="row">
+            <div class="span9">
+              <p><?php echo $d['introduce']; ?></p>
+            </div>
+          </div>
+        </section>
+		<?php } ?>
+
+      </div>
+    </div>
+
+  </div>
+<include file="Base:footer" />
