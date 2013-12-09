@@ -32,17 +32,21 @@ class ProvinceAction extends BaseAction {
     }
     
     public function data() {  //表单版
-        $years = $this -> getYears();
-        $this -> assign('y', $years);
         
-        $contestDB = D('Contest');
-        $oridata = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 2') -> order('holdtime DESC') -> select();
-        $data = array();
-        foreach ($oridata as $v) {
-            $data[$v['y']][] = $v;
+        $years = $this -> getYears();
+        if(!$years) $this -> display('nodata');
+        else {
+            $this -> assign('y', $years);
+            
+            $contestDB = D('Contest');
+            $oridata = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 2') -> order('holdtime DESC') -> select();
+            $data = array();
+            foreach ($oridata as $v) {
+                $data[$v['y']][] = $v;
+            }
+            $this -> assign('data', $data);
+            $this -> commonassign();
+            $this -> display('data');
         }
-        $this -> assign('data', $data);
-        $this -> commonassign();
-        $this -> display('data');
     }
 }

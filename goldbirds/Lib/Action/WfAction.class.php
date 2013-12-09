@@ -30,8 +30,11 @@ class WfAction extends BaseAction {
         
         $contest = D('Contest');
         $data = $contest -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type=0') -> order('holdtime DESC') -> select();
-        $this -> assign('data', $data);
-        $this -> commonassign();
-        $this -> display('data');
+		if(!$data) $this -> display('nodata');
+		else {
+			$this -> assign('data', $data);
+			$this -> commonassign();
+			$this -> display('data');
+		}
     }
 }
