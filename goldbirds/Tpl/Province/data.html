@@ -72,18 +72,18 @@
   				<table id="data-table" class="table table-striped table-condensed table-hover">
   					<thead>
     					<tr class="align-center">
-                        	<th class="sorter-false"> </th>
-      						<th>举办时间</th>
-                            <th>举办单位、地点</th>
-                            <th>队伍</th>
+                        	<th class="sorter-false" width="8%"> </th>
+      						<th width="10%">举办时间</th>
+                            <th width="25%">举办单位、地点</th>
+                            <th width="15%">队伍</th>
                             <th class="sorter-false">队员</th>
-                            <th>奖项</th>
+                            <th width="10%">奖项</th>
     					</tr>
   					</thead>
   					<tbody>
                     	<?php foreach($vd as $d) {
                         	//LOGO图案
-                        	echo '<tr><td width="10%"><img width="100%" src="img/';
+                        	echo '<tr><td><img width="100%" src="img/';
                             if($d['medal'] == 0) echo 'golden.jpg';
                             else if($d['medal'] == 1) echo 'silver.jpg';
                             else if($d['medal'] == 2) echo 'bronze.jpg';
@@ -91,9 +91,9 @@
                             echo '"></td>';
                             
                             //时间地点
-                            echo '<td width="10%"><strong>'.$d['y'].'-'.$d['m'].'</strong></td><td width="25%"><p>'.$d['university'].'</p><p>'.$d['site'].'</p></td>';
+                            echo '<td><strong>'.$d['y'].'-'.$d['m'].'</strong></td><td><p>'.$d['university'].'</p><p>'.$d['site'].'</p></td>';
                             //队伍名
-                            echo '<td width="15%"><span class="badge"><h5>'.$d['team'].'</h5></span></td><td style="text-align:left !important; padding-left:20px">';
+                            echo '<td><span class="badge"><h5>'.$d['team'].'</h5></span></td><td style="text-align:left !important; padding-left:20px">';
                             //队员
                             echo '<p><span class="label label-warning">Leader</span> ';
                             if($d['leader_detail']['sex'] != 1) echo '<span class="label">♂</span> '; 
@@ -119,7 +119,7 @@
                             if($d['teamer2_detail']['introduce']) echo '</span>';
                             echo '</p>';
                             
-                            echo '</td><td width="10%">';
+                            echo '</td><td>';
                             
                             //奖牌
                             $temp = ''; 
