@@ -15,6 +15,7 @@
     <script src="js/bootstrap.js"></script>
     <script src="js/jquery.tablesorter.min.js"></script>
     <script src="js/jquery.tablesorter.widgets.min.js"></script>
+    <script src="js/jquery.tablesorter.pager.js"></script>
     <script src="js/ajaxfileupload.js"></script>
     <script src="js/setting_common.js"></script>
 	<script type="text/javascript">
@@ -92,12 +93,24 @@
   					</thead>
   					<tbody></tbody>
 				</table>
-
             </div>
-            
-            
+            <!-- pager -->
+            <div id="pager" class="span9 pagination text-center" style="margin-top:0px">
+              	<ul>
+                    <li class="first"><a href="javascript:void(0)"><i class="icon-step-backward"></i></a></li>
+                    <li class="prev"><a href="javascript:void(0)"><i class="icon-backward"></i></a></li>
+                    <li><span class="pagedisplay"></span></li>
+                    <li class="next"><a href="javascript:void(0)"><i class="icon-forward"></i></a></li>
+                    <li class="last"><a href="javascript:void(0)"><i class="icon-step-forward"></i></a></li>
+                    <select class="pagesize input-mini inline">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                	</select>
+                </ul>
+            </div>
         </div>
-        
       </div>
     </div>
   </div>

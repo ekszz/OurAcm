@@ -1,6 +1,23 @@
 var typeahead_data = Array();  //自动提示数据
 
 $(function () {
+	var pagerOptions = {
+		container: $(".pagination"),
+		output: '{page}/{totalPages}',
+		page: 0,
+		savePages : true,
+		fixedHeight: true,
+		removeRows: false,
+		cssNext: '.next', // next page arrow
+		cssPrev: '.prev', // previous page arrow
+		cssFirst: '.first', // go to first page arrow
+		cssLast: '.last', // go to last page arrow
+		cssGoto: '.gotoPage', // select dropdown to allow choosing a page
+		cssPageDisplay: '.pagedisplay', // location of where the "output" is displayed
+		cssPageSize: '.pagesize', // page size selector - select dropdown that sets the "size" option
+		cssDisabled: 'disabled', // Note there is no period "." in front of this class name
+  	};
+	
 	//tablesorter插件初始化=====================================
 	$.extend($.tablesorter.themes.bootstrap, {
 		table      : 'table',
@@ -29,7 +46,8 @@ $(function () {
 			zebra : ["even", "odd"],
 			filter_reset : ".reset"
 		}
-	});
+	})
+	.tablesorterPager(pagerOptions);
 
 	//加载表格内容=================================
 	reFresh();
