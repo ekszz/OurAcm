@@ -11,9 +11,6 @@ class OjAction extends BaseAction {
             for($i = 0; $i < count($data); $i++) {
                 if($data[$i]['photos']) {  //有照片
                     $data[$i]['photo'] = explode(',', $data[$i]['photos']);
-                    for($j = 0; $j < count($data[$i]['photo']); $j++) {
-                        $data[$i]['photo'][$j] = base64_decode($data[$i]['photo'][$j]);
-                    }
             
                     $data[$i]['title'] = explode(',', $data[$i]['titles']);
                     for($j = 0; $j < count($data[$i]['title']); $j++) {
