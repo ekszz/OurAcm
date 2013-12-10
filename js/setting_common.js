@@ -1,7 +1,7 @@
 $(function() {
 	$('.content').on('change',':checkbox.select-all',function (){ 
-	    var checked=$(this).attr('checked')?true:false;
-	    $(this).closest("table").find("input[type='checkbox']").attr("checked",checked);
+	    var checked=$(this).prop('checked')?true:false;
+	    $(this).closest("table").find("input[type='checkbox']").prop("checked",checked);
 	});
 	$(document).ajaxStart(function() {
 		loading();

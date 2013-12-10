@@ -192,9 +192,9 @@ function reFresh() {  //reload table
 		$.each(data.data, function(i, vo) {
 			reshtml = reshtml + '<tr><td><label class="checkbox"><input type="checkbox" id="' + vo.cid + '" data-id="id"></label></td><td>' + vo.cid + '</td><td>' + vo.holdtime + '</td><td>' + vo.site + '</td><td>' + vo.university + '</td><td>';
 			if(vo.type == 0) reshtml = reshtml + 'WF';
-			else if(vo.type == 1) reshtml = reshtml + 'Regional';
-			else if(vo.type == 2) reshtml = reshtml + '省赛';
-			else reshtml = reshtml + vo.type + '未知';
+			else if(vo.type == 1) reshtml = reshtml + 'R';
+			else if(vo.type == 2) reshtml = reshtml + 'P';
+			else reshtml = reshtml + vo.type + '-';
 			
 			reshtml += '</td><td>';
 			
