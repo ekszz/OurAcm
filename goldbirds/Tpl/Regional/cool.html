@@ -2,6 +2,7 @@
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/jquery.fancybox.css" rel="stylesheet">
     <link href="css/docs.css" rel="stylesheet">
     
     <!--[if lt IE 9]>
@@ -10,10 +11,13 @@
     
     <!-- Le javascript -->
     <script src="js/jquery.js"></script>
+    <script src="js/jquery.fancybox.pack.js"></script>
+    <script src="js/jquery.easing.pack.js"></script>
     <script src="js/bootstrap.js"></script>
 	<script type="text/javascript">
 	$(function(){
 		$(function(){ $("#navbar li:nth-child(3)").addClass("active"); });
+		$(".fancybox").fancybox({openEffect:'elastic', closeEffect:'elastic', padding:10});
 		var $window = $(window);
 			$('.bs-docs-sidenav').affix({
 		        offset: {
@@ -89,8 +93,8 @@
           </div>
           <hr class="soften" />
           <div class="row">
-          	<div class="<?php if(!$d['pic2']) echo 'span6'; else echo 'span4'; ?>"><img src="<?php if($d['pic1']) echo $d['pic1']; else echo 'img/nopic.jpg'; ?>" class="img-polaroid" /></div>
-          	<?php if($d['pic2']) echo '<div class="span4"><img src="'.$d['pic2'].'" class="img-polaroid" /></div>'; ?>
+          	<div class="<?php if(!$d['pic2']) echo 'span6'; else echo 'span4'; ?>"><a class="fancybox" href="<?php if($d['pic1']) echo $d['pic1']; else echo 'img/nopic.jpg'; ?>"><img src="<?php if($d['pic1']) echo $d['pic1']; else echo 'img/nopic.jpg'; ?>" class="img-polaroid" /></a></div>
+          	<?php if($d['pic2']) echo '<div class="span4"><a class="fancybox" href="'.$d['pic2'].'"><img src="'.$d['pic2'].'" class="img-polaroid" /></a></div>'; ?>
           </div>
        <?php } ?>
        </section>
