@@ -81,7 +81,7 @@
                             else if($d['medal'] == 1) echo 'silver.jpg';
                             else if($d['medal'] == 2) echo 'bronze.jpg';
                             else echo 'final.jpg';
-                            echo '"></td><td><strong>'.$d['y'].'-'.$d['m'].'</strong></td><td><p>'.$d['university'].'</p><p>'.$d['site'].'</p></td>';
+                            echo '"></td><td><strong>'.$d['y'].'-'.$d['m'].'</strong></td><td><p>'.$d['university'].'</p><p><span class="label label-important">'.$d['site'].'</span></p></td>';
                             echo '<td><span class="badge"><h5>'.$d['team'].'</h5></span></td><td style="text-align:left !important; padding-left:20px">';
                             echo '<p><span class="label label-warning">Leader</span> ';
                             if($d['leader_detail']['sex'] != 1) echo '<span class="label">♂</span> '; 
