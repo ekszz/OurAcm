@@ -19,7 +19,12 @@ class ProvinceAction extends BaseAction {
             }
             $this -> assign('y', $years);
             $this -> assign('year', $year);
-            $data = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 2 AND YEAR(holdtime) ='.$year) -> order('holdtime DESC') -> select();
+            if(intval($this -> getconfig('config_contest_sort'))) {  //按奖项优先排序
+                $data = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 2 AND YEAR(holdtime) ='.$year) -> order('medal ASC, holdtime DESC, team ASC') -> select();
+            }
+            else {  //按时间优先排序
+                $data = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 2 AND YEAR(holdtime) ='.$year) -> order('holdtime DESC, medal ASC, team ASC') -> select();
+            }
             $this -> assign('data', $data);
             $this -> display('cool');
         }
@@ -39,7 +44,12 @@ class ProvinceAction extends BaseAction {
             $this -> assign('y', $years);
             
             $contestDB = D('Contest');
-            $oridata = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 2') -> order('holdtime DESC') -> select();
+            if(intval($this -> getconfig('config_contest_sort'))) {  //按奖项优先排序
+                $oridata = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 2') -> order('medal ASC, holdtime DESC, team ASC') -> select();
+            }
+            else {  //按时间优先排序
+                $oridata = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 2') -> order('holdtime DESC, medal ASC, team ASC') -> select();
+            }
             $data = array();
             foreach ($oridata as $v) {
                 $data[$v['y']][] = $v;
