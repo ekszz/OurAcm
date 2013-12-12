@@ -55,10 +55,10 @@
     <div class="row">
       <div class="span3 bs-docs-sidebar">
         <ul class="nav nav-list bs-docs-sidenav">
-       	  <li class="selected"><a href="<?php echo U('Regional/cool'); ?>"><i class="icon-chevron-right"></i> 酷炫版</a></li>
+       	  <li class="selected"><a href="?z=regional-cool"><i class="icon-chevron-right"></i> 酷炫版</a></li>
           <?php foreach($y as $vo) {
           	if($vo['y'] == $year) echo '<li class="active"><a><i class="icon-chevron-right"></i> -- '.$vo['y'].'年</a></li>';
-          	else echo '<li><a href="'.U('Regional/cool?y='.$vo['y']).'#top"><i class="icon-chevron-right"></i> -- '.$vo['y'].'年</a></li>';
+          	else echo '<li><a href="?z=regional-cool-y-'.$vo['y'].'#top"><i class="icon-chevron-right"></i> -- '.$vo['y'].'年</a></li>';
 		  } ?>
           <li><a href="<?php echo U('Regional/data'); ?>"><i class="icon-chevron-right"></i> 表单版</a></li>
         </ul>
