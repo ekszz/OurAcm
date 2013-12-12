@@ -71,7 +71,7 @@
           </div>
           <div class="row">
             <div class="span4">
-              <p class="text-success"><font size="+3"><img src="<?php switch($d['medal']) { case 0: echo 'img/golden.jpg'; break; case 1: echo 'img/silver.jpg'; break; case 2: echo 'img/bronze.jpg'; break; default: echo 'img/honorable.jpg'; } ?>" /> <strong><?php echo $d['team']; ?></strong></font></p>
+              <p class="text-success"><font size="+3"><img width="20%" src="<?php switch($d['medal']) { case 0: echo 'img/golden.png'; break; case 1: echo 'img/silver.png'; break; case 2: echo 'img/bronze.png'; break; default: echo 'img/honorable.png'; } ?>" /> <strong><?php echo $d['team']; ?></strong></font></p>
             </div>
             <div class="span5 text-right">
               <p><span class="alert alert-info"><i class="icon-map-marker"></i> <?php echo $d['university'].', '.$d['site'].' @ '.$d['y'].'.'.$d['m']; ?></span></p>
