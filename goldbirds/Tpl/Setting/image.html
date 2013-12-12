@@ -1,0 +1,117 @@
+<include file="Base:header" />
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    <link href="css/setting.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    
+    <!-- Le javascript -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/ajaxfileupload.js"></script>
+    <script src="js/setting_common.js"></script>
+    <script src="js/setting_image.js"></script>
+	<script type="text/javascript">
+	$(function(){ $("#navbar li:nth-child(7)").addClass("active"); $("#setting-bar li:nth-child(5)").addClass("active"); });
+	$(function(){
+		var $window = $(window);
+			$('.bs-docs-sidenav').affix({
+		        offset: {
+		            top: function () { return $window.width() <= 980 ? 290 : 210 }
+		          , bottom: 270
+		          }
+		        });
+			$("span[data-toggle=popover]")
+      			.popover()
+      			.click(function(e) {
+        			e.preventDefault()
+      		});
+	});
+  	</script>
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <include file="Base:navbar" />
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>设置</h1>
+    <p class="lead">Setting</p>
+    <div id="carbonads-container"></div>
+  </div>
+</header>
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <include file="commonbar" />
+      <div class="span9">
+		<div class="page-header">
+            <h1>上传图片</h1>
+        </div>
+        
+        <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
+        	<div class="control-group">
+				<label class="control-label">待上传照片</label>
+				<div class="controls">
+                    <input type="file" class="input-xlarge" id="fn" name="fn">
+                    <button class="btn btn-primary" type="button" id="upload-btn">上传</button>
+                    
+				</div>
+			</div>
+            <div class="control-group">
+				<label class="control-label"> </label>
+				<div class="controls">
+                    <span id="upload-res" class="label label-info" style="margin-bottom:20px">请先选择待上传的照片，再点击上传按钮上传。</span>
+				</div>
+			</div>
+       	</form>
+       	
+
+        <div class="page-header">
+            <h1>无关联图片清理</h1>
+        </div>
+        
+        <div class="row">
+        	<div class="span3">
+            	未引用图片（双击可移至待删除）：
+            	<select id="unlink" style="height:200px" multiple>
+                	<option value="1">1</option>
+                    <option value="1">1</option>
+                </select>
+                <input type="button" class="btn btn-success" id="btn-reload" value="刷新" />
+                <input type="button" class="btn btn-primary" id="movright" value="全部移至右框&gt;&gt;" />
+            </div>
+            <div class="span3">
+            	待删除图片（双击移至左框）：
+            	<select id="todel" style="height:200px" multiple>
+                	<option value="1">1</option>
+                    <option value="1">1</option>
+                </select>
+                <input type="button" class="btn btn-primary" id="movleft" value="&lt;&lt;全部移至左框" />
+                <input type="button" class="btn btn-danger" id="delall" value="全部删除" />
+            </div>
+            <div class="span3">
+            	图像预览（选择单张图片可预览）：<img id="preview" src="img/nopic.jpg" class="img-polaroid" width="100%" />
+            </div>
+        </div>
+        
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div id="alert"></div>
+<include file="Base:footer" />

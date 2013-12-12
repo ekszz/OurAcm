@@ -453,7 +453,7 @@ class SettingAction extends BaseAction {
                 $data['filename'] = $newphoto;
                 $data['id'] = intval($this -> _post('id'));
 
-                echo json_encode(array('data' => $data, 'info' => '[成功]上传成功，文件大小'.sprintf("%.2lf", intval($fileinfo[0]['size'])/1024).'KB.', 'status' => 0));
+                echo json_encode(array('data' => $data, 'info' => '[成功]上传成功，文件大小'.sprintf("%.2lf", intval($fileinfo[0]['size'])/1024).'KB。', 'status' => 0));
             }
         }
     }
@@ -708,6 +708,111 @@ class SettingAction extends BaseAction {
                 $this -> setconfig($c['k'], $dat);
                 $c['v'] = $dat;
                 $this -> ajaxReturn($c, '[成功]保存参数 ['.$c['k'].'] 成功！参数缓存已更新。', 0);
+            }
+        }
+    }
+    
+    //图片管理================================================
+    
+    public function image() {  //图片管理页面
+        
+        $this -> commonassign();
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> profile();
+        else {
+            $this -> display('');
+        }
+    }
+    
+    public function ajax_upload_image() {
+        
+        $this -> ajax_upload_contestpic();   
+    }
+
+    public function ajax_get_unlink_filename() {  //获取未引用的文件
+        
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            //获取upload目录下所有文件
+            $handler = opendir('upload');
+            $files = array();  //upload下文件名xxx.jpg形式
+            while (($filename = readdir($handler)) !== false) {  //务必使用!==，防止目录下出现类似文件名“0”等情况
+                if ($filename != "." && $filename != "..") {
+                    $files[iconv('GBK', 'UTF-8', strtolower($filename))] = iconv('GBK', 'UTF-8', $filename);  //filename-无用，null-有关联，需要中文编码转换
+                }
+            }
+            closedir($handler);
+            
+            //查找contest中的关联图片
+            $contestDB = M('Contest');
+            $data = $contestDB -> field('pic1, pic2') -> select();
+            foreach($data as $d) {
+                if($d['pic1'] && array_key_exists(strtolower(substr($d['pic1'], 7)))) $files[strtolower(substr($d['pic1'], 7))] = null;
+                if($d['pic2'] && array_key_exists(strtolower(substr($d['pic2'], 7)))) $files[strtolower(substr($d['pic2'], 7))] = null;
+            }
+            
+            //查找用户头像关联图片
+            $personDB = M('Person');
+            $data = $personDB -> field('photo') -> select();
+            foreach($data as $d) {
+                if($d['photo'] && array_key_exists(strtolower(substr($d['photo'], 7)), $files)) $files[strtolower(substr($d['photo'], 7))] = null;
+            }
+            
+            //查找OJ历史中是否有关联图片
+            $ojhistoryDB = M('Ojhistory');
+            $data = $ojhistoryDB -> field('photos') -> select();
+            foreach ($data as $d) {
+                $ps = explode(',', $d['photos']);
+                foreach ($ps as $p) {
+                    if(array_key_exists(strtolower(substr($p, 7)), $files)) $files[strtolower(substr($p, 7))] = null;
+                }
+            }
+            
+            //判断首页HTML中是否有图片关联
+            $var = strtolower($this -> getconfig('home_mainarea'));
+            foreach($files as $k => $v) {
+                if($v === 1 && strpos($var, $k) !== false) $files[$k] = null;
+            }
+            
+            //整理结果
+            $ret = array();
+            foreach ($files as $k => $v) {
+                if($v !== null) $ret[] = $v;
+            }
+            
+            $this -> ajaxReturn($ret, '[成功]', 0);
+        }
+    }
+    
+    public function ajax_del_photos() {  //删除多个图片文件
+        
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $photos = $this -> _post('photos', false);
+            $safe = true;
+            for($i = 0; $i < count($photos); $i++) {
+                if(stripos($photos[$i], '/') !== false || stripos($photos[$i], "\\") !== false) {
+                    $safe = false;
+                    break;
+                }
+                else {
+                    $photos[$i] = iconv('UTF-8', 'GBK', $photos[$i]);
+                }
+            }
+            if(!$safe) $this -> ajaxReturn(null, '[错误]文件名有误，请重试。', 1);
+            else {
+                $succ = 0;
+                $fail = 0;
+                for($i = 0; $i < count($photos); $i++) {
+                    if(file_exists('upload/'.$photos[$i])) {
+                        if(unlink('upload/'.$photos[$i])) $succ++;
+                        else $fail++;
+                    }
+                    else $fail++;
+                }                
+                $this -> ajaxReturn(null, '[提示]成功删除'.$succ.'文件，失败'.$fail.'个。', 0);
             }
         }
     }
