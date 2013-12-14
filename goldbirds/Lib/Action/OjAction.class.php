@@ -4,7 +4,7 @@ class OjAction extends BaseAction {
     public function index() {
         
         $ojhistoryDB = M('Ojhistory');
-        $data = $ojhistoryDB -> order('vid DESC') -> select();
+        $data = $ojhistoryDB -> order('sortid DESC') -> select();
         $this -> commonassign();
         if($data === null) $this -> display('nodata');
         else {

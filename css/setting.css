@@ -235,3 +235,8 @@ td label{
 	width:800px;
 	margin:0 0 0 -400px; 
 }
+#photo-modal label {
+	width:90px;
+	margin-left:40px;
+	margin-bottom:15px;
+}

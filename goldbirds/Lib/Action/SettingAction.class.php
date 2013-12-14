@@ -817,4 +817,168 @@ class SettingAction extends BaseAction {
         }
     }
     
+    //OJ历史管理==============================================
+    
+    public function ojhistory() {
+        
+        $this -> commonassign();
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> profile();
+        else {
+            $this -> display('');
+        }
+    }
+    
+    public function ajax_get_oj_list() {
+        
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $ojhistoryDB = M('Ojhistory');
+            $data = $ojhistoryDB -> field('vid, mainname') -> order('sortid DESC') -> select();
+            $this -> ajaxReturn($data, '[成功]', 0);
+        }
+    }
+    
+    public function ajax_get_oj_detail() {
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $vid = intval($this -> _get('vid'));
+            if($vid <= 0) $this -> ajaxReturn(null, '[错误]无效的VID，请检查。', 1);
+            else {
+                $ojhistoryDB = M('Ojhistory');
+                $data = $ojhistoryDB -> where('vid='.$vid) -> find();
+                $data['mainname'] = htmlspecialchars_decode($data['mainname']);
+                $data['devname'] = htmlspecialchars_decode($data['devname']);
+                $data['introduce'] = htmlspecialchars_decode($data['introduce']);
+                if($data['photos']) {
+                    $tmparray = explode(',', $data['photos']);
+                    $data['photos'] = $tmparray;
+                    for($i = 0; $i < count($data['photos']); $i++) {
+                        $data['photos'][$i] = substr($data['photos'][$i], 7);
+                    }
+                    $data['titles'] = explode(',', $data['titles']);
+                    for($i = 0; $i < count($data['titles']); $i++) {
+                        $data['titles'][$i] = base64_decode($data['titles'][$i]);
+                    }
+                    $data['descs'] = explode(',', $data['descs']);
+                    for($i = 0; $i < count($data['descs']); $i++) {
+                        $data['descs'][$i] = base64_decode($data['descs'][$i]);
+                    }
+                }
+                
+                if($data) $this -> ajaxReturn($data, '[成功]', 0);
+                else $this -> ajaxReturn(null, '[错误]无效的VID，请检查。', 1);
+            }
+        }
+    }
+    
+    public function ajax_add_oj() {  //添加一条OJ记录
+        
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $ojhistoryDB = M('Ojhistory');
+            $data['sortid'] = 10;
+            $data['mainname'] = '新建版本（请在后台修改）';
+            $k = $ojhistoryDB -> data($data) -> add();
+            if($k) $this -> ajaxReturn($k, '[成功]', 0);
+            else $this -> ajaxReturn(null, '[错误]创建新OJ历史记录错误，请重试。', 2);
+        }
+    }
+    
+    public function ajax_del_oj() {  //删除一条OJ记录
+        
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $vid = intval($this -> _get('vid'));
+            if($vid <= 0) $this -> ajaxReturn(null, '[错误]无效的VID，请检查。', 1);
+            else {
+                $ojhistoryDB = M('Ojhistory');
+                if($ojhistoryDB -> where('vid='.$vid) -> delete()) {
+                    $this -> ajaxReturn($vid, '[成功]', 0);
+                }
+                else $this -> ajaxReturn(null, '[失败]删除失败。', 2);
+            }
+        }
+    }
+    
+    public function ajax_upload_ojpic() {
+        
+        $this -> ajax_upload_contestpic();
+    }
+    
+    public function ajax_modify_oj() {  //保存一条OJ历史的修改
+        
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $vid = intval($this -> _post('vid'));
+            if($vid <= 0) $this -> ajaxReturn(null, '[错误]无效的VID参数。', 1);
+            else {
+                $data['sortid'] = intval($this -> _post('sortid'));
+                $data['mainname'] = $this -> _post('mainname');
+                $data['devname'] = $this -> _post('devname') == '' ? null : $this -> _post('devname');
+                $data['introduce'] = $this -> _post('introduce') == '' ? null : $this -> _post('introduce');
+                $photos = $this -> _post('photos');
+                $titles = $this -> _post('titles');
+                $descs = $this -> _post('descs');
+                $data['photos'] = '';
+                $data['titles'] = '';
+                $data['descs'] = '';
+                for($i = 0; $i < count($photos); $i++) {
+                    if(!$photos[$i]) continue;
+                    if($i != 0) {
+                        $data['photos'] .= ',';
+                        $data['titles'] .= ',';
+                        $data['descs'] .= ',';
+                    }
+                    $data['photos'] .= ('upload/'.$photos[$i]);
+                    if($titles[$i]) $data['titles'] .= base64_encode($titles[$i]);
+                    if($descs[$i]) $data['descs'] .= base64_encode($descs[$i]);
+                }
+                if(!$data['photos']) { $data['photos'] = null; $data['titles'] = null; $data['descs'] = null; }
+                if(!$data['titles']) $data['titles'] = null;
+                if(!$data['descs']) $data['descs'] = null;
+                
+                $ojhistoryDB = D('Ojhistory');
+                if(!$ojhistoryDB -> create($data)) {  //自动验证失败
+                    $this -> ajaxReturn(null, $ojhistoryDB -> getError(), 1);
+                }
+                else {  //自动验证成功
+                    if(false === $ojhistoryDB -> where('vid='.$vid) -> limit(1) -> save($data)) {
+                        $this -> ajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                    }
+                    else {
+                        $this -> ajaxReturn(null, '[成功]', 0);
+                    }
+                }
+            }
+        }
+       
+    }
+    
+    public function ajax_get_img_list() {  //获取图片文件名列表
+
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            //获取upload目录下所有文件
+            $handler = opendir('upload');
+            $files = array();  //upload下文件名xxx.jpg形式
+            while (($filename = readdir($handler)) !== false) {  //务必使用!==，防止目录下出现类似文件名“0”等情况
+                if ($filename != "." && $filename != "..") {
+                    $files[] = iconv('GBK', 'UTF-8', $filename);  //filename-无用，null-有关联，需要中文编码转换
+                }
+            }
+            closedir($handler);
+            
+            $this -> ajaxReturn($files, '[成功]', 0);
+        }
+    }
+    
+    
 }
