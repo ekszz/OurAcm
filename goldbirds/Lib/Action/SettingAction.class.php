@@ -748,8 +748,8 @@ class SettingAction extends BaseAction {
             $contestDB = M('Contest');
             $data = $contestDB -> field('pic1, pic2') -> select();
             foreach($data as $d) {
-                if($d['pic1'] && array_key_exists(strtolower(substr($d['pic1'], 7)))) $files[strtolower(substr($d['pic1'], 7))] = null;
-                if($d['pic2'] && array_key_exists(strtolower(substr($d['pic2'], 7)))) $files[strtolower(substr($d['pic2'], 7))] = null;
+                if($d['pic1'] && array_key_exists(strtolower(substr($d['pic1'], 7)), $files)) $files[strtolower(substr($d['pic1'], 7))] = null;
+                if($d['pic2'] && array_key_exists(strtolower(substr($d['pic2'], 7)), $files)) $files[strtolower(substr($d['pic2'], 7))] = null;
             }
             
             //查找用户头像关联图片
@@ -772,7 +772,7 @@ class SettingAction extends BaseAction {
             //判断首页HTML中是否有图片关联
             $var = strtolower($this -> getconfig('home_mainarea'));
             foreach($files as $k => $v) {
-                if($v === 1 && strpos($var, $k) !== false) $files[$k] = null;
+                if($v !== null && strpos($var, $k) !== false) $files[$k] = null;
             }
             
             //整理结果
