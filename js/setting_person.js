@@ -78,6 +78,11 @@ $(function () {
 		del_person($(this).data('uid'));
 	});
 	
+	$('.content').on('click', '[data-toggle=show_code]', function (e) {
+	    e.preventDefault();
+		$('#lucky-code-show').html('[ ' + $(this).data('chsname') + ' ] 的邀请码是：[ ' + $(this).data('code') + ' ]');
+	});
+	
 	$('#person-modal').on('click', '[data-func=upload]', function (e) {  //“上传”按钮事件
 		$.ajaxFileUpload({
 			url:"?z=setting-ajax_upload_personface",
@@ -124,6 +129,7 @@ $(function () {
 });
 
 function reFresh() {
+	$('#lucky-code-show').html(null);
 	$.getJSON("?z=setting-ajax_load_person", null)
 	.done(function(data) {
 		var reshtml = "";
@@ -132,7 +138,7 @@ function reFresh() {
 			reshtml = reshtml + (vo.sex == 1 ? '女':'男');
 			reshtml = reshtml + '</td><td>' + (vo.email == null?'':vo.email) + '</td><td>' + (vo.phone == null?'':vo.phone) + '</td><td>' + (vo.grade == null?'':vo.grade) + '</td> <td>' + (vo.ojaccount == null?'':vo.ojaccount) + '</td><td>';
 			if(vo.group == 1) reshtml += '队长'; else if(vo.group == 2) reshtml += '教练'; else if(vo.group == 9) reshtml += '管理员'; else reshtml += '队员';
-			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-uid="' + vo.uid + '" data-func="0" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-view" title="查看" data-trigger="hover"><i class="icon-zoom-in"></i> </a><a data-uid="' + vo.uid + '" data-func="2" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-edit" title="编辑" data-trigger="hover" data-placement="bottom"><i class="icon-edit"></i> </a><a data-toggle="del_person" data-uid="' + vo.uid + '" class="btn btn-small btn-delete" title="删除"><i class="icon-trash"></i> </a></div></td></tr>';  
+			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-uid="' + vo.uid + '" data-func="0" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-view" title="查看" data-trigger="hover"><i class="icon-zoom-in"></i> </a><a data-uid="' + vo.uid + '" data-func="2" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-edit" title="编辑" data-trigger="hover" data-placement="bottom"><i class="icon-edit"></i> </a><a data-toggle="del_person" data-uid="' + vo.uid + '" class="btn btn-small btn-delete" title="删除"><i class="icon-trash"></i> </a><a data-toggle="show_code" data-code="' + vo.luckycode + '" data-chsname="' + vo.chsname + '" class="btn btn-small btn-delete" title="显示邀请码"><i class="icon-barcode"></i> </a></div></td></tr>';  
 		});
 		$('#data-table tbody').html(reshtml);
 		$("#data-table").trigger("update");

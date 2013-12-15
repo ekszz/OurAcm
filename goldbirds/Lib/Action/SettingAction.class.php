@@ -200,7 +200,7 @@ class SettingAction extends BaseAction {
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
             $personDB = M('Person');
-            $data = $personDB -> field('uid, chsname, sex, email, phone, grade, ojaccount, group') -> where('uid > 0') -> order('uid ASC') -> select();
+            $data = $personDB -> field('uid, chsname, sex, email, phone, grade, ojaccount, group, luckycode') -> where('uid > 0') -> order('uid ASC') -> select();
             if($data === false) {
                 $this -> ajaxReturn(null, '[错误]数据库错误。', 1);
             }
