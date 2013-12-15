@@ -1,5 +1,5 @@
 <?php
-class ProvinceAction extends BaseAction {
+class OtherAction extends BaseAction {
     
     public function index() {
         if(intval($this -> getconfig('config_contest_default_show')) == 0) $this -> data();
