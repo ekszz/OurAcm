@@ -807,6 +807,8 @@ class SettingAction extends BaseAction {
                 $fail = 0;
                 for($i = 0; $i < count($photos); $i++) {
                     if(file_exists('upload/'.$photos[$i])) {
+                        if(file_exists('upload/thumb/'.$photos[$i]))
+                            @unlink('upload/thumb/'.$photos[$i]);
                         if(unlink('upload/'.$photos[$i])) $succ++;
                         else $fail++;
                     }

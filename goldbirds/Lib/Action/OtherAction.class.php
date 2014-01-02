@@ -25,6 +25,18 @@ class OtherAction extends BaseAction {
             else {  //按时间优先排序
                 $data = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 2 AND YEAR(holdtime) ='.$year) -> order('holdtime DESC, medal ASC, team ASC') -> select();
             }
+            
+            //如果不存在缩略图，则生成
+            import('ORG.Util.Image');
+            foreach($data as $d) {
+                if($d['pic1'] && !file_exists('upload/thumb/'.substr($d['pic1'], 7))) {
+                    Image::thumb($d['pic1'], 'upload/thumb/'.substr($d['pic1'], 7), '', 576, 360, false);
+                }
+                if($d['pic2'] && !file_exists('upload/thumb/'.substr($d['pic2'], 7))) {
+                    Image::thumb($d['pic2'], 'upload/thumb/'.substr($d['pic2'], 7), '', 576, 360, false);
+                }
+            }
+            
             $this -> assign('data', $data);
             $this -> display('cool');
         }

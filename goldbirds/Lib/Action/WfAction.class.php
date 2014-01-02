@@ -21,6 +21,18 @@ class WfAction extends BaseAction {
             $this -> assign('nowyear', 9999);
             $contest = D('Contest');
             $data = $contest -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type=0') -> order('holdtime DESC') -> select();
+            
+            //如果不存在缩略图，则生成
+            import('ORG.Util.Image');
+            foreach($data as $d) {
+                if($d['pic1'] && !file_exists('upload/thumb/'.substr($d['pic1'], 7))) {
+                    Image::thumb($d['pic1'], 'upload/thumb/'.substr($d['pic1'], 7), '', 576, 360, false);
+                }
+                if($d['pic2'] && !file_exists('upload/thumb/'.substr($d['pic2'], 7))) {
+                    Image::thumb($d['pic2'], 'upload/thumb/'.substr($d['pic2'], 7), '', 576, 360, false);
+                }
+            }
+            
             $this -> assign('data', $data);
             $this -> display('cool');
         }

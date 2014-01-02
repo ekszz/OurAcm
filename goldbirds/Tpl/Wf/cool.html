@@ -73,7 +73,7 @@
 
           <div class="row">
             <div class="span4">
-              <p class="text-success"><font size="+3"><img src="img/final.png" /> <strong><?php echo $d['team']; ?></strong></font></p>
+              <p class="text-success"><font size="+3"><img width="25%" src="img/final.png" /> <strong><?php echo $d['team']; ?></strong></font></p>
             </div>
             <div class="span5 text-right">
               <p><span class="alert alert-info"><i class="icon-map-marker"></i> <?php echo $d['university'].', '.$d['site'].' @ '.$d['y'].'.'.$d['m']; ?></span></p>
@@ -95,8 +95,8 @@
           </div>
           <hr class="soften" />
           <div class="row">
-          	<div class="<?php if(!$d['pic2']) echo 'span6'; else echo 'span4'; ?>"><a class="fancybox" href="<?php if($d['pic1']) echo $d['pic1']; else echo 'img/nopic.jpg'; ?>"><img src="<?php if($d['pic1']) echo $d['pic1']; else echo 'img/nopic.jpg'; ?>" class="img-polaroid" /></a></div>
-          	<?php if($d['pic2']) echo '<div class="span4"><a class="fancybox" href="'.$d['pic2'].'"><img src="'.$d['pic2'].'" class="img-polaroid" /></a></div>'; ?>
+          	<div class="<?php if(!$d['pic2']) echo 'span6'; else echo 'span4'; ?>"><a class="fancybox" href="<?php if($d['pic1']) echo $d['pic1']; else echo 'img/nopic.jpg'; ?>"><img src="<?php if($d['pic1']) echo 'upload/thumb/'.substr($d['pic1'], 7); else echo 'img/nopic.jpg'; ?>" class="img-polaroid" /></a></div>
+          	<?php if($d['pic2']) echo '<div class="span4"><a class="fancybox" href="'.$d['pic2'].'"><img src="upload/thumb/'.substr($d['pic2'], 7).'" class="img-polaroid" /></a></div>'; ?>
           </div>
         <?php if($flag == 1) { echo '</section>'; $flag = 0; } }?>
 
