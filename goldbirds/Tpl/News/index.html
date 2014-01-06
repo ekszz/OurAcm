@@ -1,0 +1,120 @@
+<include file="Base:header" />
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    <link href="css/setting.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    
+    <!-- Le javascript -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/setting_common.js"></script>
+	<script type="text/javascript">
+	var nid = <?php echo $nid; ?>;
+	var page = 0;
+	var category = null;
+	$(function(){
+		$("#navbar li:nth-child(5)").addClass("active");
+		var $window = $(window);
+		$('.bs-docs-sidenav').affix({
+			offset: {
+				top: function () { return $window.width() <= 980 ? 290 : 210 }
+			  , bottom: 270
+			  }
+			});
+		$("span[data-toggle=popover]")
+			.popover()
+			.click(function(e) {
+				e.preventDefault()
+		});
+		loadnews(nid, page);
+	});
+	
+	function loadnews(p_page) {
+		if(nid == 0) $('.pager').removeClass('hide');
+		else $('.pager').addClass('hide');
+		if(p_page < 0) p_page = 0;
+		$.post('?z=news-ajaxload', {nid:nid, page:p_page, category:category})
+		.done(function (data) {
+			if(data.status == 0) {
+				var str = '<div class="accordion" id="news-accordion">';
+				for(i=0;i<data.data.length;i++) {
+					str = str + '<div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#news-accordion" href="#news' + data.data[i].nid + '">[' + data.data[i].category + ']&nbsp;' + data.data[i].title + '<span class="label label-info pull-right">' + data.data[i].author_detail.chsname + '&nbsp;@&nbsp;' + data.data[i].createtime + '</span>' + (data.data[i].permission==0?'':'<span class="label label-warning pull-right" style="margin-right:5px">队内通知</span>') + '</a></div><div id="news' + data.data[i].nid + '" class="accordion-body collapse' + (data.data.length==1?' in':'') + '"><div class="accordion-inner">' + data.data[i].content + '<hr class="soften" /><span class="label">本文地址</span> <a href="http://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"]; ?>?z=news-index-nid-' + data.data[i].nid + '">http://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"]; ?>?z=news-index-nid-' + data.data[i].nid + '</a></div></div></div>';
+				}
+				str += '</div>';
+				$('#news-content').html(str);
+				page = p_page;
+			}
+			else {
+				alert(data.info, "error");
+			}
+		})
+		.fail(function () {
+			alert('[错误]请检查网络连接。', "error");
+		});
+	}
+	
+	function sh_category(c) {
+		category = c;
+		page = 0;
+		nid = 0;
+		loadnews(page);
+	}
+	
+	function go_newer() {
+		if(page == 0) { alert("[错误]-_____-这已经是第一页了。", "error"); }
+		else loadnews(page - 1);
+	}
+	
+	function go_older() {
+		loadnews(page + 1);
+	}
+	</script>
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <include file="Base:navbar" />
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>新闻中心</h1>
+    <p class="lead">News Center</p>
+    <div id="carbonads-container"></div>
+  </div>
+</header>
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list bs-docs-sidenav">
+          <li><a href="javascript:sh_category('')"><i class="icon-chevron-right"></i> 全部</a></li>
+          <?php foreach($category as $c) {
+          	echo '<li><a href="javascript:sh_category(\''.base64_encode($c['category']).'\')"><i class="icon-chevron-right"></i> '.$c['category'].'</a></li>';
+          } ?>
+        </ul>
+      </div>
+      <div class="span9">
+      	<div class="page-header">
+          <h1>新闻中心</h1>
+        </div>
+		<div class="row">
+        	<div class="span9"><ul class="pager hide"><li class="previous"><a href="javascript:go_newer()">&larr; Newer</a></li><li class="next"><a href="javascript:go_older()">Older &rarr;</a></li></ul></div>
+        	<div class="span9" id="news-content">
+          	</div>
+            <div class="span9"><ul class="pager hide"><li class="previous"><a href="javascript:go_newer()">&larr; Newer</a></li><li class="next"><a href="javascript:go_older()">Older &rarr;</a></li></ul></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div id="alert"></div>
+<include file="Base:footer" />
