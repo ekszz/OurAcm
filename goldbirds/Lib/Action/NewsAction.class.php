@@ -44,7 +44,7 @@ class NewsAction extends BaseAction {
                     $c = Array();
                     if($category) $c['category'] = $category;
                     if(!session('goldbirds_islogin')) $c['permission'] = 0;
-                    $data = $newsDB -> relation(true) -> where($c) -> limit(($page * $PAGE) . ',' . $PAGE) -> select();
+                    $data = $newsDB -> relation(true) -> where($c) -> order('nid DESC') -> limit(($page * $PAGE) . ',' . $PAGE) -> select();
                     if($data) $this -> ajaxReturn($data, '[成功]', 0);
                     else if($data === false) $this -> ajaxReturn(null, '[错误]读取数据库出错，请重试。', 2);
                     else $this -> ajaxReturn(null, '[错误]没有数据了>.<', 1);
@@ -54,7 +54,7 @@ class NewsAction extends BaseAction {
                 $c = Array();
                 if($category) $c['category'] = $category;
                 if(!session('goldbirds_islogin')) $c['permission'] = 0;
-                $data = $newsDB -> relation(true) -> where($c) -> limit(($page * $PAGE) . ',' . $PAGE) -> select();
+                $data = $newsDB -> relation(true) -> where($c) -> order('nid DESC') -> limit(($page * $PAGE) . ',' . $PAGE) -> select();
                 if($data) $this -> ajaxReturn($data, '[成功]', 0);
                 else if($data === false) $this -> ajaxReturn(null, '[错误]读取数据库出错，请重试。', 2);
                 else $this -> ajaxReturn(null, '[错误]没有数据了>.<', 1);

@@ -724,7 +724,7 @@ class SettingAction extends BaseAction {
         }
     }
     
-    public function ajax_upload_image() {
+    public function ajax_upload_image() {  //上传图片
         
         $this -> ajax_upload_contestpic();   
     }
@@ -821,17 +821,17 @@ class SettingAction extends BaseAction {
     
     //OJ历史管理==============================================
     
-    public function ojhistory() {
+    public function ojhistory() {  //OJ历史管理页面
         
         $this -> commonassign();
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> profile();
         else {
-            $this -> display('');
+            $this -> display('ojhistory');
         }
     }
     
-    public function ajax_get_oj_list() {
+    public function ajax_get_oj_list() {  //获取OJ列表
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
@@ -842,7 +842,7 @@ class SettingAction extends BaseAction {
         }
     }
     
-    public function ajax_get_oj_detail() {
+    public function ajax_get_oj_detail() {  //获取某版本OJ的详细信息
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
@@ -908,7 +908,7 @@ class SettingAction extends BaseAction {
         }
     }
     
-    public function ajax_upload_ojpic() {
+    public function ajax_upload_ojpic() {  //上传图片
         
         $this -> ajax_upload_contestpic();
     }
@@ -982,5 +982,145 @@ class SettingAction extends BaseAction {
         }
     }
     
+    //新闻管理================================================
+    
+    public function news() {  //新闻管理
+        
+        $this -> commonassign();
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> profile();
+        else {
+            $this -> display('news');
+        }
+    }
+    
+    public function ajax_load_news() {  //返回所有新闻列表
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $newsDB = D('News');
+            $data = $newsDB -> relation(true) -> field('nid, title, author, createtime, category, permission') -> order('nid DESC') -> select();
+            if($data === false) {
+                $this -> ajaxReturn(null, '[错误]数据库错误。', 1);
+            }
+            else if($data === 0) {
+                $this -> ajaxReturn(null, '[错误]没有队员信息。', 2);
+            }
+            else {
+                $this -> ajaxReturn($data, '[成功]', 0);
+            }
+        }
+    }
+    
+    public function ajax_get_news() {  //获取一条新闻详细信息
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $newsDB = D('News');
+            $nid = intval($this -> _get('nid'));
+            if($nid < 0) $this -> ajaxReturn(null, '[错误]NID无效。', 1);
+            $data = $newsDB -> relation(true) -> where('nid = '.$nid) -> find();
+            if($data === false) $this -> ajaxReturn(null, '[错误]数据库错误。', 2);
+            else if(!$data) $this -> ajaxReturn(null, '[错误]NID无效。', 1);
+            else $this -> ajaxReturn($data, '[成功]', 0);
+        }
+    }
+    
+    public function ajax_del_news() {  //删除新闻
+        
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $list = $this -> _get('nid');
+            $nids = explode(',', $list);
+            $success = 0;
+            $fail = 0;
+            foreach ($nids as $nid) {
+                if(!$this -> del_one_news($nid)) $success ++;
+                else $fail ++;
+            }
+            if($success == 0 && $fail == 0) $this -> ajaxReturn(null, '[错误]无效的参数。', 2);
+            else if($fail != 0 && $success == 0) $this -> ajaxReturn(null, '[错误]无效的NID。', 1);
+            else if($fail != 0 && $success != 0) $this -> ajaxReturn(null, '[提示]已成功删除'.$success.'条新闻，删除失败'.$fail.'条。', 0);
+            else $this -> ajaxReturn(null, '[成功]已成功删除'.$success.'条新闻。', 0);
+        }
+    }
+    
+    private function del_one_news($nid) {  //删除一条新闻，ajax_del_news具体实现，返回：1-失败，0-成功
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            return 1;
+        else {
+            $nid = intval($nid);
+            if($nid <= 0) return 1;
+    
+            $newsDB = M('News');
+    
+            $res = $newsDB -> where('nid='.$nid) -> limit(1) -> delete();
+            if(false === $res) return 1;
+            else if(0 === $res) return 1;
+            else return 0;
+        }
+    }
+    
+    public function ajax_modify_news() {  //新闻管理-修改一条新闻
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $nid = intval($this -> _post('nownid'));
+            if($nid == 9999 || $nid <= 0) $this -> ajaxReturn(null, '[错误]无效的NID。', 2);
+    
+            $data['title'] = $this -> _post('title', false);
+            $data['category'] = $this -> _post('category', false);
+            $data['content'] = $this -> _post('content', false) == '' ? null : $this -> _post('content', false);
+            $data['author'] = intval(session('goldbirds_uid'));
+            //$data['createtime'] = date("Y-m-d h:i:s");
+            $data['permission'] = ($this -> _post('permission', false) ? 1 : 0);
+
+            $newsDB = D('News');
+            if(!$newsDB -> create($data)) {  //自动验证失败
+                $this -> ajaxReturn(null, $newsDB -> getError(), 1);
+            }
+            else {  //自动验证成功
+                if(false === $newsDB -> where('nid='.$nid) -> limit(1) -> save($data)) {
+                    $this -> ajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                }
+                else {
+                    $this -> ajaxReturn(null, '[成功]', 0);
+                }
+            }
+        }
+    }
+    
+    public function ajax_add_news() {  //新闻管理-添加一条新闻
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $tmp = intval($this -> _post('nownid'));
+            if($tmp != 9999) $this -> ajaxReturn(null, '[错误]无效的参数。', 2);
+            
+            $data['title'] = $this -> _post('title', false);
+            $data['category'] = $this -> _post('category', false);
+            $data['content'] = $this -> _post('content', false) == '' ? null : $this -> _post('content', false);
+            $data['author'] = intval(session('goldbirds_uid'));
+            $data['createtime'] = date("Y-m-d h:i:s");
+            $data['permission'] = ($this -> _post('permission', false) ? 1 : 0);
+    
+            $newsDB = D('News');
+            if(!$newsDB -> create($data)) {
+                $this -> ajaxReturn(null, $newsDB -> getError(), 1);
+            }
+            else {
+                if(false === ($tmp = $newsDB -> add()))
+                    $this -> ajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                else
+                  $this -> ajaxReturn($tmp, '[成功]添加新闻成功，UID:'.$tmp, 0);
+            }
+        }
+    }
     
 }
