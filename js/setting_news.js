@@ -1,4 +1,6 @@
 var editor;
+var typeahead_data = Array();  //自动提示数据
+
 KindEditor.ready(function(K) {
 	editor = K.create('#content', {
 		width : '200px',
@@ -106,7 +108,7 @@ $(function () {
 		if($('#nownid').val() == '9999') {
 			$.post("?z=setting-ajax_add_news", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert(data.info); $('#news-modal').modal('hide'); reFresh(); }
+				if(data.status == 0) { alert(data.info); addcategory($('#category').val()); $('#news-modal').modal('hide'); reFresh(); }
 				else alert(data.info, "error");
 			})
 			.fail(function () {
@@ -116,13 +118,29 @@ $(function () {
 		else {
 			$.post("?z=setting-ajax_modify_news", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert("[成功]修改该新闻成功！"); $('#news-modal').modal('hide'); reFresh(); }
+				if(data.status == 0) { alert("[成功]修改该新闻成功！"); addcategory($('#category').val()); $('#news-modal').modal('hide'); reFresh(); }
 				else alert(data.info, "error");
 			})
 			.fail(function () {
 				alert('[错误]请检查网络连接。', "error");
 			});
 		}
+	});
+	
+	$.getJSON("?z=setting-ajax_get_category", null)
+	.done( function(data) {
+		if(data.status == 0) {
+			for(var i=0;i<data.data.length;i++) { typeahead_data[i] = data.data[i]; }
+			$('#category').typeahead({
+				source: function(query, process) {
+					return typeahead_data;
+				}
+			});
+		}
+		else alert(data.info, "error");
+	})
+	.fail( function() {
+		alert("[错误]获取自动完成数据出错，请检查网络连接。", "error");
 	});
 });
 
@@ -132,6 +150,13 @@ function isnew(str) {
 	var n = new Date();
 	if(n.getTime() - d.getTime() > 1000*3600*24*3) return false;
 	else return true;
+}
+
+function addcategory(str) {
+	for(i=0;i<typeahead_data.length;i++) {
+		if(typeahead_data[i] == str) break;
+	}
+	if(i==typeahead_data.length) typeahead_data.push(str);
 }
 	
 function reFresh() {

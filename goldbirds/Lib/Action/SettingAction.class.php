@@ -1125,4 +1125,29 @@ class SettingAction extends BaseAction {
         }
     }
     
+    public function ajax_get_category() {  //自动提示的类别
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $newsDB = M('News');
+            $data = $newsDB -> distinct(true) -> field('category') -> select();
+            if($data === false) {
+                $this -> ajaxReturn(null, '[错误]数据库错误。', 1);
+            }
+            else if($data === null) {
+                $this -> ajaxReturn('[]', '[提示]系统中没有分类。', 0);
+            }
+            else {
+                $retstr = array();
+                $i = 0;
+                foreach($data as $d) {
+                    $retstr[$i] = $d['category'];
+                    $i++;
+                }
+                $this -> ajaxReturn($retstr, '[成功]', 0);
+            }
+        }
+    }
+    
 }
