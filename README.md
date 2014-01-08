@@ -30,5 +30,5 @@ OurAcm
 4、删除\db\目录；  
 5、请确保\upload、\goldbirds\Runtime具有写权限；  
 6、访问index.php尝试能否正常访问；  
-7、登录OnlineJudge，并访问index.php/?z=setting，以邀请码"iloveacmiloveacm"关联带管理权的OnlineJudge账户；  
+7、登录OnlineJudge，并访问index.php?z=setting，以邀请码"iloveacmiloveacm"关联带管理权的OnlineJudge账户；  
 8、关联后，点击"个人中心"，可在里面进行相应配置管理。  
