@@ -17,6 +17,7 @@
     <script src="js/jquery.tablesorter.widgets.min.js"></script>
     <script src="js/jquery.tablesorter.pager.js"></script>
     <script src="js/ajaxfileupload.js"></script>
+    <script src="js/kindeditor/kindeditor-min.js"></script>
     <script src="js/setting_common.js"></script>
     <script src="js/setting_news.js"></script>
 	<script type="text/javascript">
@@ -120,11 +121,12 @@
   	</div>
     <form class="form-inline" id="news-form" method="post" action="" enctype="multipart/form-data">
   	<div class="modal-body">
-		<label for="category">类别*</label><input type="text" id="category" name="category">
-        <label class="checkbox" for="permission" style="width:160px"><input type="checkbox" id="permission" name="permission" value="onlyteam"> 仅队内可见</label>
+		<label for="category">类别*</label><input type="text" id="category" name="category" class="input-xlarge">
+        <label class="checkbox" for="permission" style="width:240px"><input type="checkbox" id="permission" name="permission" value="onlyteam"> 仅队内可见</label>
         <label for="title">标题*</label><input type="text" name="title" id="title" class="input-xxlarge">
-        <label for="content">内容*</label><textarea rows="12" class="input-xxlarge" name="content" id="content"></textarea>
+        <div style="margin-left:50px;"><textarea style="height:280px;visibility:hidden;" id="content"></textarea></div>
         <input type="hidden" name="nownid" id="nownid">
+        <input type="hidden" name="content">
   	</div>
     </form>
   	<div class="modal-footer">

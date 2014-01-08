@@ -1,3 +1,25 @@
+var editor;
+KindEditor.ready(function(K) {
+	editor = K.create('#content', {
+		width : '200px',
+		allowPreviewEmoticons : false,
+		allowImageUpload : false,
+		items : [
+		'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'cut', 'copy', 'paste',
+        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+        'superscript', 'clearhtml', 'selectall', '/',
+        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'table', 'hr', 'emoticons', 'pagebreak',
+        'anchor', 'link', 'unlink'],
+		themeType : 'simple',
+		allowImageUpload: false,
+		allowFlashUpload: false,
+		allowMediaUpload: false,
+		allowFileUpload: false,
+	});
+});
+	
 $(function () {
 	var pagerOptions = {
 		container: $(".pagination"),
@@ -78,7 +100,8 @@ $(function () {
 		del_news($(this).data('nid'));
 	});
 	
-	$('#btn-submit').on('click', null, function(e) {  //undo
+	$('#btn-submit').on('click', null, function(e) {
+		$('input[name=content]').val(editor.html());
 		var form_data = $('#news-form').serialize();
 		if($('#nownid').val() == '9999') {
 			$.post("?z=setting-ajax_add_news", form_data)
@@ -129,7 +152,7 @@ function set_news_modal(func, nid) {  //0-查看,1-增加,2-修改
 				$('#nownid').val(nid);
 				$('#category').val(data.data.category);
 				$('#title').val(data.data.title);
-				data.data.content == null ? $('#content').val(null) : $('#content').val(data.data.content);
+				data.data.content == null ? editor.html('') : editor.html(data.data.content);
 				data.data.permission == 0 ? $('#permission').prop('checked', false) : $('#permission').prop('checked', true);
 				
 				if(func == "2") {
@@ -153,7 +176,7 @@ function set_news_modal(func, nid) {  //0-查看,1-增加,2-修改
 		$('#nownid').val(9999);
 		$('#category').val(null);
 		$('#title').val(null);
-		$('#content').val(null);
+		editor.html('');
 		$('#permission').prop('checked', false);
 
 		$('#btn-submit').removeClass('hide');
