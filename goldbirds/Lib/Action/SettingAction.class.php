@@ -738,7 +738,7 @@ class SettingAction extends BaseAction {
             $handler = opendir('upload');
             $files = array();  //upload下文件名xxx.jpg形式
             while (($filename = readdir($handler)) !== false) {  //务必使用!==，防止目录下出现类似文件名“0”等情况
-                if ($filename != "." && $filename != "..") {
+                if ($filename != "." && $filename != ".." && $filename != "thumb") {
                     $files[iconv('GBK', 'UTF-8', strtolower($filename))] = iconv('GBK', 'UTF-8', $filename);  //filename-无用，null-有关联，需要中文编码转换
                 }
             }
