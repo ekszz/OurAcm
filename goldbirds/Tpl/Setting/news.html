@@ -73,6 +73,7 @@
 				<div class="btn-group">
 		    		<a style="margin-left: -1px;" title="刷新" data-target="#modal" class="btn btn-large" onClick="reFresh();"><i class="icon-refresh"></i></a>
 				</div>
+                <span style="margin-left:100px">说明：<span class="label label-info">内</span>表示仅队内可见，<span class="label label-success">顶</span>表示该新闻目前置顶，<span class="label label-warning">新</span>表示该新闻为最近3天发布。</span>
 			</div>
             <div class="span9" style="min-height:10px"> </div>
             <div id="table-content-index" class="span9 table-content">
@@ -82,7 +83,7 @@
       						<th><label class="checkbox"><input type="checkbox" class="select-all"></label></th>
                             <th>NID</th>
       						<th>类别</th>
-                            <th>权限</th>
+                            <th>标记</th>
                             <th>新闻标题</th>
                             <th>发布人</th>
                             <th>创建时间</th>
@@ -122,7 +123,7 @@
     <form class="form-inline" id="news-form" method="post" action="" enctype="multipart/form-data">
   	<div class="modal-body">
 		<label for="category">类别*</label><input type="text" id="category" name="category" class="input-xlarge">
-        <label class="checkbox" for="permission" style="width:240px"><input type="checkbox" id="permission" name="permission" value="onlyteam"> 仅队内可见</label>
+        <label class="checkbox" for="permission" style="width:120px"><input type="checkbox" id="permission" name="permission" value="onlyteam"> 仅队内可见</label><label class="checkbox" for="top" style="width:100px"><input type="checkbox" id="top" name="top" value="top"> 置顶</label>
         <label for="title">标题*</label><input type="text" name="title" id="title" class="input-xxlarge">
         <div style="margin-left:50px;"><textarea style="height:280px;visibility:hidden;" id="content"></textarea></div>
         <input type="hidden" name="nownid" id="nownid">

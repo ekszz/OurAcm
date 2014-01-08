@@ -1000,7 +1000,7 @@ class SettingAction extends BaseAction {
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
             $newsDB = D('News');
-            $data = $newsDB -> relation(true) -> field('nid, title, author, createtime, category, permission') -> order('nid DESC') -> select();
+            $data = $newsDB -> relation(true) -> field('nid, title, author, createtime, category, permission, top') -> order('nid DESC') -> select();
             if($data === false) {
                 $this -> ajaxReturn(null, '[错误]数据库错误。', 1);
             }
@@ -1078,6 +1078,7 @@ class SettingAction extends BaseAction {
             $data['content'] = $this -> _post('content', false) == '' ? null : $this -> _post('content', false);
             $data['author'] = intval(session('goldbirds_uid'));
             //$data['createtime'] = date("Y-m-d h:i:s");
+            $data['top'] = ($this -> _post('top', false) ? 1 : 0);
             $data['permission'] = ($this -> _post('permission', false) ? 1 : 0);
 
             $newsDB = D('News');
@@ -1108,6 +1109,7 @@ class SettingAction extends BaseAction {
             $data['content'] = $this -> _post('content', false) == '' ? null : $this -> _post('content', false);
             $data['author'] = intval(session('goldbirds_uid'));
             $data['createtime'] = date("Y-m-d h:i:s");
+            $data['top'] = ($this -> _post('top', false) ? 1 : 0);
             $data['permission'] = ($this -> _post('permission', false) ? 1 : 0);
     
             $newsDB = D('News');
@@ -1118,7 +1120,7 @@ class SettingAction extends BaseAction {
                 if(false === ($tmp = $newsDB -> add()))
                     $this -> ajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                 else
-                  $this -> ajaxReturn($tmp, '[成功]添加新闻成功，UID:'.$tmp, 0);
+                  $this -> ajaxReturn($tmp, '[成功]添加新闻成功，NID:'.$tmp, 0);
             }
         }
     }

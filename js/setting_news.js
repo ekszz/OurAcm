@@ -126,13 +126,21 @@ $(function () {
 	});
 });
 
+function isnew(str) {
+	var t = str.split(/[- :]/);
+	var d = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+	var n = new Date();
+	if(n.getTime() - d.getTime() > 1000*3600*24*3) return false;
+	else return true;
+}
+	
 function reFresh() {
 	$.getJSON("?z=setting-ajax_load_news", null)
 	.done(function(data) {
 		var reshtml = "";
 		$.each(data.data, function(i, vo) {
 			reshtml = reshtml + '<tr><td><label class="checkbox"><input type="checkbox" id="' + vo.nid + '" data-id="id"></label></td><td>' + vo.nid + '</td><td>' + vo.category + '</td><td>';
-			reshtml = reshtml + (vo.permission == 0 ? '所有人':'队内');
+			reshtml = reshtml + (vo.permission == 0 ? '':'<span class="label label-info">内</span>') + (vo.top == 1 ? '<span class="label label-success">顶</span>':'') + (isnew(vo.createtime) ? '<span class="label label-warning">新</span>':'');
 			reshtml = reshtml + '</td><td>' + (vo.title.length>20?(vo.title.substr(0,20) + '...'):vo.title) + '</td><td>' + vo.author_detail.chsname + '</td><td>' + vo.createtime;
 			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-nid="' + vo.nid + '" data-func="0" data-target="#news-modal" data-toggle="modal" class="btn btn-small btn-view" title="查看" data-trigger="hover"><i class="icon-zoom-in"></i> </a><a data-nid="' + vo.nid + '" data-func="2" data-target="#news-modal" data-toggle="modal" class="btn btn-small btn-edit" title="编辑" data-trigger="hover" data-placement="bottom"><i class="icon-edit"></i> </a><a data-toggle="del_news" data-nid="' + vo.nid + '" class="btn btn-small btn-delete" title="删除"><i class="icon-trash"></i> </a></div></td></tr>';  
 		});
@@ -153,6 +161,7 @@ function set_news_modal(func, nid) {  //0-查看,1-增加,2-修改
 				$('#category').val(data.data.category);
 				$('#title').val(data.data.title);
 				data.data.content == null ? editor.html('') : editor.html(data.data.content);
+				data.data.top == 0 ? $('#top').prop('checked', false) : $('#top').prop('checked', true);
 				data.data.permission == 0 ? $('#permission').prop('checked', false) : $('#permission').prop('checked', true);
 				
 				if(func == "2") {
@@ -177,6 +186,7 @@ function set_news_modal(func, nid) {  //0-查看,1-增加,2-修改
 		$('#category').val(null);
 		$('#title').val(null);
 		editor.html('');
+		$('#top').prop('checked', false);
 		$('#permission').prop('checked', false);
 
 		$('#btn-submit').removeClass('hide');
