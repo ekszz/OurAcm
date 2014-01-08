@@ -22,10 +22,10 @@
 		var $window = $(window);
 		$('.bs-docs-sidenav').affix({
 			offset: {
-				top: function () { return $window.width() <= 980 ? 290 : 210 }
-			  , bottom: 270
-			  }
-			});
+				top: function () { return $window.width() <= 980 ? 290 : 210 },
+			  	bottom: 270
+			}
+		});
 		$("span[data-toggle=popover]")
 			.popover()
 			.click(function(e) {
@@ -66,7 +66,9 @@
 		});
 	}
 	
-	function sh_category(c) {
+	function sh_category(c,co) {
+		if(c == '') $('#page-header').html('新闻中心');
+		else $('#page-header').html('新闻中心 - <small>' + co + '</small>');
 		category = c;
 		page = 0;
 		nid = 0;
@@ -106,13 +108,13 @@
         <ul class="nav nav-list bs-docs-sidenav">
           <li><a href="javascript:sh_category('')"><i class="icon-chevron-right"></i> 全部</a></li>
           <?php foreach($category as $c) {
-          	echo '<li><a href="javascript:sh_category(\''.base64_encode($c['category']).'\')"><i class="icon-chevron-right"></i> '.$c['category'].'</a></li>';
+          	echo '<li><a href="javascript:sh_category(\''.base64_encode($c['category']).'\',\''.$c['category'].'\')"><i class="icon-chevron-right"></i> '.$c['category'].'</a></li>';
           } ?>
         </ul>
       </div>
       <div class="span9">
       	<div class="page-header">
-          <h1>新闻中心</h1>
+          <h1 id="page-header">新闻中心</h1>
         </div>
 		<div class="row">
         	<div class="span9"><ul class="pager hide"><li class="previous"><a href="javascript:go_newer()">&larr; Newer</a></li><li class="next"><a href="javascript:go_older()">Older &rarr;</a></li></ul></div>
