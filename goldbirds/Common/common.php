@@ -17,4 +17,8 @@ class OJLoginInterface {  //OJ登录接口，请根据自己的OJ修改
     static public function getLoginURL() {  //返回OJ登录地址
         return '/fasast/login.php';
     }
+
+	static public function getOJURL() {  //返回OJ主页地址
+        return '/fasast/';
+    }
 }

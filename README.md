@@ -24,7 +24,7 @@ OurAcm
 ========  
   
 1、将所有文件拷贝到web目录下；  
-2、修改\goldbirds\Common\common.php中的三个OnlineJudge用户关联接口；  
+2、修改\goldbirds\Common\common.php中的4个OnlineJudge接口；  
 2、使用phpmyadmin或其它工具，导入db目录下的数据库文件；  
 3、修改\goldbirds\Conf\config.php中的数据库配置选项；  
 4、删除\db\目录；  
