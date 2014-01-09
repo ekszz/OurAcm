@@ -82,7 +82,7 @@
                     	<?php for($i = 0; $i < count($d['photo']); $i++) {
                        	if($i == 0) { ?>
                         <div class="active item">
-                        	<img src="<?php echo $d['photo'][$i]; ?>" alt="" width="100%">
+                        	<img src="<?php echo $d['photo'][$i]; ?>" alt="" style="width:100%">
                     		<div class="carousel-caption">
                       			<h4><?php echo $d['title'][$i]; ?></h4>
                       			<p><?php echo $d['desc'][$i]; ?></p>
@@ -90,7 +90,7 @@
                         </div>
                         <?php } else { ?>
                         <div class="item">
-                        	<img src="<?php echo $d['photo'][$i]; ?>" alt="" width="100%">
+                        	<img src="<?php echo $d['photo'][$i]; ?>" alt="" style="width:100%">
                     		<div class="carousel-caption">
                       			<h4><?php echo $d['title'][$i]; ?></h4>
                       			<p><?php echo $d['desc'][$i]; ?></p>
