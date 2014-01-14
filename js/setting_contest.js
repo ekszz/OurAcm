@@ -246,6 +246,7 @@ function set_contest_modal(func, cid) {  //填充modal中的数据，0-查看,1-
 				$('#university').val(data.data.university);
 				$('#type').val(data.data.type);
 				$('#medal').val(data.data.medal);
+				data.data.ranking == null ? $('#ranking').val(null) : $('#ranking').val(data.data.ranking);
 				data.data.title == null ? $('#title').val(null) : $('#title').val(data.data.title);
 				$('#leader').val(data.data.leader_detail.uid + '-' + data.data.leader_detail.chsname);
 				$('#teamer1').val(data.data.teamer1_detail.uid + '-' + data.data.teamer1_detail.chsname);
