@@ -1108,7 +1108,7 @@ class SettingAction extends BaseAction {
             $data['category'] = $this -> _post('category', false);
             $data['content'] = $this -> _post('content', false) == '' ? null : $this -> _post('content', false);
             $data['author'] = intval(session('goldbirds_uid'));
-            $data['createtime'] = date("Y-m-d h:i:s");
+            $data['createtime'] = date("Y-m-d H:i:s");
             $data['top'] = ($this -> _post('top', false) ? 1 : 0);
             $data['permission'] = ($this -> _post('permission', false) ? 1 : 0);
     
