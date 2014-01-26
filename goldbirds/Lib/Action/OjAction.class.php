@@ -9,17 +9,21 @@ class OjAction extends BaseAction {
         if($data === null) $this -> display('nodata');
         else {
             for($i = 0; $i < count($data); $i++) {
+                $data[$i]['mainname'] = htmlspecialchars($data[$i]['mainname']);
+                $data[$i]['devname'] = htmlspecialchars($data[$i]['devname']);
+                $data[$i]['introduce'] = htmlspecialchars($data[$i]['introduce']);
+                
                 if($data[$i]['photos']) {  //有照片
                     $data[$i]['photo'] = explode(',', $data[$i]['photos']);
             
                     $data[$i]['title'] = explode(',', $data[$i]['titles']);
                     for($j = 0; $j < count($data[$i]['title']); $j++) {
-                        $data[$i]['title'][$j] = base64_decode($data[$i]['title'][$j]);
+                        $data[$i]['title'][$j] = htmlspecialchars(base64_decode($data[$i]['title'][$j]));
                     }
             
                     $data[$i]['desc'] = explode(',', $data[$i]['descs']);
                     for($j = 0; $j < count($data[$i]['desc']); $j++) {
-                        $data[$i]['desc'][$j] = base64_decode($data[$i]['desc'][$j]);
+                        $data[$i]['desc'][$j] = htmlspecialchars(base64_decode($data[$i]['desc'][$j]));
                     }
                 }
                 else {  //无照片

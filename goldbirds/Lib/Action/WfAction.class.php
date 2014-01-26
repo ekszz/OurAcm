@@ -24,12 +24,18 @@ class WfAction extends BaseAction {
             
             //如果不存在缩略图，则生成
             import('ORG.Util.Image');
-            foreach($data as $d) {
-                if($d['pic1'] && !file_exists('upload/thumb/'.substr($d['pic1'], 7))) {
-                    Image::thumb($d['pic1'], 'upload/thumb/'.substr($d['pic1'], 7), '', 576, 360, false);
+            for($i = 0; $i < count($data); $i++) {
+                $data[$i]['site'] = htmlspecialchars($data[$i]['site']);
+                $data[$i]['university'] = htmlspecialchars($data[$i]['university']);
+                $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
+                $data[$i]['team'] = htmlspecialchars($data[$i]['team']);
+                
+                //如果不存在缩略图，则生成
+                if($data[$i]['pic1'] && !file_exists('upload/thumb/'.substr($data[$i]['pic1'], 7))) {
+                    Image::thumb($data[$i]['pic1'], 'upload/thumb/'.substr($data[$i]['pic1'], 7), '', 576, 360, false);
                 }
-                if($d['pic2'] && !file_exists('upload/thumb/'.substr($d['pic2'], 7))) {
-                    Image::thumb($d['pic2'], 'upload/thumb/'.substr($d['pic2'], 7), '', 576, 360, false);
+                if($data[$i]['pic2'] && !file_exists('upload/thumb/'.substr($data[$i]['pic2'], 7))) {
+                    Image::thumb($data[$i]['pic2'], 'upload/thumb/'.substr($data[$i]['pic2'], 7), '', 576, 360, false);
                 }
             }
             
@@ -44,6 +50,12 @@ class WfAction extends BaseAction {
         $data = $contest -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type=0') -> order('holdtime DESC') -> select();
 		if(!$data) $this -> display('nodata');
 		else {
+		    for($i = 0; $i < count($data); $i++) {
+		        $data[$i]['site'] = htmlspecialchars($data[$i]['site']);
+                $data[$i]['university'] = htmlspecialchars($data[$i]['university']);
+                $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
+                $data[$i]['team'] = htmlspecialchars($data[$i]['team']);
+		    }
 			$this -> assign('data', $data);
 			$this -> commonassign();
 			$this -> display('data');

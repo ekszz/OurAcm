@@ -85,7 +85,7 @@ $(function () {
 			descs:descs
 		})
 		.done(function (data) {
-			if(data.status == 0) { $('#vid option:selected').first().html($('#mainname').val()); alert("[提示]保存成功！"); }
+			if(data.status == 0) { $('#vid option:selected').first().html(data.data); alert("[提示]保存成功！"); }
 			else alert(data.info, "error");
 			$('#btn-save').prop('disabled', false);
 		})

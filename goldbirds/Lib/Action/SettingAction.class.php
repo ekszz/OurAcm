@@ -70,18 +70,18 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin')) $this -> ajaxReturn(null, '[错误]还未登录，无权限。', 2);  //无权限处理
         
         $personDB = D('Person');
-        if($this -> _post('email') === '') $data['email'] = null; 
-        else if(strlen($this -> _post('email')) > 0) $data['email'] = $this -> _post('email');
-        if($this -> _post('phone') === '') $data['phone'] = null;
-        else if(strlen($this -> _post('phone')) > 0) $data['phone'] = $this -> _post('phone');
-        if($this -> _post('address') === '') $data['address'] = null;
-        else if(strlen($this -> _post('address')) > 0) $data['address'] = $this -> _post('address');
+        if(I('post.email', '', false) === '') $data['email'] = null;
+        else if(strlen(I('post.email', '', false)) > 0) $data['email'] = I('post.email', '', false);
+        if(I('post.phone', '', false) === '') $data['phone'] = null;
+        else if(strlen(I('post.phone', '', false)) > 0) $data['phone'] = I('post.phone', '', false);
+        if(I('post.address', '', false) === '') $data['address'] = null;
+        else if(strlen(I('post.address', '', false)) > 0) $data['address'] = I('post.address', '', false);
         if(!intval($this -> getconfig('config_lock_person_introduce'))) {
-            if($this -> _post('introduce') === '') $data['introduce'] = null;
-            else if(strlen($this -> _post('introduce')) > 0) $data['introduce'] = $this -> _post('introduce');
+            if(I('post.introduce', '', false) === '') $data['introduce'] = null;
+            else if(strlen(I('post.introduce', '', false)) > 0) $data['introduce'] = I('post.introduce', '', false);
         }
-        if($this -> _post('detail') === '') $data['detail'] = null;
-        else if(strlen($this -> _post('detail')) > 0) $data['detail'] = $this -> _post('detail');
+        if(I('post.detail', '', false) === '') $data['detail'] = null;
+        else if(strlen(I('post.detail', '', false)) > 0) $data['detail'] = I('post.detail', '', false);
         
         if(!$personDB -> create($data)) {  //自动验证失败
             $this -> ajaxReturn(null, $personDB -> getError(), 1);
@@ -131,7 +131,7 @@ class SettingAction extends BaseAction {
         
         if($this -> logincheck() == 0) $this -> ajaxReturn(null, '[错误]还未登录，无权限。', 2);  //无权限处理
         
-        $code = $this -> _post('code');
+        $code = I('post.code');
         sleep(1);
         if(strlen($code) != 16)
             $this -> ajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
@@ -156,7 +156,7 @@ class SettingAction extends BaseAction {
     
         if($this -> logincheck() == 0) $this -> ajaxReturn(null, '[错误]还未登录，无权限。', 2);  //无权限处理
         
-        $code = $this -> _post('code');
+        $code = I('post.code');
         $oj = OJLoginInterface::getLoginUser();
         sleep(1);
         if(strlen($code) != 16)
@@ -208,6 +208,12 @@ class SettingAction extends BaseAction {
                 $this -> ajaxReturn(null, '[错误]没有队员信息。', 2);
             }
             else {
+                for($i = 0; $i < count($data); $i++) {
+                    $data[$i]['chsname'] = htmlspecialchars($data[$i]['chsname']);
+                    $data[$i]['email'] = htmlspecialchars($data[$i]['email']);
+                    $data[$i]['phone'] = htmlspecialchars($data[$i]['phone']);
+                    $data[$i]['ojaccount'] = htmlspecialchars($data[$i]['ojaccount']);
+                }
                 $this -> ajaxReturn($data, '[成功]', 0);
             }
         }
@@ -219,12 +225,14 @@ class SettingAction extends BaseAction {
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
             $personDB = M('Person');
-            $uid = intval($this -> _get('uid'));
+            $uid = intval(I('get.uid'));
             if($uid < 0) $this -> ajaxReturn(null, '[错误]UID无效。', 1);
             $data = $personDB -> where('uid = '.$uid) -> find();
             if($data === false) $this -> ajaxReturn(null, '[错误]数据库错误。', 2);
             else if(!$data) $this -> ajaxReturn(null, '[错误]UID无效。', 1);
-            else $this -> ajaxReturn($data, '[成功]', 0);
+            else {
+                $this -> ajaxReturn($data, '[成功]', 0);
+            }
         }
     }
     
@@ -232,7 +240,7 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $list = $this -> _get('uid');
+            $list = I('get.uid');
             $uids = explode(',', $list);
             $success = 0;
             $fail = 0;
@@ -278,29 +286,28 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $tmp = intval($this -> _post('nowuid'));
+            $tmp = intval(I('post.nowuid'));
             if($tmp != 9999) $this -> ajaxReturn(null, '[错误]无效的参数。', 2);
-            $data['chsname'] = $this -> _post('chsname');
-            $data['engname'] = $this -> _post('engname') == '' ? null : $this -> _post('engname');
-            $data['email'] = $this -> _post('email') == '' ? null : $this -> _post('email');
-            $data['phone'] = $this -> _post('phone') == '' ? null : $this -> _post('phone');
-            $data['address'] = $this -> _post('address') == '' ? null : $this -> _post('address');
-            if(intval($this -> _post('sex')) == 1) $data['sex'] = 1;
+            $data['chsname'] = I('post.chsname', '<ERROR NAME>', false);
+            $data['engname'] = I('post.engname', '', false) == '' ? null : I('post.engname', '', false);
+            $data['email'] = I('post.email', '', false) == '' ? null : I('post.email', '', false);
+            $data['phone'] = I('post.phone', '', false) == '' ? null : I('post.phone', '', false);
+            $data['address'] = I('post.address', '', false) == '' ? null : I('post.address', '', false);
+            if(intval(I('post.sex')) == 1) $data['sex'] = 1;
             else $data['sex'] = 0;
-            $tmp = intval($this -> _post('grade'));
+            $tmp = intval(I('post.grade'));
             if($tmp > 1950 && $tmp < 2100) $data['grade'] = $tmp;
             else $data['grade'] = null;
-            $data['introduce'] = $this -> _post('introduce') == '' ? null : $this -> _post('introduce');
-            $data['detail'] = $this -> _post('detail') == '' ? null : $this -> _post('detail');
-            $data['photo'] = null;
-            $data['ojaccount'] = $this -> _post('ojaccount') == '' ? null : $this -> _post('ojaccount');
-            $tmp = intval($this -> _post('group'));
+            $data['introduce'] = I('post.introduce', '', false) == '' ? null : I('post.introduce', '', false);
+            $data['detail'] = I('post.detail', '', false) == '' ? null : I('post.detail', '', false);
+            $data['ojaccount'] = I('post.ojaccount') == '' ? null : I('post.ojaccount');
+            $tmp = intval(I('post.group'));
             if($tmp == 0 || $tmp == 1 || $tmp == 9) $data['group'] = $tmp;
             else $tmp = 0;
             srand((double)microtime()*1000000);
             $data['luckycode'] = substr(md5('goldbirds'.'_xzz'.$data['chsname'].rand()), 10, 16);
             
-            $data['photo'] = strcmp(substr($this -> _post('face_fn'), 0, 7), 'upload/') == 0 ? $this -> _post('face_fn') : null;
+            $data['photo'] = strcmp(substr(I('post.face_fn'), 0, 7), 'upload/') == 0 ? I('post.face_fn') : null;
             
             $personDB = D('Person');
             if(!$personDB -> create($data)) {
@@ -320,28 +327,27 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $uid = intval($this -> _post('nowuid'));
+            $uid = intval(I('post.nowuid'));
             if($uid == 9999 || $uid <= 0) $this -> ajaxReturn(null, '[错误]无效的UID。', 2);
             
-            $data['chsname'] = $this -> _post('chsname');
-            $data['engname'] = $this -> _post('engname') == '' ? null : $this -> _post('engname');
-            $data['email'] = $this -> _post('email') == '' ? null : $this -> _post('email');
-            $data['phone'] = $this -> _post('phone') == '' ? null : $this -> _post('phone');
-            $data['address'] = $this -> _post('address') == '' ? null : $this -> _post('address');
-            if(intval($this -> _post('sex')) == 1) $data['sex'] = 1;
+            $data['chsname'] = I('post.chsname', '<ERROR NAME>', false);
+            $data['engname'] = I('post.engname', '', false) == '' ? null : I('post.engname', '', false);
+            $data['email'] = I('post.email', '', false) == '' ? null : I('post.email', '', false);
+            $data['phone'] = I('post.phone', '', false) == '' ? null : I('post.phone', '', false);
+            $data['address'] = I('post.address', '', false) == '' ? null : I('post.address', '', false);
+            if(intval(I('post.sex')) == 1) $data['sex'] = 1;
             else $data['sex'] = 0;
-            $tmp = intval($this -> _post('grade'));
+            $tmp = intval(I('post.grade'));
             if($tmp > 1950 && $tmp < 2100) $data['grade'] = $tmp;
             else $data['grade'] = null;
-            $data['introduce'] = $this -> _post('introduce') == '' ? null : $this -> _post('introduce');
-            $data['detail'] = $this -> _post('detail') == '' ? null : $this -> _post('detail');
-            $data['photo'] = null;
-            $data['ojaccount'] = $this -> _post('ojaccount') == '' ? null : $this -> _post('ojaccount');
-            $tmp = intval($this -> _post('group'));
-            if($tmp == 0 || $tmp == 1 || $tmp == 2 || $tmp == 9) $data['group'] = $tmp;
+            $data['introduce'] = I('post.introduce', '', false) == '' ? null : I('post.introduce', '', false);
+            $data['detail'] = I('post.detail', '', false) == '' ? null : I('post.detail', '', false);
+            $data['ojaccount'] = I('post.ojaccount') == '' ? null : I('post.ojaccount');
+            $tmp = intval(I('post.group'));
+            if($tmp == 0 || $tmp == 1 || $tmp == 9) $data['group'] = $tmp;
             else $tmp = 0;
             
-            $data['photo'] = strcmp(substr($this -> _post('face_fn'), 0, 7), 'upload/') == 0 ? $this -> _post('face_fn') : null;
+            $data['photo'] = strcmp(substr(I('post.face_fn'), 0, 7), 'upload/') == 0 ? I('post.face_fn') : null;
             
             
             $personDB = D('Person');
@@ -381,7 +387,7 @@ class SettingAction extends BaseAction {
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
             $contestDB = D('Contest');
-            $data = $contestDB -> where('cid > 0') -> order('holdtime DESC, cid DESC') -> select();
+            $data = $contestDB -> field('cid, holdtime, site, university, type, medal, team, pic1, pic2') -> where('cid > 0') -> order('holdtime DESC, cid DESC') -> select();
             if($data === false) {
                 $this -> ajaxReturn(null, '[错误]数据库错误。', 1);
             }
@@ -389,6 +395,11 @@ class SettingAction extends BaseAction {
                 $this -> ajaxReturn(null, '[错误]没有比赛信息。', 2);
             }
             else {
+                for($i = 0; $i < count($data); $i++) {
+                    $data[$i]['site'] = htmlspecialchars($data[$i]['site']);
+                    $data[$i]['university'] = htmlspecialchars($data[$i]['university']);
+                    $data[$i]['team'] = htmlspecialchars($data[$i]['team']);
+                }
                 $this -> ajaxReturn($data, '[成功]', 0);
             }
         }
@@ -399,7 +410,7 @@ class SettingAction extends BaseAction {
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
             $contestDB = D('Contest');
-            $cid = intval($this -> _get('cid'));
+            $cid = intval(I('get.cid'));
             if($cid <= 0) $this -> ajaxReturn(null, '[错误]CID无效。', 1);
             $data = $contestDB -> relation(true) -> where('cid = '.$cid) -> find();
             if($data === false) $this -> ajaxReturn(null, '[错误]数据库错误。', 2);
@@ -451,7 +462,7 @@ class SettingAction extends BaseAction {
                 $fileinfo = $upload -> getUploadFileInfo();
                 $newphoto = 'upload/'.$fileinfo[0]['savename'];
                 $data['filename'] = $newphoto;
-                $data['id'] = intval($this -> _post('id'));
+                $data['id'] = intval(I('post.id'));
 
                 echo json_encode(array('data' => $data, 'info' => '[成功]上传成功，文件大小'.sprintf("%.2lf", intval($fileinfo[0]['size'])/1024).'KB。', 'status' => 0));
             }
@@ -462,49 +473,49 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $tmp = intval($this -> _post('nowcid'));
+            $tmp = intval(I('post.nowcid'));
             if($tmp != 9999) $this -> ajaxReturn(null, '[错误]无效的参数。', 2);
             
-            if(false === strtotime($this -> _post('holdtime')))
+            if(false === strtotime(I('post.holdtime', '', false)))
                 $this -> ajaxReturn(null, '[错误]日期格式不对！', 1);
-            if(strtotime($this -> _post('holdtime')) >= strtotime('2037-12-31') 
-                || strtotime($this -> _post('holdtime')) < strtotime('1960-1-1')) {
+            if(strtotime(I('post.holdtime', '', false)) >= strtotime('2037-12-31') 
+                || strtotime(I('post.holdtime', '', false)) < strtotime('1960-1-1')) {
                 $this -> ajaxReturn(null, '[错误]日期范围不太对！', 1);
             }
-            $data['holdtime'] = $this -> _post('holdtime');
+            $data['holdtime'] = I('post.holdtime', '', false);
             
-            $data['team'] = $this -> _post('team');
-            $data['site'] = $this -> _post('site');
-            $data['university'] = $this -> _post('university');
-            $data['type'] = (intval($this -> _post('type')) >= 0 && intval($this -> _post('type')) <= 2) ? intval($this -> _post('type')) : 1;
-            $data['medal'] = (intval($this -> _post('medal')) >= 0 && intval($this -> _post('medal')) <= 3) ? intval($this -> _post('medal')) : 3;
-            $data['ranking'] = $this -> _post('ranking') == '' ? null : $this -> _post('ranking');
-            $data['title'] = $this -> _post('title') == '' ? null : $this -> _post('title');
+            $data['team'] = I('post.team', '', false);
+            $data['site'] = I('post.site', '', false);
+            $data['university'] = I('post.university', '', false);
+            $data['type'] = (intval(I('post.type')) >= 0 && intval(I('post.type')) <= 2) ? intval(I('post.type')) : 1;
+            $data['medal'] = (intval(I('post.medal')) >= 0 && intval(I('post.medal')) <= 3) ? intval(I('post.medal')) : 3;
+            $data['ranking'] = I('post.ranking', '', false) == '' ? null : I('post.ranking', '', false);
+            $data['title'] = I('post.title', '', false) == '' ? null : I('post.title', '', false);
             
             $personDB = M('Person');
-            $plist = explode('-', $this -> _post('leader'));
+            $plist = explode('-', I('post.leader'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
             if(!$res) $this -> ajaxReturn(null, '[错误]Leader的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['leader'] = $c['uid'];
             
-            $plist = explode('-', $this -> _post('teamer1'));
+            $plist = explode('-', I('post.teamer1'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
             if(!$res) $this -> ajaxReturn(null, '[错误]Teamer1的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['teamer1'] = $c['uid'];
             
-            $plist = explode('-', $this -> _post('teamer2'));
+            $plist = explode('-', I('post.teamer2'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
             if(!$res) $this -> ajaxReturn(null, '[错误]Teamer2的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['teamer2'] = $c['uid'];
             
-            $data['pic1'] = strcmp(substr($this -> _post('pic1_fn'), 0, 7), 'upload/') == 0 ? $this -> _post('pic1_fn') : null;
-            $data['pic2'] = strcmp(substr($this -> _post('pic2_fn'), 0, 7), 'upload/') == 0 ? $this -> _post('pic2_fn') : null;
+            $data['pic1'] = strcmp(substr(I('post.pic1_fn'), 0, 7), 'upload/') == 0 ? I('post.pic1_fn') : null;
+            $data['pic2'] = strcmp(substr(I('post.pic2_fn'), 0, 7), 'upload/') == 0 ? I('post.pic2_fn') : null;
             
             if($data['pic1'] === null && $data['pic2'] !== null) {
                 $data['pic1'] = $data['pic2'];
@@ -529,8 +540,8 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $list = $this -> _get('cid');
-            $delpic = intval($this -> _get('delpic'));
+            $list = I('get.cid', '', false);
+            $delpic = intval(I('get.delpic'));
             $cids = explode(',', $list);
             $success = 0;
             $fail = 0;
@@ -574,49 +585,49 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $cid = intval($this -> _post('nowcid'));
+            $cid = intval(I('post.nowcid'));
             if($cid == 9999 || $cid <= 0) $this -> ajaxReturn(null, '[错误]无效的CID。', 2);
             
-            if(false === strtotime($this -> _post('holdtime')))
+            if(false === strtotime(I('post.holdtime', '', false)))
                 $this -> ajaxReturn(null, '[错误]日期格式不对！', 1);
-            if(strtotime($this -> _post('holdtime')) >= strtotime('2037-12-31')
-            || strtotime($this -> _post('holdtime')) < strtotime('1960-1-1')) {
+            if(strtotime(I('post.holdtime', '', false)) >= strtotime('2037-12-31')
+            || strtotime(I('post.holdtime', '', false)) < strtotime('1960-1-1')) {
                 $this -> ajaxReturn(null, '[错误]日期范围不太对！', 1);
             }
-            $data['holdtime'] = $this -> _post('holdtime');
+            $data['holdtime'] = I('post.holdtime', '', false);
             
-            $data['team'] = $this -> _post('team');
-            $data['site'] = $this -> _post('site');
-            $data['university'] = $this -> _post('university');
-            $data['type'] = (intval($this -> _post('type')) >= 0 && intval($this -> _post('type')) <= 2) ? intval($this -> _post('type')) : 1;
-            $data['medal'] = (intval($this -> _post('medal')) >= 0 && intval($this -> _post('medal')) <= 3) ? intval($this -> _post('medal')) : 3;
-            $data['ranking'] = $this -> _post('ranking') == '' ? null : $this -> _post('ranking');
-            $data['title'] = $this -> _post('title') == '' ? null : $this -> _post('title');
+            $data['team'] = I('post.team', '', false);
+            $data['site'] = I('post.site', '', false);
+            $data['university'] = I('post.university', '', false);
+            $data['type'] = (intval(I('post.type')) >= 0 && intval(I('post.type')) <= 2) ? intval(I('post.type')) : 1;
+            $data['medal'] = (intval(I('post.medal')) >= 0 && intval(I('post.medal')) <= 3) ? intval(I('post.medal')) : 3;
+            $data['ranking'] = I('post.ranking', '', false) == '' ? null : I('post.ranking', '', false);
+            $data['title'] = I('post.title', '', false) == '' ? null : I('post.title', '', false);
             
             $personDB = M('Person');
-            $plist = explode('-', $this -> _post('leader'));
+            $plist = explode('-', I('post.leader'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
             if(!$res) $this -> ajaxReturn(null, '[错误]Leader的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['leader'] = $c['uid'];
             
-            $plist = explode('-', $this -> _post('teamer1'));
+            $plist = explode('-', I('post.teamer1'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
             if(!$res) $this -> ajaxReturn(null, '[错误]Teamer1的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['teamer1'] = $c['uid'];
             
-            $plist = explode('-', $this -> _post('teamer2'));
+            $plist = explode('-', I('post.teamer2'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
             if(!$res) $this -> ajaxReturn(null, '[错误]Teamer2的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['teamer2'] = $c['uid'];
             
-            $data['pic1'] = strcmp(substr($this -> _post('pic1_fn'), 0, 7), 'upload/') == 0 ? $this -> _post('pic1_fn') : null;
-            $data['pic2'] = strcmp(substr($this -> _post('pic2_fn'), 0, 7), 'upload/') == 0 ? $this -> _post('pic2_fn') : null;
+            $data['pic1'] = strcmp(substr(I('post.pic1_fn'), 0, 7), 'upload/') == 0 ? I('post.pic1_fn') : null;
+            $data['pic2'] = strcmp(substr(I('post.pic2_fn'), 0, 7), 'upload/') == 0 ? I('post.pic2_fn') : null;
             
             if($data['pic1'] === null && $data['pic2'] !== null) {
                 $data['pic1'] = $data['pic2'];
@@ -681,25 +692,25 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $c['k'] = $this -> _post('k');
+            $c['k'] = I('post.k', '', false);
             $settingDB = M('Setting');
             $data = $settingDB -> where($c) -> find();
             if(!$data) $this -> ajaxReturn(null, '[错误]参数键值错误！', 1);  //无效的K值或者查询错误
             if($data['type'] == 0) {  //bool型，非0-是，0-否
-                if(intval($this -> _post('v')) == 0) $dat = '0';
+                if(intval(I('post.v')) == 0) $dat = '0';
                 else $dat = '1';
             }
             else if($data['type'] == 1) {  //文本-转义
                 if(get_magic_quotes_gpc()) {  //如果get_magic_quotes_gpc()是打开的
                     $_POST['v'] = stripslashes($_POST['v']);
                 }
-                $dat = $this -> _post('v');
+                $dat = I('post.v', '', 'htmlspecialchars');
             }
             else {  //文本-不转义
                 if(get_magic_quotes_gpc()) {  //如果get_magic_quotes_gpc()是打开的
                     $_POST['v'] = stripslashes($_POST['v']);
                 }
-                $dat = $this -> _post('v', false);
+                $dat = I('post.v', '', false);
             }
             if(false === $settingDB -> where($c) -> setField('v', $dat)) {
                 $this -> ajaxReturn(null, '[错误]保存参数错误，请重试！', 2);
@@ -790,7 +801,7 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $photos = $this -> _post('photos', false);
+            $photos = I('post.photos', '', false);
             $safe = true;
             for($i = 0; $i < count($photos); $i++) {
                 if(stripos($photos[$i], '/') !== false || stripos($photos[$i], "\\") !== false) {
@@ -838,6 +849,9 @@ class SettingAction extends BaseAction {
         else {
             $ojhistoryDB = M('Ojhistory');
             $data = $ojhistoryDB -> field('vid, mainname') -> order('sortid DESC') -> select();
+            for($i = 0; $i < count($data); $i++) {
+                $data[$i]['mainname'] = htmlspecialchars($data[$i]['mainname']);
+            }
             $this -> ajaxReturn($data, '[成功]', 0);
         }
     }
@@ -847,14 +861,14 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $vid = intval($this -> _get('vid'));
+            $vid = intval(I('get.vid'));
             if($vid <= 0) $this -> ajaxReturn(null, '[错误]无效的VID，请检查。', 1);
             else {
                 $ojhistoryDB = M('Ojhistory');
                 $data = $ojhistoryDB -> where('vid='.$vid) -> find();
-                $data['mainname'] = htmlspecialchars_decode($data['mainname']);
-                $data['devname'] = htmlspecialchars_decode($data['devname']);
-                $data['introduce'] = htmlspecialchars_decode($data['introduce']);
+                $data['mainname'] = $data['mainname'];
+                $data['devname'] = $data['devname'];
+                $data['introduce'] = $data['introduce'];
                 if($data['photos']) {
                     $tmparray = explode(',', $data['photos']);
                     $data['photos'] = $tmparray;
@@ -896,7 +910,7 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $vid = intval($this -> _get('vid'));
+            $vid = intval(I('get.vid'));
             if($vid <= 0) $this -> ajaxReturn(null, '[错误]无效的VID，请检查。', 1);
             else {
                 $ojhistoryDB = M('Ojhistory');
@@ -918,16 +932,16 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $vid = intval($this -> _post('vid'));
+            $vid = intval(I('post.vid'));
             if($vid <= 0) $this -> ajaxReturn(null, '[错误]无效的VID参数。', 1);
             else {
-                $data['sortid'] = intval($this -> _post('sortid'));
-                $data['mainname'] = $this -> _post('mainname');
-                $data['devname'] = $this -> _post('devname') == '' ? null : $this -> _post('devname');
-                $data['introduce'] = $this -> _post('introduce') == '' ? null : $this -> _post('introduce');
-                $photos = $this -> _post('photos');
-                $titles = $this -> _post('titles');
-                $descs = $this -> _post('descs');
+                $data['sortid'] = intval(I('post.sortid'));
+                $data['mainname'] = I('post.mainname', '', false);
+                $data['devname'] = I('post.devname', '', false) == '' ? null : I('post.devname', '', false);
+                $data['introduce'] = I('post.introduce', '', false) == '' ? null : I('post.introduce', '', false);
+                $photos = I('post.photos', '', false);
+                $titles = I('post.titles', '', false);
+                $descs = I('post.descs', '', false);
                 $data['photos'] = '';
                 $data['titles'] = '';
                 $data['descs'] = '';
@@ -955,7 +969,7 @@ class SettingAction extends BaseAction {
                         $this -> ajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                     }
                     else {
-                        $this -> ajaxReturn(null, '[成功]', 0);
+                        $this -> ajaxReturn(htmlspecialchars($data['mainname']), '[成功]', 0);
                     }
                 }
             }
@@ -1008,6 +1022,10 @@ class SettingAction extends BaseAction {
                 $this -> ajaxReturn(null, '[错误]没有队员信息。', 2);
             }
             else {
+                for($i = 0; $i < count($data); $i++) {
+                    $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
+                    $data[$i]['category'] = htmlspecialchars($data[$i]['category']);
+                }
                 $this -> ajaxReturn($data, '[成功]', 0);
             }
         }
@@ -1019,12 +1037,14 @@ class SettingAction extends BaseAction {
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
             $newsDB = D('News');
-            $nid = intval($this -> _get('nid'));
+            $nid = intval(I('get.nid'));
             if($nid < 0) $this -> ajaxReturn(null, '[错误]NID无效。', 1);
             $data = $newsDB -> relation(true) -> where('nid = '.$nid) -> find();
             if($data === false) $this -> ajaxReturn(null, '[错误]数据库错误。', 2);
             else if(!$data) $this -> ajaxReturn(null, '[错误]NID无效。', 1);
-            else $this -> ajaxReturn($data, '[成功]', 0);
+            else {
+                $this -> ajaxReturn($data, '[成功]', 0);
+            }
         }
     }
     
@@ -1033,7 +1053,7 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $list = $this -> _get('nid');
+            $list = I('get.nid');
             $nids = explode(',', $list);
             $success = 0;
             $fail = 0;
@@ -1070,16 +1090,16 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $nid = intval($this -> _post('nownid'));
+            $nid = intval(I('post.nownid'));
             if($nid == 9999 || $nid <= 0) $this -> ajaxReturn(null, '[错误]无效的NID。', 2);
     
-            $data['title'] = $this -> _post('title', false);
-            $data['category'] = $this -> _post('category', false);
-            $data['content'] = $this -> _post('content', false) == '' ? null : $this -> _post('content', false);
+            $data['title'] = I('post.title', '', false);
+            $data['category'] = I('post.category', '', false);
+            $data['content'] = I('post.content', '', false) == '' ? null : I('post.content', '', false);
             $data['author'] = intval(session('goldbirds_uid'));
             //$data['createtime'] = date("Y-m-d h:i:s");
-            $data['top'] = ($this -> _post('top', false) ? 1 : 0);
-            $data['permission'] = ($this -> _post('permission', false) ? 1 : 0);
+            $data['top'] = (I('post.top', '', false) ? 1 : 0);
+            $data['permission'] = (I('post.permission', '', false) ? 1 : 0);
 
             $newsDB = D('News');
             if(!$newsDB -> create($data)) {  //自动验证失败
@@ -1101,16 +1121,16 @@ class SettingAction extends BaseAction {
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
             $this -> ajaxReturn(null, '[错误]无权限。', 3);
         else {
-            $tmp = intval($this -> _post('nownid'));
+            $tmp = intval(I('post.nownid'));
             if($tmp != 9999) $this -> ajaxReturn(null, '[错误]无效的参数。', 2);
             
-            $data['title'] = $this -> _post('title', false);
-            $data['category'] = $this -> _post('category', false);
-            $data['content'] = $this -> _post('content', false) == '' ? null : $this -> _post('content', false);
+            $data['title'] = I('post.title', '', false);
+            $data['category'] = I('post.category', '', false);
+            $data['content'] = I('post.content', '', false) == '' ? null : I('post.content', '', false);
             $data['author'] = intval(session('goldbirds_uid'));
             $data['createtime'] = date("Y-m-d H:i:s");
-            $data['top'] = ($this -> _post('top', false) ? 1 : 0);
-            $data['permission'] = ($this -> _post('permission', false) ? 1 : 0);
+            $data['top'] = (I('post.top', false) ? 1 : 0);
+            $data['permission'] = (I('post.permission', '', false) ? 1 : 0);
     
             $newsDB = D('News');
             if(!$newsDB -> create($data)) {

@@ -20,7 +20,7 @@ class IndexAction extends BaseAction {
                 foreach($res as $r) {
                     $tmp['type'] = $r['type'];
                     $tmp['medal'] = $r['medal'];
-                    $tmp['team'] = $r['team'];
+                    $tmp['team'] = htmlspecialchars($r['team']);
                     $tmp['holdtime'] = $r['holdtime'];
                     $recent[] = $tmp;
                 }
