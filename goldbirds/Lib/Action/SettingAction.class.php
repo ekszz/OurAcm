@@ -182,6 +182,43 @@ class SettingAction extends BaseAction {
     }
     
     
+    //通讯录页面===================================
+    
+    public function contacts() {
+        
+        $this -> commonassign();
+        if($this -> logincheck() == 0) {  //未登录处理
+            $this -> assign('url', OJLoginInterface::getLoginURL());
+            $this -> display('nologin');
+            return ;
+        }
+        
+        if($this -> logincheck() == 1) {  //无权限处理
+            $this -> display('noallow');
+            return ;
+        }
+        
+        $personDB = M('Person');
+        
+        $teacher = $personDB -> field('chsname, sex, email, phone, introduce') -> where('`group` = 2') -> order('uid ASC') -> select();
+        $data = $personDB -> field('chsname, sex, email, phone, grade, address, introduce') -> where('`group` < 2 AND uid > 0') -> select();
+        
+        for($i = 0; $i < count($teacher); $i++) {
+            $teacher[$i]['email'] = htmlspecialchars($teacher[$i]['email']);
+            $teacher[$i]['introduce'] = htmlspecialchars($teacher[$i]['introduce']);
+        }
+        
+        for($i = 0; $i < count($data); $i++) {
+            $data[$i]['email'] = htmlspecialchars($data[$i]['email']);
+            $data[$i]['address'] = htmlspecialchars($data[$i]['address']);
+            $data[$i]['introduce'] = htmlspecialchars($data[$i]['introduce']);
+        }
+
+        $this -> assign('teacher', $teacher);
+        $this -> assign('data', $data);
+        $this -> display('contacts');
+    }
+    
     //队员管理页面===================================
     
     public function person() {  //队员管理
