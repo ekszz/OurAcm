@@ -70,13 +70,18 @@
 			},
 			widthFixed: true,
 			headerTemplate : '{content} {icon}',
-			widgets : [ "uitheme",  "zebra" ],
+			widgets : [ "uitheme",  "zebra", "filter" ],
 			widgetOptions : {
 				zebra : ["even", "odd"],
-				filter_reset : ".reset"
+				filter_external : '.search',
+				filter_hideFilters : true,
+      			filter_columnFilters: true,
+     			filter_saveFilters : true,
+      			filter_reset: '.reset'
 			}
 		})
-		.tablesorterPager(pagerOptions);	
+		.tablesorterPager(pagerOptions);
+		
 	});
 
 	</script>
@@ -130,12 +135,11 @@
 				</table>
             </div>
         </div>
-        
 		<div class="page-header">
             <h1>队员通讯录</h1>
         </div>
         <div class="row">
-            <div class="span9" style="min-height:10px"> </div>
+            <div class="span9">搜索任意内容：<input class="search input-xlarge" type="search" data-column="all"> <button type="button" class="reset btn btn-primary">还原过滤</button></div>
             <div id="table-content-index" class="span9 table-content">
   				<table id="data-table" class="data-table table table-bordered table-striped table-condensed table-hover">
   					<thead>
