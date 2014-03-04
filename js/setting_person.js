@@ -83,6 +83,11 @@ $(function () {
 		$('#lucky-code-show').html('[ ' + $(this).data('chsname') + ' ] 的邀请码是：[ ' + $(this).data('code') + ' ]');
 	});
 	
+	$('.content').on('click', '[data-toggle=sendinv]', function (e) {
+	    e.preventDefault();
+		sendinv_person($(this).data('uid'));
+	});
+	
 	$('#person-modal').on('click', '[data-func=upload]', function (e) {  //“上传”按钮事件
 		$.ajaxFileUpload({
 			url:"?z=setting-ajax_upload_personface",
@@ -138,7 +143,9 @@ function reFresh() {
 			reshtml = reshtml + (vo.sex == 1 ? '女':'男');
 			reshtml = reshtml + '</td><td>' + (vo.email == null?'':vo.email) + '</td><td>' + (vo.phone == null?'':vo.phone) + '</td><td>' + (vo.grade == null?'':vo.grade) + '</td> <td>' + (vo.ojaccount == null?'':vo.ojaccount) + '</td><td>';
 			if(vo.group == 1) reshtml += '队长'; else if(vo.group == 2) reshtml += '教练'; else if(vo.group == 9) reshtml += '管理员'; else reshtml += '队员';
-			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-uid="' + vo.uid + '" data-func="0" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-view" title="查看" data-trigger="hover"><i class="icon-zoom-in"></i> </a><a data-uid="' + vo.uid + '" data-func="2" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-edit" title="编辑" data-trigger="hover" data-placement="bottom"><i class="icon-edit"></i> </a><a data-toggle="del_person" data-uid="' + vo.uid + '" class="btn btn-small btn-delete" title="删除"><i class="icon-trash"></i> </a><a data-toggle="show_code" data-code="' + vo.luckycode + '" data-chsname="' + vo.chsname + '" class="btn btn-small btn-delete" title="显示邀请码"><i class="icon-barcode"></i> </a></div></td></tr>';  
+			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-uid="' + vo.uid + '" data-func="0" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-view" title="查看" data-trigger="hover"><i class="icon-zoom-in"></i> </a><a data-uid="' + vo.uid + '" data-func="2" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-edit" title="编辑" data-trigger="hover" data-placement="bottom"><i class="icon-edit"></i> </a><a data-toggle="del_person" data-uid="' + vo.uid + '" class="btn btn-small btn-delete" title="删除"><i class="icon-trash"></i> </a><a data-toggle="show_code" data-code="' + vo.luckycode + '" data-chsname="' + vo.chsname + '" class="btn btn-small btn-delete" title="显示邀请码"><i class="icon-barcode"></i> </a>';
+			if(vo.email != null && vo.ojaccount == null) reshtml = reshtml + '<a data-toggle="sendinv" data-uid="' + vo.uid + '"  class="btn btn-small btn-delete" title="发送邀请邮件"><i class="icon-envelope"></i> </a>';
+			reshtml = reshtml + '</div></td></tr>';  
 		});
 		$('#data-table tbody').html(reshtml);
 		$("#data-table").trigger("update");
@@ -227,6 +234,31 @@ function del_checked(){
 function del_person(uids) {
 	if(confirm("[提示]你确定要删除队员吗？如果该队员包含在某个队伍中，则删除后将使用UID：0的空用户替代。")) {
 		$.getJSON("?z=setting-ajax_del_person", {uid:uids})
+		.done( function(data) {
+			if(data.status == 0) { alert(data.info); reFresh(); }
+			else alert(data.info, "error");
+		})
+		.fail( function () {
+			alert('[错误]请检查网络连接。', "error");
+		});
+	}
+}
+
+function sendinv_checked(){
+	var n=$("#data-table input:checked").length;
+	if(!n){
+		alert('[错误]请先选择待发送邀请邮件的队员。', "error");
+		return false;
+	}
+	var list=$("#data-table input:checked").map(function() {
+		return $(this).attr('id');
+	}).get().join(',');
+	sendinv_person(list);
+}
+
+function sendinv_person(uids) {
+	if(confirm("[提示]你确定要发送邀请邮件吗？已经关联OJ账号的用户不会重复发送。")) {
+		$.getJSON("?z=setting-ajax_sendinv", {uid:uids})
 		.done( function(data) {
 			if(data.status == 0) { alert(data.info); reFresh(); }
 			else alert(data.info, "error");

@@ -259,9 +259,9 @@ class SettingAction extends BaseAction {
             else {
                 for($i = 0; $i < count($data); $i++) {
                     $data[$i]['chsname'] = htmlspecialchars($data[$i]['chsname']);
-                    $data[$i]['email'] = htmlspecialchars($data[$i]['email']);
-                    $data[$i]['phone'] = htmlspecialchars($data[$i]['phone']);
-                    $data[$i]['ojaccount'] = htmlspecialchars($data[$i]['ojaccount']);
+                    if($data[$i]['email']) $data[$i]['email'] = htmlspecialchars($data[$i]['email']);
+                    if($data[$i]['phone']) $data[$i]['phone'] = htmlspecialchars($data[$i]['phone']);
+                    if($data[$i]['ojaccount']) $data[$i]['ojaccount'] = htmlspecialchars($data[$i]['ojaccount']);
                 }
                 $this -> ajaxReturn($data, '[成功]', 0);
             }
@@ -298,7 +298,7 @@ class SettingAction extends BaseAction {
                 else $fail ++;
             }
             if($success == 0 && $fail == 0) $this -> ajaxReturn(null, '[错误]无效的参数。', 2);
-            else if($fail != 0 && $success == 0) $this -> ajaxReturn(null, '[错误]无效的UID。', 1);
+            else if($fail != 0 && $success == 0) $this -> ajaxReturn(null, '[错误]删除失败。', 1);
             else if($fail != 0 && $success != 0) $this -> ajaxReturn(null, '[提示]已成功删除'.$success.'名队员，删除失败'.$fail.'名。', 0);
             else $this -> ajaxReturn(null, '[成功]已成功删除'.$success.'名队员。', 0);
         }
@@ -327,6 +327,62 @@ class SettingAction extends BaseAction {
             if(false === $res) return 1;
             else if(0 === $res) return 1;
             else return 0;
+        }
+    }
+    
+    public function ajax_sendinv() {  //发送邀请函
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $list = I('get.uid');
+            $uids = explode(',', $list);
+            $success = 0;
+            $fail = 0;
+            foreach ($uids as $uid) {
+                $ret = $this -> sendinv_impl($uid);
+                if($ret == 9) continue;
+                else if(!$ret) $success ++;
+                else $fail ++;
+            }
+            if($success == 0 && $fail == 0) $this -> ajaxReturn(null, '[错误]无效的参数。', 2);
+            else if($fail != 0 && $success == 0) $this -> ajaxReturn(null, '[错误]发送邮件失败。', 1);
+            else if($fail != 0 && $success != 0) $this -> ajaxReturn(null, '[提示]已成功发送'.$success.'封邀请邮件，失败'.$fail.'封。', 0);
+            else $this -> ajaxReturn(null, '[成功]已成功发送'.$success.'封邀请邮件。', 0);
+        }
+    }
+    
+    private function sendinv_impl($uid) {
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            return 1;
+        else {
+            $uid = intval($uid);
+            if($uid <= 0) return 1;
+        
+            //获取队员信息
+            $personDB = M('Person');
+            $person = $personDB -> where('uid = '.$uid) -> field('chsname, engname, email, luckycode, ojaccount') -> find();
+            if(!$person) return 1;
+            if(!$person['email'] || $person['ojaccount']) return 9;  //已注册用户，略过
+            
+            //发送邮件
+            Vendor('phpMailer.phpmailer');
+            $mail = new PHPMailer();
+            $mail -> IsSMTP();
+            $mail -> CharSet = 'UTF-8';
+            $mail -> AddAddress($person['email'], $person['engname']);  //收件人地址
+            $mail -> Body = str_replace('{url}', 'http://'.$_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"].'?z=setting', str_replace('{code}', $person['luckycode'], str_replace('{engname}', $person['engname'], str_replace('{chsname}', $person['chsname'], $this -> getconfig('config_invite_content')))));  //设置邮件正文
+            $mail -> From = $this -> getconfig('config_smtp_account');  //设置邮件头的From字段
+            $mail -> FromName = $this -> getconfig('config_smtp_fromname');  //设置发件人名字
+            $mail -> Subject = $this -> getconfig('config_invite_title');  //设置邮件标题
+            $mail -> Host = $this -> getconfig('config_smtp_host');  //设置SMTP服务器
+
+            $mail -> SMTPAuth = (intval($this -> getconfig('config_smtp_needauth')) == '0' ? false : true);  //需要验证
+            if($mail -> SMTPAuth) $mail -> Username = $this -> getconfig('config_smtp_username');  //设置用户名和密码
+            if($mail -> SMTPAuth) $mail -> Password = $this -> getconfig('config_smtp_password');
+            
+            // 发送邮件
+            if($mail->Send()) return 0;
+            else return 2;
         }
     }
     
