@@ -138,11 +138,13 @@ class SettingAction extends BaseAction {
         
         $personDB = M('Person');
         $c['luckycode'] = $code;
-        $data = $personDB -> field('uid, chsname, engname, ojaccount') -> where($c) -> find();
+        $data = $personDB -> field('uid, chsname, engname, ojaccount, email, phone') -> where($c) -> find();
         if($data) {
             if($data['ojaccount'] == null) {
-                $r['code'] = $data['uid'].'-'.$data['chsname'].'-'.$data['engname'];
+                $r['code'] = 'UID:'.$data['uid'].'-'.$data['chsname'].'-'.$data['engname'];
                 $r['oj'] = OJLoginInterface::getLoginUser();
+                $r['email'] = $data['email'];
+                $r['phone'] = $data['phone'];
                 $this -> ajaxReturn($r, '[成功]', 0);
             }
             else $this -> ajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
@@ -157,27 +159,37 @@ class SettingAction extends BaseAction {
         if($this -> logincheck() == 0) $this -> ajaxReturn(null, '[错误]还未登录，无权限。', 2);  //无权限处理
         
         $code = I('post.code');
+        $email = I('post.email', '', false);
+        $phone = I('post.phone', '', false);
         $oj = OJLoginInterface::getLoginUser();
         sleep(1);
         if(strlen($code) != 16)
             $this -> ajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
-    
-        $personDB = M('Person');
-        $c['luckycode'] = $code;
-        $data = $personDB -> field('uid, chsname, engname, ojaccount') -> where($c) -> find();
-        if($data) {
-            if($data['ojaccount'] == null) {  //验证完毕，准备绑定
-                
-                if($personDB -> where('uid = '.$data['uid']) -> limit(1) -> setField('ojaccount', $oj))
-                    $this -> ajaxReturn(null, '[成功]', 0);
-                else {
-                    $this -> ajaxReturn(null, '[错误]绑定失败，请刷新后重试。', 0);
-                }
-            }
-            else $this -> ajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
-        }
+        else if(!preg_match('/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,5}$/', $email))
+            $this -> ajaxReturn(null, '[错误]E-mail格式不正确！请重试。', 1);
+        else if(strlen($phone) < 8 || strlen($phone) > 11)
+            $this -> ajaxReturn(null, '[错误]联系电话格式不正确！请重试。', 1);
         else {
-            $this -> ajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
+            $personDB = M('Person');
+            $c['luckycode'] = $code;
+            $data = $personDB -> field('uid, chsname, engname, ojaccount') -> where($c) -> find();
+            if($data) {
+                if($data['ojaccount'] == null) {  //验证完毕，准备绑定
+            
+                    $data['ojaccount'] = $oj;
+                    $data['phone'] = $phone;
+                    $data['email'] = $email;
+                    if($personDB -> where('uid = '.$data['uid']) -> limit(1) -> save($data))
+                        $this -> ajaxReturn(null, '[成功]', 0);
+                    else {
+                        $this -> ajaxReturn(null, '[错误]绑定失败，请刷新后重试。', 0);
+                    }
+                }
+                else $this -> ajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
+            }
+            else {
+                $this -> ajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
+            }
         }
     }
     

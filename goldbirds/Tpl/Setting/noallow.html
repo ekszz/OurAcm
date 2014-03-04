@@ -24,9 +24,12 @@
 				.done(function (data) {
 					if(data.status == 0) {
 						alert('[成功]有效的邀请码！请核对邀请码下方的信息无误后，点击“绑定”按钮绑定！注意：一个邀请码只能绑定一个OnlineJudge账号哦！');
-						$('#result').html('邀请码对应的用户信息： '+data.data.code+'<br />当前待绑定OnlineJudge账号：'+data.data.oj);
+						$('#result').html('邀请码对应的用户信息： '+data.data.code+'<br />当前待绑定OnlineJudge账号：'+data.data.oj+'<br />请核对或补充下方信息：<br /><br />');
 						$('#submit-btn').addClass('hide');
 						$('#bind-btn').removeClass('hide');
+						$('#email').val(data.data.email);
+						$('#phone').val(data.data.phone);
+						$('#detail').removeClass('hide');
 					}
 					else {
 						alert(data.info, "error");
@@ -39,21 +42,30 @@
 				});
 			});
 			$('#bind-btn').on('click', null, function() {
-				$('#bind-btn').attr('disabled', true);
-				$.post("?z=setting-ajax_bind_luckycode", {code:$('#luckycode').val()})
-				.done(function (data) {
-					if(data.status == 0) {
-						$('#bind-btn').html('已绑定');
-						alert('[成功]绑定成功！刷新本页面可进入个人信息设置。');
-					}
-					else {
-						alert(data.info, "error");
-						$('#bind-btn').removeAttr('disabled');
-					}
-				})
-				.fail(function () {
-					alert('[错误]请检查网络连接。', "error");
-				});
+				var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,5}$/;
+				var email = $('#email').val();
+				var phone = $('#phone').val();
+				if(!reg.test(email)) alert('[错误]E-mail格式不正确！请重试。', 'error');
+				else if(phone.length < 8 || phone.length > 11) alert('[错误]联系电话格式不正确！请重试。', 'error');
+				else {
+					$('#bind-btn').attr('disabled', true);
+					$.post("?z=setting-ajax_bind_luckycode", {code:$('#luckycode').val(), email:email, phone:phone})
+					.done(function (data) {
+						if(data.status == 0) {
+							$('#bind-btn').html('已绑定');
+							$('#email').prop('readonly', true);
+							$('#phone').prop('readonly', true);
+							alert('[成功]绑定成功！刷新本页面可进入个人信息设置。');
+						}
+						else {
+							alert(data.info, "error");
+							$('#bind-btn').removeAttr('disabled');
+						}
+					})
+					.fail(function () {
+						alert('[错误]请检查网络连接。', "error");
+					});
+				}
 			});
 		});
     </script>
@@ -88,6 +100,10 @@
     	  </div>
       </div>
       <div class="span12 text-center text-info" id="result"></div>
+      <div class="span12 text-center hide" id="detail">
+            E-mail: <input class="span2" id="email" type="text" placeholder="E-mail here.">
+            联系电话: <input class="span2" id="phone" type="text" placeholder="请输入联系电话">
+      </div>
     </div>
   </div>
   <div id="alert" class="row-fluid"></div> 
