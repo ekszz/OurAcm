@@ -128,7 +128,7 @@
                     	echo '<tr><td>'.$t['chsname'].'</td><td>';
                         if($t['sex'] == 1) echo '女'; else echo '男';
                         echo '</td><td>'.$t['email'].'</td><td>'.$t['phone'].'</td><td>';
-                        if(strlen($t['introduce']) > 30) echo '<span data-trigger="hover" data-content="'.$t['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$t['chsname'].'">'.substr($t['introduce'], 0, 27).'...</span>';
+                        if(strlen($t['introduce']) > 28) echo '<span data-trigger="hover" data-content="'.$t['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$t['chsname'].'">'.substr($t['introduce'], 0, 25).'...</span>';
                         else echo $t['introduce'];
                         echo '</td></tr>';
                     } ?></tbody>
@@ -145,7 +145,7 @@
   					<thead>
     					<tr class="align-center">
       						<th>中文姓名</th>
-                            <th>性别</th>
+                            <th width="40px">性别</th>
                             <th>Email</th>
                             <th>电话</th>
                             <th>本科年级</th>
