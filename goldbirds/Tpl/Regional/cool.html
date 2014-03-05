@@ -82,13 +82,13 @@
           <hr class="soften" />
           <div class="row">
           	<div class="span3">
-          	  <p><span class="label label-warning">Leader</span> <?php if($d['leader_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <?php if($d['leader_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['leader_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['leader_detail']['chsname'].' '.$d['leader_detail']['engname'].'">'; ?><?php echo $d['leader_detail']['chsname'].' '.$d['leader_detail']['engname']; ?><?php if($d['leader_detail']['introduce']) echo '</span>'; ?></p>
+          	  <p><span class="label label-warning">Leader</span> <?php if($d['leader_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <a href="#" data-toggle="personmodal" data-uid="<?php echo $d['leader']; ?>"><?php if($d['leader_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['leader_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['leader_detail']['chsname'].' '.$d['leader_detail']['engname'].'">'; ?><?php echo $d['leader_detail']['chsname'].' '.$d['leader_detail']['engname']; ?><?php if($d['leader_detail']['introduce']) echo '</span>'; ?></a></p>
           	</div>
           	<div class="span3">
-          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer1_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <?php if($d['teamer1_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer1_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname'].'">'; ?><?php echo $d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname']; ?><?php if($d['teamer1_detail']['introduce']) echo '</span>'; ?></p>
+          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer1_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <a href="#" data-toggle="personmodal" data-uid="<?php echo $d['teamer1']; ?>"><?php if($d['teamer1_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer1_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname'].'">'; ?><?php echo $d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname']; ?><?php if($d['teamer1_detail']['introduce']) echo '</span>'; ?></a></p>
           	</div>
           	<div class="span3">
-          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer2_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <?php if($d['teamer2_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer2_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname'].'">'; ?><?php echo $d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname']; ?><?php if($d['teamer2_detail']['introduce']) echo '</span>'; ?></p>
+          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer2_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <a href="#" data-toggle="personmodal" data-uid="<?php echo $d['teamer2']; ?>"><?php if($d['teamer2_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer2_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname'].'">'; ?><?php echo $d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname']; ?><?php if($d['teamer2_detail']['introduce']) echo '</span>'; ?></a></p>
           	</div>
           </div>
           <hr class="soften" />
@@ -102,4 +102,5 @@
     </div>
 
   </div>
+<include file="Base:personmodal" />
 <include file="Base:footer" />

@@ -1275,4 +1275,49 @@ class SettingAction extends BaseAction {
         }
     }
     
+    //其它ajax请求=============================================
+    
+    public function ajax_get_person_modal() {  //个人展示窗口数据
+        
+        $uid = intval(I('get.uid'));
+        if($uid <= 0) $this -> ajaxReturn(null, '[错误]UID参数不正确。', 1);
+        else {
+            $arrayStr = array('一个人的单程旅途，一个人的朝朝暮暮，一个人的韶华倾负。 [系统随机]',
+            '妙笔难书一纸愁肠，苍白的誓言，终究抵不过岁月的遗忘。 [系统随机]',
+            '看樱花满天，悲伤在流转，却掩不住斑驳的流年。 [系统随机]',
+            '凡真心尝试助人者，没有不帮到自己的。 [系统随机]',
+            '行动是成功的阶梯，行动越多，登得越高。 [系统随机]',
+            '成功需要成本，时间也是一种成本，对时间的珍惜就是对成本的节约。 [系统随机]',
+            '有事者，事竟成；破釜沉舟，百二秦关终归楚；苦心人，天不负；卧薪尝胆，三千越甲可吞吴。 [系统随机]',
+            '燃尽的风华，为谁化作了彼岸花？ [系统随机]',
+            '一切似乎没有改变，其实一切都已改变的生命罅隙。 [系统随机]',
+            '那个寻找失落了的单车的少年，是否还有勇气回一回头？ [系统随机]'
+            );
+            $personDB = M('Person');
+            $data = $personDB -> field('chsname, engname, email, phone, address, grade, introduce, detail, photo') -> where('uid = '.$uid.' AND `group` < 2') -> find();  //获取个人信息
+            if(!$data) $this -> ajaxReturn(null, '[错误]UID参数不正确。', 1);
+            else {
+                if(session('goldbirds_islogin')) $data['email'] = htmlspecialchars($data['email']);
+                else $data['email'] = '[登录后可见]';
+                $data['address'] = htmlspecialchars($data['address']);
+                if(session('goldbirds_islogin')) $data['phone'] = htmlspecialchars($data['phone']);
+                else $data['phone'] = '[登录后可见]';
+                $data['introduce'] = htmlspecialchars($data['introduce']);
+                if($data['detail']) $data['detail'] = htmlspecialchars($data['detail']);
+                else $data['detail'] = $arrayStr[rand(0, count($arrayStr) - 1)];
+                
+                $contestDB = M('Contest');
+                $contestdata = $contestDB -> field('YEAR(holdtime) AS y, MONTH(holdtime) AS m, site, type, medal, team') -> where('leader = '.$uid.' OR teamer1='.$uid.' OR teamer2='.$uid) -> order('type ASC, medal ASC, holdtime DESC') -> select();
+                if(!$contestdata) $data['contest'] = null;
+                else {
+                    for($i = 0; $i < count($contestdata); $i++) {  //转义HTML字符
+                        $contestdata[$i]['site'] = htmlspecialchars($contestdata[$i]['site']);
+                        $contestdata[$i]['team'] = htmlspecialchars($contestdata[$i]['team']);
+                    }
+                    $data['contest'] = $contestdata;  //拼接比赛结果
+                }
+                $this -> ajaxReturn($data, '[成功]', 0);
+            }
+        }
+    }
 }

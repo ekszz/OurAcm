@@ -82,26 +82,29 @@
                             echo '<p><span class="label label-warning">Leader</span> ';
                             if($d['leader_detail']['sex'] != 1) echo '<span class="label">♂</span> '; 
                             else echo '<span class="label label-important">♀</span> ';
+                            echo '<a href="#" data-toggle="personmodal" data-uid="'.$d['leader'].'">';
                             if($d['leader_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['leader_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['leader_detail']['chsname'].' '.$d['leader_detail']['engname'].'">';
                             echo $d['leader_detail']['chsname'].' '.$d['leader_detail']['engname'];
                             if($d['leader_detail']['introduce']) echo '</span>';
-                            echo '</p>';
+                            echo '</a></p>';
                             
           	  				echo '<p><span class="label label-info">Teamer</span> ';
                             if($d['teamer1_detail']['sex'] != 1) echo '<span class="label">♂</span> '; 
                             else echo '<span class="label label-important">♀</span> ';
+                            echo '<a href="#" data-toggle="personmodal" data-uid="'.$d['teamer1'].'">';
                             if($d['teamer1_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer1_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname'].'">';
                             echo $d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname'];
                             if($d['teamer1_detail']['introduce']) echo '</span>';
-                            echo '</p>';
+                            echo '</a></p>';
 
           	  				echo '<p><span class="label label-info">Teamer</span> ';
                             if($d['teamer2_detail']['sex'] != 1) echo '<span class="label">♂</span> '; 
                             else echo '<span class="label label-important">♀</span> ';
+                            echo '<a href="#" data-toggle="personmodal" data-uid="'.$d['teamer2'].'">';
                             if($d['teamer2_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer2_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname'].'">';
                             echo $d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname'];
                             if($d['teamer2_detail']['introduce']) echo '</span>';
-                            echo '</p>';
+                            echo '</a></p>';
                             
                             echo '</td><td>';
                             $temp = ''; 
@@ -124,4 +127,5 @@
     </div>
 
   </div>
+<include file="Base:personmodal" />
 <include file="Base:footer" />
