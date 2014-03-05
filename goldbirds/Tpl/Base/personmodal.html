@@ -25,7 +25,7 @@
 							conteststr = conteststr + '<div class="row-fluid"><div class="span12" style="margin-bottom:5px;"><a href="';
 							if(data.data.contest[i].type == 0) conteststr = conteststr + '?z=wf#year' + data.data.contest[i].y;
 							else conteststr = conteststr + '?z=regional-cool-y-' + data.data.contest[i].y;
-							conteststr += '" class="btn span12"><img style="width:20px" src="';
+							conteststr += '" class="btn span12"><img style="height:20px;" src="';
 							if(data.data.contest[i].type == 0) conteststr += 'img/final.png';
 							else {
 								if(data.data.contest[i].medal == 0) conteststr += 'img/golden.png';
