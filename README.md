@@ -25,10 +25,10 @@ OurAcm
   
 1、将所有文件拷贝到web目录下；  
 2、修改\goldbirds\Common\common.php中的4个OnlineJudge接口；  
-2、使用phpmyadmin或其它工具，导入db目录下的数据库文件；  
-3、修改\goldbirds\Conf\config.php中的数据库配置选项；  
-4、删除\db\目录；  
-5、请确保\upload、\goldbirds\Runtime具有写权限；  
-6、访问index.php尝试能否正常访问；  
-7、登录OnlineJudge，并访问index.php?z=setting，以邀请码"iloveacmiloveacm"关联带管理权的OnlineJudge账户；  
-8、关联后，点击"个人中心"，可在里面进行相应配置管理。  
+3、使用phpmyadmin或其它工具，导入db目录下的数据库文件；  
+4、修改\goldbirds\Conf\config.php中的数据库配置选项；  
+5、删除\db\目录；  
+6、请确保\upload、\goldbirds\Runtime具有写权限；  
+7、访问index.php尝试能否正常访问；  
+8、登录OnlineJudge，并访问index.php?z=setting，以邀请码"iloveacmiloveacm"关联带管理权的OnlineJudge账户；  
+9、关联后，点击"个人中心"，可在里面进行相应配置管理。  
