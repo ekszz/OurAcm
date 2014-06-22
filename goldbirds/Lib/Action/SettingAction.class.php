@@ -407,8 +407,8 @@ class SettingAction extends BaseAction {
             $data['detail'] = I('post.detail', '', false) == '' ? null : I('post.detail', '', false);
             $data['ojaccount'] = I('post.ojaccount') == '' ? null : I('post.ojaccount');
             $tmp = intval(I('post.group'));
-            if($tmp == 0 || $tmp == 1 || $tmp == 9) $data['group'] = $tmp;
-            else $tmp = 0;
+            if($tmp == 0 || $tmp == 1 || $tmp == 2 || $tmp == 9) $data['group'] = $tmp;
+            else $data['group'] = 0;
             srand((double)microtime()*1000000);
             $data['luckycode'] = substr(md5('goldbirds'.'_xzz'.$data['chsname'].rand()), 10, 16);
             
@@ -449,8 +449,8 @@ class SettingAction extends BaseAction {
             $data['detail'] = I('post.detail', '', false) == '' ? null : I('post.detail', '', false);
             $data['ojaccount'] = I('post.ojaccount') == '' ? null : I('post.ojaccount');
             $tmp = intval(I('post.group'));
-            if($tmp == 0 || $tmp == 1 || $tmp == 9) $data['group'] = $tmp;
-            else $tmp = 0;
+            if($tmp == 0 || $tmp == 1 || $tmp == 2 || $tmp == 9) $data['group'] = $tmp;
+            else $data['group'] = 0;
             
             $data['photo'] = strcmp(substr(I('post.face_fn'), 0, 7), 'upload/') == 0 ? I('post.face_fn') : null;
             
