@@ -1320,4 +1320,313 @@ class SettingAction extends BaseAction {
             }
         }
     }
+
+    //活动管理============================
+    public function activity() {
+    
+        $this -> commonassign();
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> profile();
+        else {
+            $this -> display('activity');
+        }
+    }
+    
+    public function ajax_load_activity() {  //AJAX获取活动报名列表
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $activitylistDB = M('Activitylist');
+            $data = $activitylistDB -> field('aid, title, deadline, isinner, ispublic, isneedreview') -> order('aid DESC') -> select();
+            if($data === false) {
+                $this -> ajaxReturn(null, '[错误]数据库错误。', 1);
+            }
+            else if($data === null) {
+                $this -> ajaxReturn(null, '[错误]没有活动报名信息。', 2);
+            }
+            else {
+                $activitydataDB = M('Activitydata');
+                $sum = $activitydataDB -> field('aid, count(*) AS sum') -> group('aid') -> order('aid DESC') -> select();
+                $accept = $activitydataDB -> field('aid, count(*) AS accept') -> group('aid') -> where('state = 2') -> order('aid DESC') -> select();
+                $j = 0;
+                $k = 0;
+                for($i = 0; $i < count($data); $i++) {
+                    $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
+                    $data[$i]['sum'] = 0;
+                    $data[$i]['accept'] = 0;
+                    while($j < count($sum) && $sum[$j]['aid'] >= $data[$i]['aid']) {
+                        if($sum[$j]['aid'] == $data[$i]['aid']) { $data[$i]['sum'] = $sum[$j]['sum']; $j++; break; }
+                        $j++;
+                    }
+                    while($k < count($accept) && $accept[$k]['aid'] >= $data[$i]['aid']) {
+                        if($accept[$k]['aid'] == $data[$i]['aid']) { $data[$i]['accept'] = $accept[$k]['accept']; $k++; break; }
+                        $k++;
+                    }
+                }
+                $this -> ajaxReturn($data, '[成功]', 0);
+            }
+        }
+    }
+    
+    public function ajax_get_activity() {  //获取一条活动信息
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $activitylistDB = D('Activitylist');
+            $aid = intval(I('get.aid'));
+            if($aid <= 0) $this -> ajaxReturn(null, '[错误]AID无效。', 1);
+            $data = $activitylistDB -> relation(true) -> where('aid = '.$aid) -> find();
+            if($data === false) $this -> ajaxReturn(null, '[错误]数据库错误。', 2);
+            else if(!$data) $this -> ajaxReturn(null, '[错误]AID无效。', 1);
+            else {
+                if($data['adminuid'] == 0) $data['admin_detail'] = null;
+                $this -> ajaxReturn($data, '[成功]', 0);
+            }
+        }
+    }
+    
+    private function explain_reg_rule($string) {  //解析注册字段字符串，成功返回Array，失败返回null
+        //0|classname（可选classname,返回true成功,false失败）,1|0(是否公开显示，1显示，0不显示)|text_input类型标题|input-xxlarge,
+        //2|0|只读类型标题|classname,3|密码类型标题|classname,4|0|checkbox类型标题|classname,
+        //5|0|combobox类型标题|classname(不可省)|项一|项二|项三,6|0|textarea类型标题|classname,7|span类型|classname
+        //如果只有0一项，则使用class中的buildpage方法生成注册表单。class中的checkdata用来验证提交数据。
+        $ret = array();
+        $ret[0]['classname'] = null;
+        $i = 1;
+        
+        Vendor('ActivityFormClass.activity');
+        
+        $list = explode(',', $string);
+        foreach($list as $l) {
+            $units = explode('|', $l);
+            $id = intval($units[0]);
+            $len = count($units);
+
+            switch($id) {
+                case 0:
+                    if($len != 2) return null;
+                    if(!class_exists($units[1]) || !method_exists($units[1], 'checkdata')) return null;
+                    if(count($list) == 1 && (!class_exists($units[1]) || !method_exists($units[1], 'checkdata') || !method_exists($units[1], 'buildpage'))) return null;
+                    $ret[0]['classname'] = $units[1];
+                    break;
+                case 1:
+                    if($len != 3 && $len != 4) return null;
+                    $ret[$i]['type'] = 1;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    if($len == 4) $ret[$i]['class'] = $units[3];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 2:
+                    if($len != 3 && $len != 4) return null;
+                    $ret[$i]['type'] = 2;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    if($len == 4) $ret[$i]['class'] = $units[3];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 3:
+                    if($len != 2 && $len != 3) return null;
+                    $ret[$i]['type'] = 3;
+                    $ret[$i]['public'] = 0;
+                    $ret[$i]['dis'] = $units[1];
+                    if($len == 3) $ret[$i]['class'] = $units[2];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 4:
+                    if($len != 3 && $len != 4) return null;
+                    $ret[$i]['type'] = 4;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    if($len == 4) $ret[$i]['class'] = $units[3];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 5:
+                    if($len < 5) return null;
+                    $ret[$i]['type'] = 5;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    $ret[$i]['class'] = $units[3];
+                    $ret[$i]['item'] = array();
+                    for($j = 0; $j < $len - 4; $j++) {
+                        array_push($ret[$i]['item'], $units[4 + $j]);
+                    }
+                    $i++;
+                    break;
+                case 6:
+                    if($len != 3 && $len != 4) return null;
+                    $ret[$i]['type'] = 4;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    if($len == 4) $ret[$i]['class'] = $units[3];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 7:
+                    if($len != 2 && $len != 3) return null;
+                    $ret[$i]['type'] = 3;
+                    $ret[$i]['public'] = 0;
+                    $ret[$i]['dis'] = $units[1];
+                    if($len == 3) $ret[$i]['class'] = $units[2];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                default:
+                    return null;
+                    break;
+            }
+        }
+        $ret[0]['count'] = $i;
+        return $ret;
+    }
+    
+    public function ajax_add_activity() {  //添加一条活动记录
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $tmp = intval(I('post.nowaid'));
+            if($tmp != 9999) $this -> ajaxReturn(null, '[错误]无效的参数。', 2);
+    
+            if(false === strtotime(I('post.deadline', '', false)))
+                $this -> ajaxReturn(null, '[错误]日期格式不对！', 1);
+            if(strtotime(I('post.deadline', '', false)) >= strtotime('2037-12-31')
+            || strtotime(I('post.deadline', '', false)) < strtotime('1960-1-1')) {
+                $this -> ajaxReturn(null, '[错误]日期范围不太对！', 1);
+            }
+            $data['deadline'] = I('post.deadline', '', false);
+    
+            $data['title'] = I('post.title', '', false);
+            $data['desc'] = I('post.content', '', false) == '' ? null : I('post.content', '', false);
+            $data['addtime'] = date("Y-m-d H:i:s");
+            
+            if(null === $this -> explain_reg_rule(I('post.form', '', false))) {
+                $this -> ajaxReturn(null, '[错误]注册信息格式不对:(', 1);
+            }
+            else {
+                $data['form'] = I('post.form', '', false);
+            }
+            
+            $data['isinner'] = intval(I('post.isinner')) == 0 ? 0 : 1;
+            $data['ispublic'] = intval(I('post.ispublic')) == 0 ? 0 : 1;
+            $data['isneedreview'] = intval(I('post.isneedreview')) == 0 ? 0 : 1;
+            
+            $personDB = M('Person');
+            $plist = explode('-', I('post.admin', '', false));
+            $c['uid'] = intval($plist[0]);
+            $c['chsname'] = $plist[1];
+            $res = $personDB -> where($c) -> find();
+            if(!$res) $data['adminuid'] = 0;
+            else $data['adminuid'] = $c['uid'];
+    
+            $activitylistDB = M('Activitylist');
+            if(!$activitylistDB -> create($data)) {
+                $this -> ajaxReturn(null, $activitylistDB -> getError(), 1);
+            }
+            else {
+                if(false === ($tmp = $activitylistDB -> add()))
+                    $this -> ajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                else
+                  $this -> ajaxReturn(null, '[成功]新增活动，AID:'.$tmp, 0);
+            }
+        }
+    }
+    
+    public function ajax_del_activity() {  //删除活动记录
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $list = I('get.aid', '', false);
+            $aids = explode(',', $list);
+            $success = 0;
+            $fail = 0;
+            foreach ($aids as $aid) {
+                if(!$this -> del_one_activity($aid)) $success ++;
+                else $fail ++;
+            }
+            if($success == 0 && $fail == 0) $this -> ajaxReturn(null, '[错误]无效的参数。', 2);
+            else if($fail != 0 && $success == 0) $this -> ajaxReturn(null, '[错误]无效的AID。', 1);
+            else if($fail != 0 && $success != 0) $this -> ajaxReturn(null, '[提示]已成功删除'.$success.'条活动记录，删除失败'.$fail.'条。', 0);
+            else $this -> ajaxReturn(null, '[成功]已成功删除'.$success.'条活动记录。', 0);
+        }
+    }
+    
+    private function del_one_activity($aid) {  //删除一条活动，ajax_del_activity具体实现，返回：1-失败，0-成功
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            return 1;
+        else {
+            $aid = intval($aid);
+            if($aid <= 0) return 1;
+    
+            $activitylistDB = M('Activitylist');
+            $res = $activitylistDB -> where('aid = '.$aid) -> delete();
+            if(false === $res) return 1;
+            else if(0 === $res) return 1;
+            else {
+                $activitydataDB = M('Activitydata');
+                $activitydataDB -> where('aid = '.$aid) -> delete();
+                return 0;
+            }
+        }
+    }
+    
+    public function ajax_modify_activity() {  //修改获奖记录
+    
+        if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
+            $this -> ajaxReturn(null, '[错误]无权限。', 3);
+        else {
+            $aid = intval(I('post.nowaid'));
+            if($aid == 9999 || $aid <= 0) $this -> ajaxReturn(null, '[错误]无效的参数AID。', 2);
+    
+            if(false === strtotime(I('post.deadline', '', false)))
+                $this -> ajaxReturn(null, '[错误]日期格式不对！', 1);
+            if(strtotime(I('post.deadline', '', false)) >= strtotime('2037-12-31')
+            || strtotime(I('post.deadline', '', false)) < strtotime('1960-1-1')) {
+                $this -> ajaxReturn(null, '[错误]日期范围不太对！', 1);
+            }
+            $data['deadline'] = I('post.deadline', '', false);
+    
+            $data['title'] = I('post.title', '', false);
+            $data['desc'] = I('post.content', '', false) == '' ? null : I('post.content', '', false);
+            $data['addtime'] = date("Y-m-d H:i:s");
+            
+            if(null === $this -> explain_reg_rule(I('post.form', '', false))) {
+                $this -> ajaxReturn(null, '[错误]注册信息格式不对:(', 1);
+            }
+            else {
+                $data['form'] = I('post.form', '', false);
+            }
+            
+            $data['isinner'] = intval(I('post.isinner')) == 0 ? 0 : 1;
+            $data['ispublic'] = intval(I('post.ispublic')) == 0 ? 0 : 1;
+            $data['isneedreview'] = intval(I('post.isneedreview')) == 0 ? 0 : 1;
+            
+            $personDB = M('Person');
+            $plist = explode('-', I('post.admin', '', false));
+            $c['uid'] = intval($plist[0]);
+            $c['chsname'] = $plist[1];
+            $res = $personDB -> where($c) -> find();
+            if(!$res) $data['adminuid'] = 0;
+            else $data['adminuid'] = $c['uid'];
+    
+            $activitylistDB = M('Activitylist');
+            if(!$activitylistDB -> create($data)) {  //自动验证失败
+                $this -> ajaxReturn(null, $activitylistDB -> getError(), 1);
+            }
+            else {  //自动验证成功
+                if(false === $activitylistDB -> where('aid='.$aid) -> limit(1) -> save($data)) {
+                    $this -> ajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                }
+                else {
+                    $this -> ajaxReturn(null, '[成功]', 0);
+                }
+            }
+        }
+    }
 }

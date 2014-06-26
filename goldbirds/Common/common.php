@@ -22,3 +22,9 @@ class OJLoginInterface {  //OJ登录接口，请根据自己的OJ修改
         return '/fasast/';
     }
 }
+
+interface ActivityForm
+{
+    public function buildpage();
+    public function checkdata($data);
+}
