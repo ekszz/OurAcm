@@ -21,7 +21,6 @@ class ContestModel extends RelationModel{
         ),
     );
     protected $_validate = array(
-        //array('holdtime', '1950-1-1,2099-12-31', '[错误]日期不是正常的地球历！你确定你来自地球么？', Model::EXISTS_VALIDATE, 'expire', Model::MODEL_BOTH),  //THINKPHP的BUG，该行验证为当前时间的验证
         array('site', '1,32', '[错误]地点太长了，试试简写！', Model::EXISTS_VALIDATE, 'length', Model::MODEL_BOTH),
         array('university', '1,32', '[错误]举办单位太长了，试试简写！', Model::EXISTS_VALIDATE, 'length', Model::MODEL_BOTH),
         array('type', array(0,1,2), '[错误]类型错误:(', Model::EXISTS_VALIDATE, 'in', Model::MODEL_BOTH),
