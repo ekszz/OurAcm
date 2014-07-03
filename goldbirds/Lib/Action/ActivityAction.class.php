@@ -49,10 +49,10 @@ class ActivityAction extends BaseAction {
             
             $activitylistDB = M('Activitylist');
             if($this -> logincheck() == 2) {  //队员已登录，可看isinner=1的比赛
-                $data = $activitylistDB -> field('aid, title, deadline, isinner, ispublic, isneedreview') -> order('aid DESC') -> select();
+                $data = $activitylistDB -> field('aid, title, deadline, isinner, ispublic, isneedreview, desc, adminuid') -> order('aid DESC') -> select();
             }
             else {  //未登录，仅可看公开比赛
-                $data = $activitylistDB -> field('aid, title, deadline, isinner, ispublic, isneedreview') -> where('isinner = 0') -> order('aid DESC') -> select();
+                $data = $activitylistDB -> field('aid, title, deadline, isinner, ispublic, isneedreview, desc, adminuid') -> where('isinner = 0') -> order('aid DESC') -> select();
             }
             
             if($data === false) {
@@ -66,6 +66,9 @@ class ActivityAction extends BaseAction {
                 $accept = $activitydataDB -> field('aid, count(*) AS accept') -> group('aid') -> where('state = 2') -> order('aid DESC') -> select();
                 $k = 0;
                 for($i = 0; $i < count($data); $i++) {
+                    if(session('goldbirds_islogin') && (session('goldbirds_group') > 0 || session('goldbirds_uid') == $data[$i]['adminuid'])) $data[$i]['adminuid'] = 1;
+                    else $data[$i]['adminuid'] = 0;
+                    if($data[$i]['desc']) $data[$i]['desc'] = '_'; else $data[$i]['desc'] = null;
                     $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
                     $data[$i]['accept'] = 0;
                     while($k < count($accept) && $accept[$k]['aid'] >= $data[$i]['aid']) {
@@ -91,7 +94,7 @@ class ActivityAction extends BaseAction {
             }
             
             $activitylistDB = M('Activitylist');
-            $data = $activitylistDB -> field('aid, title, deadline, isinner, ispublic, isneedreview') -> where('aid IN ('.$aidstr.')') -> order('aid DESC') -> select();
+            $data = $activitylistDB -> field('aid, title, deadline, isinner, ispublic, isneedreview, desc, adminuid') -> where('aid IN ('.$aidstr.')') -> order('aid DESC') -> select();
             
             if($data === false) {
                 $this -> ajaxReturn(null, '[错误]数据库错误。', 1);
@@ -104,6 +107,9 @@ class ActivityAction extends BaseAction {
                 $accept = $activitydataDB -> field('aid, count(*) AS accept') -> group('aid') -> where('state = 2') -> order('aid DESC') -> select();
                 $k = 0;
                 for($i = 0; $i < count($data); $i++) {
+                    if(session('goldbirds_islogin') && (session('goldbirds_group') > 0 || session('goldbirds_uid') == $data[$i]['adminuid'])) $data[$i]['adminuid'] = 1;
+                    else $data[$i]['adminuid'] = 0;
+                    if($data[$i]['desc']) $data[$i]['desc'] = '_'; else $data[$i]['desc'] = null;
                     $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
                     $data[$i]['accept'] = 0;
                     while($k < count($accept) && $accept[$k]['aid'] >= $data[$i]['aid']) {

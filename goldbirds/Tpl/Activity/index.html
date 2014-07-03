@@ -19,6 +19,7 @@
     <script src="js/setting_common.js"></script>
     <script src="js/activity.js"></script>
 	<script type="text/javascript">
+	var islogin = <?php if($notlogin) echo '0'; else echo '1'; ?>;
 	$(function(){ $("#navbar li:nth-child(8)").addClass("active"); $("#setting-bar li:nth-child(5)").addClass("active"); });
 	$(function(){
 		var $window = $(window);
