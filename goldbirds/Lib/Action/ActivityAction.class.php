@@ -34,6 +34,105 @@ class ActivityAction extends BaseAction {
         }
     }
     
+    private function explain_reg_rule($string) {  //解析注册字段字符串，成功返回Array，失败返回null
+        //0|classname（可选classname,返回true成功,false失败）,1|0(是否公开显示，1显示，0不显示)|text_input类型标题|input-xxlarge,
+        //2|0|只读类型标题|classname,3|密码类型标题|classname,4|0|checkbox类型标题|classname,
+        //5|0|combobox类型标题|classname(不可省)|项一|项二|项三,6|0|textarea类型标题|classname,7|span类型|classname
+        //如果只有0一项，则使用class中的buildpage方法生成注册表单。class中的checkdata用来验证提交数据。
+        $ret = array();
+        $ret[0]['classname'] = null;
+        $i = 1;
+    
+        Vendor('ActivityFormClass.activity');
+    
+        $list = explode(',', $string);
+        foreach($list as $l) {
+            $units = explode('|', $l);
+            $id = intval($units[0]);
+            $len = count($units);
+    
+            switch($id) {
+                case 0:
+                    if($len != 2) return null;
+                    if(!class_exists($units[1]) || !method_exists($units[1], 'checkdata')) return null;
+                    if(count($list) == 1 && (!class_exists($units[1]) || !method_exists($units[1], 'checkdata') || !method_exists($units[1], 'buildpage'))) return null;
+                    $ret[0]['classname'] = $units[1];
+                    break;
+                case 1:
+                    if($len != 3 && $len != 4) return null;
+                    $ret[$i]['type'] = 1;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    if($len == 4) $ret[$i]['class'] = $units[3];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 2:
+                    if($len != 3 && $len != 4) return null;
+                    $ret[$i]['type'] = 2;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    if($len == 4) $ret[$i]['class'] = $units[3];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 3:
+                    if($len != 2 && $len != 3) return null;
+                    $ret[$i]['type'] = 3;
+                    $ret[$i]['public'] = 0;
+                    $ret[$i]['dis'] = $units[1];
+                    if($len == 3) $ret[$i]['class'] = $units[2];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 4:
+                    if($len != 3 && $len != 4) return null;
+                    $ret[$i]['type'] = 4;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    if($len == 4) $ret[$i]['class'] = $units[3];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 5:
+                    if($len < 5) return null;
+                    $ret[$i]['type'] = 5;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    $ret[$i]['class'] = $units[3];
+                    $ret[$i]['item'] = array();
+                    for($j = 0; $j < $len - 4; $j++) {
+                        array_push($ret[$i]['item'], $units[4 + $j]);
+                    }
+                    $i++;
+                    break;
+                case 6:
+                    if($len != 3 && $len != 4) return null;
+                    $ret[$i]['type'] = 4;
+                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
+                    $ret[$i]['dis'] = $units[2];
+                    if($len == 4) $ret[$i]['class'] = $units[3];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                case 7:
+                    if($len != 2 && $len != 3) return null;
+                    $ret[$i]['type'] = 3;
+                    $ret[$i]['public'] = 0;
+                    $ret[$i]['dis'] = $units[1];
+                    if($len == 3) $ret[$i]['class'] = $units[2];
+                    else $ret[$i]['class'] = '';
+                    $i++;
+                    break;
+                default:
+                    return null;
+                    break;
+            }
+        }
+        $ret[0]['count'] = $i;
+        return $ret;
+    }
+    
     public function index() {
         
         $this -> commonassign();
@@ -84,7 +183,7 @@ class ActivityAction extends BaseAction {
             if($this -> logincheck() == 0) $this -> ajaxReturn(null, '[错误]你在OJ上还未登录，请先登录。', 1);  //OJ未登录
             
             $activitydataDB = M('Activitydata');
-            $myaid = $activitydataDB -> field('aid') -> where('ojaccount = "'.session('goldbirds_oj').'"') -> select();
+            $myaid = $activitydataDB -> field('aid') -> where('ojaccount = "'.OJLoginInterface::getLoginUser().'"') -> select();
             if(!$myaid) $this -> ajaxReturn(null, '[成功]无数据。', 0);
 
             $aidstr = '';
@@ -122,12 +221,106 @@ class ActivityAction extends BaseAction {
         }
     }
 
-    public function ajax_get_registeform() {  //未完工
+    public function ajax_get_registeform() {  //生成注册表单，未完工，还需要添加rule格式的解析生成表单
+        
+        if($this -> logincheck() == 0) $this -> ajaxReturn(null, '[错误]请先登录OJ。', 5);  //未登录，非法操作
         
         $aid = intval(I('get.aid'));
-        $activitylistDB = M('Activitylist');
+        if($aid <= 0) $this -> ajaxReturn(null, '[错误]无效的AID参数。', 1);
         
-        $settingAction = A('Setting');
+        $activitylistDB = M('Activitylist');
+        $data = $activitylistDB -> field('title, form, deadline, isinner') -> where('aid = '.$aid) -> find();
+        if(!$data) $this -> ajaxReturn(null, '[错误]获取注册表单格式出错:(', 2);
+        if($data['isinner'] == 1 && $this -> logincheck() != 2) $this -> ajaxReturn(null, '[错误]没有权限。', 6);  //内部活动，非法操作
+        if(NOW > strtotime($data['deadline'])) $this -> ajaxReturn(null, '[错误]已经过了报名时间了。', 3);
+        
+        Vendor('ActivityFormClass.activity');
+        $rule = $this -> explain_reg_rule($data['form']);
+        $ret['title'] = htmlspecialchars($data['title']);
+        
+        if($rule[0]['classname'] != null && method_exists($rule[0]['classname'], 'buildpage')) {  //使用自定义类中的buildpage生成页面
+            if(false === eval('$ret["form"] = '.$rule[0]['classname'].'::buildpage();'))
+                $this -> ajaxReturn(null, '[错误]生成注册表单出错:(', 4);
+            else {
+                $activitydataDB = M('Activitydata');
+                $regdata = $activitydataDB -> field('data') -> where('aid = '.$aid.' AND ojaccount = "'.OJLoginInterface::getLoginUser().'"') -> order('adid DESC') -> find();
+                if(!$regdata) $ret['data'] = null;
+                else {
+                    $ret['data'] = array();
+                    $perunit = explode(',', $regdata['data']);
+                    foreach($perunit as $p) {
+                        array_push($ret['data'], base64_decode($p));
+                    }
+                }
+                $this -> ajaxReturn($ret, '[成功]', 0);
+            }
+        }
+        else {
+            
+        }
+    }
+    
+    public function ajax_save_regdata() {  //提交注册信息，未完工，需要加check函数
+        
+        if($this -> logincheck() == 0) $this -> ajaxReturn(null, '[错误]请先登录OJ。', 5);  //未登录，非法操作
+        
+        $aid = I('post.aid');
+        if($aid <= 0) $this -> ajaxReturn(null, '[错误]无效的AID参数。', 1);
+        
+        $activitylistDB = M('Activitylist');
+        $activity = $activitylistDB -> where('aid = '.$aid) -> find();
+        if(!$activity) $this -> ajaxReturn(null, '[错误]无效的AID参数。', 1);
+        if($activity['isinner'] == 1 && $this -> logincheck() != 2) $this -> ajaxReturn(null, '[错误]没有权限。', 6);  //内部活动，非法操作
+        if(NOW > strtotime($activity['deadline'])) $this -> ajaxReturn(null, '[错误]报名时间已截止。', 2);
+        
+        $activitydataDB = M('Activitydata');
+        $regdata = $activitydataDB -> where('aid = '.$aid.' AND ojaccount = "'.OJLoginInterface::getLoginUser().'"') -> find();
+        if(!$regdata) {  //注册
+            $postdata = I('post.regdata', false, '');  //传进的是数组
+            $datastr = '';
+            if(count($postdata) < 1) $this -> ajaxReturn(null, '[错误]无效的请求数据。', 3);
+            for($i = 0; $i < count($postdata); $i++) {
+                if($i == 0) $datastr .= base64_encode($postdata[$i]);
+                else $datastr = $datastr.','.base64_encode($postdata[$i]);
+            }
+            $d['aid'] = $aid;
+            $d['ojaccount'] = OJLoginInterface::getLoginUser();
+            $d['data'] = $datastr;
+            if($activity['isneedreview'] == 1) $d['state'] = 0;
+            else $d['state'] = 2;
+            $d['regtime'] = date('Y-m-d H:i:s',time());
+            if($activitydataDB -> add($d)) {
+                $this -> ajaxReturn(null, '[成功]报名活动成功！', 0);
+            }
+            else {
+                $this -> ajaxReturn(null, '[错误]报名活动失败！', 4);
+            }
+         }
+        else {  //修改
+            if($activity['isneedreview'] == 1 && $regdata['state'] == 2) 
+                $this -> ajaxReturn(null, '[错误]你已通过审核，无法修改报名信息。如果确实需要修改，请联系管理员。', 7);
+            
+            $adid = $regdata['adid'];
+            
+            $postdata = I('post.regdata', false, '');  //传进的是数组
+            $datastr = '';
+            if(count($postdata) < 1) $this -> ajaxReturn(null, '[错误]无效的请求数据。', 3);
+            for($i = 0; $i < count($postdata); $i++) {
+                if($i == 0) $datastr .= base64_encode($postdata[$i]);
+                else $datastr = $datastr.','.base64_encode($postdata[$i]);
+            }
+
+            $d['data'] = $datastr;
+            if($activity['isneedreview'] == 1) $d['state'] = 0;
+            else $d['state'] = 2;
+            $result = $activitydataDB -> where('adid = '.$adid.' AND ojaccount = "'.OJLoginInterface::getLoginUser().'"') -> save($d);
+            if($result !== false) {
+                $this -> ajaxReturn(null, '[成功]修改活动报名信息成功！', 0);
+            }
+            else {
+                $this -> ajaxReturn(null, '[错误]修改活动报名信息失败！', 4);
+            }
+        }
         
     }
     
