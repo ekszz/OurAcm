@@ -154,8 +154,15 @@ function set_activity_modal(target, func, aid) {
 				$('#activity-modal-body').html(data.data.form + '<input type="hidden" name="aid" value="' + aid + '" />');
 				$('#activity-btn-submit').removeClass('hide');
 				if(data.data.data != null) {  //已有注册数据
-					alert('[提示]你已报名过，这里可以修改报名信息！');
-					$.each($('#activity-modal-body [name="regdata[]"]'), function(i, v) { $(this).val(data.data.data[i]); });
+					if(data.data.readonly == 1) {  //已通过审核
+						$('#activity-btn-submit').addClass('hide');
+						alert(data.info);
+						$.each($('#activity-modal-body [name="regdata[]"]'), function(i, v) { $(this).val(data.data.data[i]); $(this).prop('disabled', true); });
+					}
+					else {
+						alert('[提示]你已报名过，这里可以修改报名信息！');
+						$.each($('#activity-modal-body [name="regdata[]"]'), function(i, v) { $(this).val(data.data.data[i]); });
+					}
 				}
 				$(target).modal('show');
 			}

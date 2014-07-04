@@ -1387,22 +1387,22 @@ class SettingAction extends BaseAction {
     }
     
     private function explain_reg_rule($string) {  //解析注册字段字符串，成功返回Array，失败返回null
-        //0|classname（可选classname,返回true成功,false失败）,1|0(是否公开显示，1显示，0不显示)|text_input类型标题|input-xxlarge,
-        //2|0|只读类型标题|classname,3|密码类型标题|classname,4|0|checkbox类型标题|classname,
+        //0|classname（可选classname,包含checkdata(返回true成功,false失败)和buildpage(可选)函数）,1|0(是否公开显示，1显示，0不显示)|text_input类型标题|input-xxlarge,
+        //2|0|只读类型标题|classname|value,3|密码类型标题|classname,4|HTML值str
         //5|0|combobox类型标题|classname(不可省)|项一|项二|项三,6|0|textarea类型标题|classname,7|span类型|classname
         //如果只有0一项，则使用class中的buildpage方法生成注册表单。class中的checkdata用来验证提交数据。
         $ret = array();
         $ret[0]['classname'] = null;
         $i = 1;
-        
+    
         Vendor('ActivityFormClass.activity');
-        
+    
         $list = explode(',', $string);
         foreach($list as $l) {
             $units = explode('|', $l);
             $id = intval($units[0]);
             $len = count($units);
-
+    
             switch($id) {
                 case 0:
                     if($len != 2) return null;
@@ -1420,12 +1420,13 @@ class SettingAction extends BaseAction {
                     $i++;
                     break;
                 case 2:
-                    if($len != 3 && $len != 4) return null;
+                    if($len != 4 && $len != 5) return null;
                     $ret[$i]['type'] = 2;
                     $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
                     $ret[$i]['dis'] = $units[2];
-                    if($len == 4) $ret[$i]['class'] = $units[3];
-                    else $ret[$i]['class'] = '';
+                    $ret[$i]['class'] = $units[3];
+                    if($len == 5) $ret[$i]['item'] = $units[4];
+                    else $ret[$i]['item'] = '';
                     $i++;
                     break;
                 case 3:
@@ -1438,12 +1439,10 @@ class SettingAction extends BaseAction {
                     $i++;
                     break;
                 case 4:
-                    if($len != 3 && $len != 4) return null;
+                    if($len != 2) return null;
                     $ret[$i]['type'] = 4;
-                    $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
-                    $ret[$i]['dis'] = $units[2];
-                    if($len == 4) $ret[$i]['class'] = $units[3];
-                    else $ret[$i]['class'] = '';
+                    $ret[$i]['public'] = 0;
+                    $ret[$i]['dis'] = $units[1];
                     $i++;
                     break;
                 case 5:
@@ -1460,7 +1459,7 @@ class SettingAction extends BaseAction {
                     break;
                 case 6:
                     if($len != 3 && $len != 4) return null;
-                    $ret[$i]['type'] = 4;
+                    $ret[$i]['type'] = 6;
                     $ret[$i]['public'] = intval($units[1]) == 0 ? 0 : 1;
                     $ret[$i]['dis'] = $units[2];
                     if($len == 4) $ret[$i]['class'] = $units[3];
@@ -1469,7 +1468,7 @@ class SettingAction extends BaseAction {
                     break;
                 case 7:
                     if($len != 2 && $len != 3) return null;
-                    $ret[$i]['type'] = 3;
+                    $ret[$i]['type'] = 7;
                     $ret[$i]['public'] = 0;
                     $ret[$i]['dis'] = $units[1];
                     if($len == 3) $ret[$i]['class'] = $units[2];
