@@ -238,7 +238,7 @@ class ActivityAction extends BaseAction {
         $rule = $this -> explain_reg_rule($data['form']);
         $ret['title'] = htmlspecialchars($data['title']);
         
-        if($rule[0]['classname'] != null && method_exists($rule[0]['classname'], 'buildpage')) {  //使用自定义类中的buildpage生成页面
+        if($rule[0]['classname'] != null && class_exists($rule[0]['classname']) && method_exists($rule[0]['classname'], 'buildpage')) {  //使用自定义类中的buildpage生成页面
             if(false === eval('$ret["form"] = '.$rule[0]['classname'].'::buildpage();'))
                 $this -> ajaxReturn(null, '[错误]生成注册表单出错:(', 4);
             else {
