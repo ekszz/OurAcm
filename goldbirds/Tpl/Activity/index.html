@@ -65,23 +65,20 @@
       </div>
       
       <div class="span9">
-		<div class="page-header">
+		<div class="page-header" id="header1">
             <h1>活动列表</h1>
+        </div>
+        <div class="page-header hide" id="header2">
+        	<blockquote><p id="header-title"></p></blockquote>
+        	<div class="btn-group">
+					<a onClick="reFresh(now_page)" title="返回" class="btn btn-add btn-large btn-tool"><i class="icon-arrow-left"></i></a>
+					<a onClick="load_contestants()" title="刷新" class="btn btn-large btn-edit btn-tool"><i class="icon-refresh"></i></a>
+			</div>
         </div>
         <div class="row">
             <div class="span9" style="min-height:10px"> </div>
             <div id="table-content-index" class="span9 table-content">
-  				<table id="data-table" class="data-table table table-bordered table-striped table-condensed table-hover">
-  					<thead>
-    					<tr class="align-center">
-      						<th width="50%">活动名称</th>
-                            <th width="20%">报名截止时间</th>
-                            <th width="10%">报名人数</th>
-							<th width="20%" class="sorter-false">操作</th>
-    					</tr>
-  					</thead>
-  					<tbody></tbody>
-				</table>
+  				<table id="data-table" class="data-table table table-bordered table-striped table-condensed table-hover"></table>
             </div>
             <!-- pager -->
             <div id="pager" class="span9 pagination text-center" style="margin-top:0px">

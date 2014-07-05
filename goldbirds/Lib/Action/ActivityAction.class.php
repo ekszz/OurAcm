@@ -467,4 +467,116 @@ class ActivityAction extends BaseAction {
             $this -> ajaxReturn($data, '[成功]', 0);
         }
     }
+
+    public function ajax_load_contestants() {  //获取参赛人员名单
+        
+        $aid = intval(I('get.aid'));
+        if($aid <= 0) $this -> ajaxReturn(null, '[错误]无效的AID参数。', 1);
+        
+        $activitylistDB = M('Activitylist');
+        $activity = $activitylistDB -> field('title, form, adminuid, ispublic, isinner, isneedreview') -> where('aid = '.$aid) -> find();
+        if(!$activity) $this -> ajaxReturn(null, '[错误]无效的AID参数。', 1);  //没有数据或数据库错误
+        
+        //权限检查
+        if($activity['isinner'] == 1 && $this -> logincheck() < 2) $this -> ajaxReturn(null, '[错误]无效的AID参数', 1); //没有权限，返回无效AID参数
+        if($activity['ispublic'] == 0 && ($this -> logincheck() < 2 || (session('goldbirds_group') < 1 && session('goldbirds_uid') != $activity['adminuid'])))
+            $this -> ajaxReturn(null, '[错误]你没有权限查看已报名的人员名单。', 2);
+        
+        $rule = $this -> explain_reg_rule($activity['form']);
+        if(null === $rule) $this -> ajaxReturn(null, '[错误]系统错误，无效的活动规则字符串。', 3);
+        
+        if($this -> logincheck() == 2 && (session('goldbirds_group') > 0 || session('goldbirds_uid') == $activity['adminuid'])) $ret['isadmin'] = 1;
+        else $ret['isadmin'] = 0;
+        $ret['title'] = htmlspecialchars($activity['title']);
+        $ret['isneedreview'] = $activity['isneedreview'];
+        $ret['contestants'] = array();
+        $ret['titles'] = array();
+        
+        //获取报名者信息
+        $dataid = array();  //公开字段序号-base64逗号隔开的注册信息中的序号
+        $ruleid = array();  //公开字段序号-rule条目中对应的序号
+        $k = 0;
+        for($i = 1; $i < count($rule); $i++) {
+            if($rule[$i]['type'] == 1 || $rule[$i]['type'] == 2 || $rule[$i]['type'] == 3 || $rule[$i]['type'] == 5 || $rule[$i]['type'] == 6) {  //只有这些才有数据
+                if($rule[$i]['public'] == 1) {
+                    array_push($ret['titles'], $rule[$i]['dis']);
+                    array_push($ruleid, $i);
+                    array_push($dataid, $k);
+                }
+                $k++;
+            }
+        }
+
+        $activitydataDB = M('Activitydata');
+        $regdata = $activitydataDB -> field('adid, ojaccount, data, state') -> where('aid = '.$aid) -> order('regtime DESC') -> select();
+        if($regdata) {
+            foreach($regdata as $r) {   //每一条用户注册信息$r
+                $tmp['adid'] = $r['adid'];
+                $tmp['ojaccount'] = $r['ojaccount'];
+                $tmp['state'] = $r['state'];
+                $tmp['data'] = array();
+                $perunit = explode(',', $r['data']);
+                for($j = 0; $j < count($ruleid); $j++) {
+                    $rulei = $ruleid[$j];
+                    $datai = $dataid[$j];
+                    if($rule[$rulei]['type'] != 5) {
+                        array_push($tmp['data'], htmlspecialchars(base64_decode($perunit[$datai])));
+                    }
+                    else {
+                        $no = intval(base64_decode($perunit[$datai]));
+                        array_push($tmp['data'], htmlspecialchars($rule[$rulei]['item'][$no]));
+                    }
+                }
+                array_push($ret['contestants'], $tmp);
+            }
+        }
+        $this -> ajaxReturn($ret, '[成功]', 0);
+    }
+    
+    public function ajax_review_contestant() {  //更改报名者审核状态
+        
+        $adid = intval(I('get.adid'));
+        $state = (intval(I('get.state')) == 2 ? 2 : 1);
+        if($adid <= 0) $this -> ajaxReturn(null, '[错误]无效的ADID参数。', 1);
+        if($this -> logincheck() < 2) $this -> ajaxReturn(null, '[错误]没有权限。', 2);
+        
+        $activitydataDB = M('Activitydata');
+        $contestant = $activitydataDB -> where('adid = '.$adid) -> field('aid') -> find();
+        if(!$contestant) $this -> ajaxReturn(null, '[错误]无效的ADID参数。', 1);
+        
+        $aid = $contestant['aid'];
+        $activitylistDB = M('Activitylist');
+        $activity = $activitylistDB -> field('isneedreview, adminuid') -> where('aid = '.$aid) -> find();
+        if(!$activity) $this -> ajaxReturn(null, '[错误]未找到该场活动的报名信息，请检查。', 3);
+        
+        if($activity['isneedreview'] == 0) $this -> ajaxReturn(null, '[错误]本活动无需审核。', 4);
+        if(session('goldbirds_group') < 1 && $activity['adminuid'] != session('goldbirds_uid')) $this -> ajaxReturn(null, '[错误]没有权限。', 2);
+        
+        $d['state'] = $state;
+        $res = $activitydataDB -> where('adid = '. $adid) -> save($d);
+        if($res === false) $this -> ajaxReturn(null, '[错误]审核该参与者失败，请重试。ADID='.$adid, 5);
+        else $this -> ajaxReturn($adid, '[成功]', 0);
+    }
+    
+    public function ajax_del_contestant() {
+        
+        $adid = intval(I('get.adid'));
+        if($adid <= 0) $this -> ajaxReturn(null, '[错误]无效的ADID参数。', 1);
+        if($this -> logincheck() < 2) $this -> ajaxReturn(null, '[错误]没有权限。', 2);
+        
+        $activitydataDB = M('Activitydata');
+        $contestant = $activitydataDB -> where('adid = '.$adid) -> field('aid') -> find();
+        if(!$contestant) $this -> ajaxReturn(null, '[错误]无效的ADID参数。', 1);
+        
+        $aid = $contestant['aid'];
+        $activitylistDB = M('Activitylist');
+        $activity = $activitylistDB -> field('adminuid') -> where('aid = '.$aid) -> find();
+        if(!$activity) $this -> ajaxReturn(null, '[错误]未找到该场活动的报名信息，请检查。', 3);
+
+        if(session('goldbirds_group') < 1 && $activity['adminuid'] != session('goldbirds_uid')) $this -> ajaxReturn(null, '[错误]没有权限。', 2);
+        
+        $res = $activitydataDB -> where('adid = '. $adid) -> delete();
+        if(!$res) $this -> ajaxReturn(null, '[错误]审核该参与者失败，请重试。ADID='.$adid, 5);
+        else $this -> ajaxReturn(null, '[成功]', 0);
+    }
 }
