@@ -558,7 +558,7 @@ class ActivityAction extends BaseAction {
         else $this -> ajaxReturn($adid, '[成功]', 0);
     }
     
-    public function ajax_del_contestant() {
+    public function ajax_del_contestant() {  //删除某条注册信息
         
         $adid = intval(I('get.adid'));
         if($adid <= 0) $this -> ajaxReturn(null, '[错误]无效的ADID参数。', 1);
@@ -578,5 +578,55 @@ class ActivityAction extends BaseAction {
         $res = $activitydataDB -> where('adid = '. $adid) -> delete();
         if(!$res) $this -> ajaxReturn(null, '[错误]审核该参与者失败，请重试。ADID='.$adid, 5);
         else $this -> ajaxReturn(null, '[成功]', 0);
+    }
+    
+    public function export_contestants() {  //导出注册信息文件
+        
+        $aid = intval(I('get.aid'));
+        if($aid <= 0) $this -> ajaxReturn(null, '[错误]无效的AID参数。', 1);
+        if($this -> logincheck() < 2) echo '[错误]没有权限。';
+        else {
+            $activitylistDB = M('Activitylist');
+            $activity = $activitylistDB -> field('adminuid, form') -> where('aid = '.$aid) -> find();
+            if(!$activity) echo '[错误]查询比赛信息出错。';
+            else {
+                if(session('goldbirds_group') < 1 && $activity['adminuid'] != session('goldbirds_uid')) echo '[错误]没有权限。';
+                else if(null === ($rule = $this -> explain_reg_rule($activity['form']))) echo '[错误]解析活动规则字符串失败。';
+                else {
+                    $file = ''; //文件内容
+                    $activitydataDB = M('Activitydata');
+                    $data = $activitydataDB -> where('aid = '.$aid) -> order('regtime ASC') -> select();
+                    $file .= 'OJ账号,审核状态(2-通过，1-拒绝，0-未审核),注册时间,';
+                    for($i = 0; $i < count($rule); $i++) {  //标题
+                        if($rule[$i]['type'] == 1 || $rule[$i]['type'] == 2 || $rule[$i]['type'] == 3 || $rule[$i]['type'] == 6)
+                            $file .= ($rule[$i]['dis'].',');
+                        else if($rule[$i]['type'] == 5) {
+                            $tmp = '';
+                            for($a = 0; $a < count($rule[$i]['item']); $a++) {
+                                if($a != 0) $tmp .= '|';
+                                $tmp .= ($a.'-'.$rule[$i]['item'][$a]);
+                            }
+                            $file .= ($rule[$i]['dis'].'('.$tmp.'),');    
+                        }
+                    }
+                    $file .= "\r\n";
+                    foreach($data as $d) {
+                        $file .= ($d['ojaccount'].',');
+                        $file .= ($d['state'].',');
+                        $file .= ($d['regtime'].',');
+                        $list = explode(',', $d['data']);
+                        foreach($list as $l) $file .= (base64_decode($l).',');
+                        $file .= "\r\n";
+                    }
+                    
+                    $file = iconv("UTF-8", "GBK", $file);  //UTF-8在EXCEL下乱码
+                    Header("Content-type: application/octet-stream");
+                    Header("Accept-Ranges: bytes");
+                    Header("Accept-Length:".strlen($file));
+                    Header("Content-Disposition: attachment; filename=Activity_".$aid.'.csv');
+                    echo $file;
+                }
+            }
+        }
     }
 }
