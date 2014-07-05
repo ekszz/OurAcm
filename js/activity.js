@@ -6,7 +6,7 @@ $(function () {
 		output: '{page}/{totalPages}',
 		page: 0,
 		savePages : true,
-		fixedHeight: true,
+		fixedHeight: false,
 		removeRows: false,
 		cssNext: '.next', // next page arrow
 		cssPrev: '.prev', // previous page arrow
