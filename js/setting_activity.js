@@ -151,7 +151,7 @@ function reFresh() {
 		$.each(data.data, function(i, vo) {
 			reshtml = reshtml + '<tr><td><label class="checkbox"><input type="checkbox" id="' + vo.aid + '" data-id="id"></label></td><td>' + vo.aid + '</td>';
 			reshtml = reshtml + '<td>' + (vo.title.length>20?(vo.title.substr(0,20) + '...'):vo.title) + '</td><td>' + vo.deadline + '</td><td>';
-			reshtml = reshtml + (vo.isinner == 0 ? '':'<span class="label label-info">内</span>') + (vo.ispublic == 0 ? '<span class="label label-success">秘</span>':'') + (vo.isneedreview != 0 ? '<span class="label label-warning">审</span>':'');
+			reshtml = reshtml + (vo.isinner == 0 ? '':' <span class="label label-info">内</span>') + (vo.ispublic == 0 ? ' <span class="label label-success">秘</span>':'') + (vo.isneedreview != 0 ? ' <span class="label label-warning">审</span>':'');
 			reshtml = reshtml + '</td><td>' + vo.accept + '/' + vo.sum;
 			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-aid="' + vo.aid + '" data-func="0" data-target="#activity-modal" data-toggle="modal" class="btn btn-small btn-view" title="查看" data-trigger="hover"><i class="icon-zoom-in"></i> </a><a data-aid="' + vo.aid + '" data-func="2" data-target="#activity-modal" data-toggle="modal" class="btn btn-small btn-edit" title="编辑" data-trigger="hover" data-placement="bottom"><i class="icon-edit"></i> </a><a data-toggle="del_activity" data-aid="' + vo.aid + '" class="btn btn-small btn-delete" title="删除"><i class="icon-trash"></i> </a></div></td></tr>';  
 		});

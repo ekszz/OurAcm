@@ -135,7 +135,7 @@ $(function () {
 function reFresh(type) {
 	$('#header2').addClass('hide');
 	$('#header1').removeClass('hide');
-	$('#data-table').html('<thead><tr class="align-center"><th class="sorter-false" width="50%">活动名称</th><th class="sorter-false" width="20%">报名截止时间</th><th class="sorter-false" width="10%">报名人数</th><th width="20%" class="sorter-false">操作</th></tr></thead><tbody></tbody>');
+	$('#data-table').html('<thead><tr class="align-center"><th class="sorter-false" width="50%">活动名称</th><th class="sorter-false" width="20%">报名截止时间</th><th class="sorter-false" width="10%">参加人数</th><th width="20%" class="sorter-false">操作</th></tr></thead><tbody></tbody>');
 	if(type == 0) {
 		now_page = 0;
 		$('#reFresh1').removeClass('active');
