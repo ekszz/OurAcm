@@ -773,15 +773,9 @@ class SettingAction extends BaseAction {
                 else $dat = '1';
             }
             else if($data['type'] == 1) {  //文本-转义
-                if(get_magic_quotes_gpc()) {  //如果get_magic_quotes_gpc()是打开的
-                    $_POST['v'] = stripslashes($_POST['v']);
-                }
                 $dat = I('post.v', '', 'htmlspecialchars');
             }
             else {  //文本-不转义
-                if(get_magic_quotes_gpc()) {  //如果get_magic_quotes_gpc()是打开的
-                    $_POST['v'] = stripslashes($_POST['v']);
-                }
                 $dat = I('post.v', '', false);
             }
             if(false === $settingDB -> where($c) -> setField('v', $dat)) {

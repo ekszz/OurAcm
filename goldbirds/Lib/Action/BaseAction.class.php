@@ -1,6 +1,27 @@
 <?php 
 class BaseAction extends Action {
     
+    protected function _initialize() {
+        if(version_compare(PHP_VERSION, '5.4.0') < 0) {  //PHP 5.4版本以下，判断magic_quotes_gpc是否打开，打开则关闭
+            if(get_magic_quotes_gpc()) {
+                $_GET = BaseAction::stripslashesRecursive($_GET);
+                $_POST = BaseAction::stripslashesRecursive($_POST);
+            }
+        }
+    }
+    
+    static protected function stripslashesRecursive(array $array)
+    {
+        foreach ($array as $k => $v) {
+            if (is_string($v)) {
+                $array[$k] = stripslashes($v);
+            } else if (is_array($v)) {
+                $array[$k] = BaseAction::stripslashesRecursive($v);
+            }
+        }
+        return $array;
+    }
+    
     protected function init() {  //初始化参数缓存
         $configDB = M('Setting');
         $data = $configDB -> field('k, v') -> select();
