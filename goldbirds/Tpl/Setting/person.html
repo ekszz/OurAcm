@@ -134,7 +134,7 @@
 		<label for="address">现所在地</label><input class="input-xxlarge" type="text" name="address" id="address">
 		<label for="introduce">简要介绍</label><input type="text" name="introduce" id="introduce" class="input-xxlarge">
 		<label for="detail">详细自白</label>
-		<textarea rows="5" class="input-xxlarge" name="detail" id="detail"><?php if($data['detail']) echo $data['detail']; ?></textarea>
+		<textarea rows="5" class="input-xxlarge" name="detail" id="detail"></textarea>
 		<label for="luckycode">邀请码*</label><input type="text" id="luckycode" name="luckycode" placeholder="系统自动生成，无需填写" readonly>
 		<label for="ojaccount">关联OJ账号</label><input type="text" id="ojaccount" name="ojaccount" placeholder="不填写则由队员自行关联">
         <div class="row" style="margin-left:20px"><img class="img-polaroid span2" src="img/nopic.jpg" id="face_show"><label>个人照片</label><div class="input-append"><input type="file" class="input-small" name="face" id="face"><button class="btn" type="button" id="face_upload" data-func="upload">上传</button><button class="btn" type="button" id="face_del" data-func="del">删除</button></div></div>
