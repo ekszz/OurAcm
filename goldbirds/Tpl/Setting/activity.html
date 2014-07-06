@@ -30,11 +30,7 @@
 		          , bottom: 270
 		          }
 		        });
-			$("span[data-toggle=popover]")
-      			.popover()
-      			.click(function(e) {
-        			e.preventDefault();
-      		});
+			$("span[data-toggle=popover]").popover();	
 	});
 	</script>
   </head>
@@ -124,7 +120,7 @@
 		<label for="deadline">截止时间*</label><input type="text" id="deadline" name="deadline" class="input-medium" placeholder="格式：2014-8-8 23:59:59">
         <label class="checkbox" for="isinner" style="width:75px"><input type="checkbox" id="isinner" name="isinner" value="1"> 队内活动</label><label class="checkbox" for="type" style="width:105px"><input type="checkbox" id="ispublic" name="ispublic" value="1"> 公开注册信息</label><label class="checkbox" for="isneedreview" style="width:70px"><input type="checkbox" id="isneedreview" name="isneedreview" value="1"> 需审核</label>
         <label for="title">标题*</label><input type="text" name="title" id="title" class="input-large"><label for="admin">审核人</label><input type="text" name="admin" id="admin" class="input-large">
-        <label for="form">注册格式*</label><textarea style="height:80px;" class="input-xxlarge" id="form" name="form"></textarea>
+        <label for="form"><span data-trigger="hover" data-content="不明白该填什么？请点击跳转到Wiki上的该项帮助。" data-placement="right" data-toggle="popover" data-original-title="帮助"><a target="_blank" href="https://github.com/ekszz/OurAcm/wiki/%E2%80%9C%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86%E2%80%9D%E4%B8%AD%E2%80%9C%E6%B3%A8%E5%86%8C%E6%A0%BC%E5%BC%8F%E2%80%9D%E5%AD%97%E6%AE%B5%E8%AF%B4%E6%98%8E">注册格式*</a></span></label><textarea style="height:80px;" class="input-xxlarge" id="form" name="form"></textarea>
         <div style="margin-left:50px;"><textarea style="height:210px;visibility:hidden;" id="content"></textarea></div>
         <input type="hidden" name="nowaid" id="nowaid">
         <input type="hidden" name="content">
