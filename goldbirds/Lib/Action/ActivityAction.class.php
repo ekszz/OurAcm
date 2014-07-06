@@ -51,7 +51,7 @@ class ActivityAction extends BaseAction {
             if($this -> logincheck() == 0) $this -> ajaxReturn(null, '[错误]你在OJ上还未登录，请先登录。', 1);  //OJ未登录
             
             $activitydataDB = M('Activitydata');
-            $myaid = $activitydataDB -> field('aid') -> where('ojaccount = "'.OJLoginInterface::getLoginUser().'"') -> select();
+            $myaid = $activitydataDB -> field('aid, state') -> where('ojaccount = "'.OJLoginInterface::getLoginUser().'"') -> select();
             if(!$myaid) $this -> ajaxReturn(null, '[成功]无数据。', 0);
 
             $aidstr = '';
@@ -79,9 +79,14 @@ class ActivityAction extends BaseAction {
                     if($data[$i]['desc']) $data[$i]['desc'] = '_'; else $data[$i]['desc'] = null;
                     $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
                     $data[$i]['accept'] = 0;
-                    while($k < count($accept) && $accept[$k]['aid'] >= $data[$i]['aid']) {
+                    while($k < count($accept) && $accept[$k]['aid'] >= $data[$i]['aid']) {  //遍历获取通过审核参加活动人数
                         if($accept[$k]['aid'] == $data[$i]['aid']) { $data[$i]['accept'] = $accept[$k]['accept']; $k++; break; }
                         $k++;
+                    }
+                    foreach($myaid as $state) {  //遍历获取审核状态
+                        if($state['aid'] == $data[$i]['aid']) {
+                            $data[$i]['state'] = $state['state'];
+                        }
                     }
                 }
                 $this -> ajaxReturn($data, '[成功]', 0);
