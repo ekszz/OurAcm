@@ -2,6 +2,8 @@
 class BaseAction extends Action {
     
     protected function _initialize() {
+        define('GOLDBIRDS_VER', '0.5.0');
+        define('GOLDBIRDS_VER_DIS', '0.5.0 beta1');
         if(version_compare(PHP_VERSION, '5.4.0') < 0) {  //PHP 5.4版本以下，判断magic_quotes_gpc是否打开，打开则关闭
             if(get_magic_quotes_gpc()) {
                 $_GET = BaseAction::stripslashesRecursive($_GET);
@@ -42,6 +44,7 @@ class BaseAction extends Action {
     }
     
     protected function commonassign() {  //公共assign值
+        $this -> assign('GOLDBIRDS_VER_DIS', GOLDBIRDS_VER_DIS);
         $this -> assign('config_title', $this -> getconfig('config_title'));
         $this -> assign('footer_additional_code', $this -> getconfig('footer_additional_code'));
     }
