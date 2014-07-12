@@ -202,7 +202,7 @@ function set_activity_modal(func, aid) {  //0-查看,1-增加,2-修改
 		$('#title').val(null);
 		$('#admin').val(null);
 		editor.html('');
-		$('#form').val(null);
+		$('#form').val('0|Standard,1|1|学号,1|1|姓名,5|1|性别||男|女,1|0|邮箱,1|0|手机,1|0|备注');
 		$('#isinner').prop('checked', false);
 		$('#ispublic').prop('checked', true);
 		$('#isneedreview').prop('checked', true);
