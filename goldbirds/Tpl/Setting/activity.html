@@ -19,9 +19,9 @@
     <script src="js/ajaxfileupload.js"></script>
     <script src="js/kindeditor/kindeditor-min.js"></script>
     <script src="js/setting_common.js"></script>
-    <script src="js/setting_news.js"></script>
+    <script src="js/setting_activity.js"></script>
 	<script type="text/javascript">
-	$(function(){ $("#navbar li:nth-child(9)").addClass("active"); $("#setting-bar li:nth-child(8)").addClass("active"); });
+	$(function(){ $("#navbar li:nth-child(9)").addClass("active"); $("#setting-bar li:nth-child(9)").addClass("active"); });
 	$(function(){
 		var $window = $(window);
 			$('.bs-docs-sidenav').affix({
@@ -30,11 +30,7 @@
 		          , bottom: 270
 		          }
 		        });
-			$("span[data-toggle=popover]")
-      			.popover()
-      			.click(function(e) {
-        			e.preventDefault();
-      		});
+			$("span[data-toggle=popover]").popover();	
 	});
 	</script>
   </head>
@@ -61,19 +57,19 @@
       <include file="commonbar" />
       <div class="span9 content">
 		<div class="page-header">
-            <h1>新闻列表</h1>
+            <h1>活动列表</h1>
         </div>
         <div class="row">
 			<div class="span9 pull-left">
 				<div class="btn-group">
-					<a data-func="1" title="添加" data-target="#news-modal" data-toggle="modal" role="button" class="btn btn-add btn-large btn-tool"><i class="icon-plus"></i></a>
-					<a data-func="3" title="编辑" data-target="#news-modal" data-toggle="modal" role="button" class="btn btn-large btn-edit btn-tool" data-nid=""><i class="icon-edit"></i></a>
+					<a data-func="1" title="添加" data-target="#activity-modal" data-toggle="modal" role="button" class="btn btn-add btn-large btn-tool"><i class="icon-plus"></i></a>
+					<a data-func="3" title="编辑" data-target="#activity-modal" data-toggle="modal" role="button" class="btn btn-large btn-edit btn-tool" data-aid=""><i class="icon-edit"></i></a>
 					<a onClick="del_checked();" title="删除" class="btn btn-large btn-delete btn-tool"><i class="icon-trash"></i></a>
 				</div>
 				<div class="btn-group">
 		    		<a style="margin-left: -1px;" title="刷新" data-target="#modal" class="btn btn-large" onClick="reFresh();"><i class="icon-refresh"></i></a>
 				</div>
-                <span style="margin-left:100px">说明：<span class="label label-info">内</span>表示仅队内可见，<span class="label label-success">顶</span>表示该新闻目前置顶，<span class="label label-warning">新</span>表示该新闻为最近3天发布。</span>
+                <span style="margin-left:100px">说明：<span class="label label-info">内</span> 表示队内活动，<span class="label label-success">秘</span> 表示注册信息不公开，<span class="label label-warning">审</span> 表示需要审核。</span>
 			</div>
             <div class="span9" style="min-height:10px"> </div>
             <div id="table-content-index" class="span9 table-content">
@@ -81,12 +77,11 @@
   					<thead>
     					<tr class="align-center">
       						<th><label class="checkbox"><input type="checkbox" class="select-all"></label></th>
-                            <th>NID</th>
-      						<th>类别</th>
+                            <th>AID</th>
+      						<th>活动名称</th>
+                            <th>报名截止时间</th>
                             <th>标记</th>
-                            <th>新闻标题</th>
-                            <th>发布人</th>
-                            <th>创建时间</th>
+                            <th>人数</th>
 							<th class="sorter-false">操作</th>
     					</tr>
   					</thead>
@@ -115,18 +110,19 @@
   </div>
 
   <div id="alert"></div>
-  <div class="modal hide fade" id="news-modal" data-cache='false' data-backdrop="true" data-keyboard="true" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal hide fade" id="activity-modal" data-cache='false' data-backdrop="true" data-keyboard="true" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
   	<div class="modal-header">
     	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    	<h3 id="news-modal-title">新闻管理</h3>
+    	<h3 id="activity-modal-title">活动管理</h3>
   	</div>
-    <form class="form-inline" id="news-form" method="post" action="" enctype="multipart/form-data">
+    <form class="form-inline" id="activity-form" method="post" action="" enctype="multipart/form-data">
   	<div class="modal-body">
-		<label for="category">类别*</label><input type="text" id="category" name="category" class="input-xlarge">
-        <label class="checkbox" for="permission" style="width:120px"><input type="checkbox" id="permission" name="permission" value="onlyteam"> 仅队内可见</label><label class="checkbox" for="top" style="width:100px"><input type="checkbox" id="top" name="top" value="top"> 置顶</label>
-        <label for="title">标题*</label><input type="text" name="title" id="title" class="input-xxlarge">
-        <div style="margin-left:50px;"><textarea style="height:280px;visibility:hidden;" id="content"></textarea></div>
-        <input type="hidden" name="nownid" id="nownid">
+		<label for="deadline">截止时间*</label><input type="text" id="deadline" name="deadline" class="input-medium" placeholder="格式：2014-8-8 23:59:59">
+        <label class="checkbox" for="isinner" style="width:75px"><input type="checkbox" id="isinner" name="isinner" value="1"> 队内活动</label><label class="checkbox" for="type" style="width:105px"><input type="checkbox" id="ispublic" name="ispublic" value="1"> 公开注册信息</label><label class="checkbox" for="isneedreview" style="width:70px"><input type="checkbox" id="isneedreview" name="isneedreview" value="1"> 需审核</label>
+        <label for="title">标题*</label><input type="text" name="title" id="title" class="input-large"><label for="admin">审核人</label><input type="text" name="admin" id="admin" class="input-large">
+        <label for="form"><span data-trigger="hover" data-content="不建议在已有人报名的情况下修改该项内容+_+ 如果不明白该填什么？请点击跳转到Wiki上的该项帮助。" data-placement="right" data-toggle="popover" data-original-title="帮助"><a target="_blank" href="https://github.com/ekszz/OurAcm/wiki/%E2%80%9C%E6%B4%BB%E5%8A%A8%E7%AE%A1%E7%90%86%E2%80%9D%E4%B8%AD%E2%80%9C%E6%B3%A8%E5%86%8C%E6%A0%BC%E5%BC%8F%E2%80%9D%E5%AD%97%E6%AE%B5%E8%AF%B4%E6%98%8E">注册格式*</a></span></label><textarea style="height:80px;" class="input-xxlarge" id="form" name="form"></textarea>
+        <div style="margin-left:50px;"><textarea style="height:210px;visibility:hidden;" id="content"></textarea></div>
+        <input type="hidden" name="nowaid" id="nowaid">
         <input type="hidden" name="content">
   	</div>
     </form>

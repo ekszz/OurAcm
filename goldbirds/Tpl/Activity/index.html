@@ -1,0 +1,120 @@
+<include file="Base:header" />
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    <link href="css/theme.bootstrap.css" rel="stylesheet">
+    <link href="css/setting.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    
+    <!-- Le javascript -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery.tablesorter.min.js"></script>
+    <script src="js/jquery.tablesorter.widgets.min.js"></script>
+    <script src="js/jquery.tablesorter.pager.js"></script>
+    <script src="js/setting_common.js"></script>
+    <script src="js/activity.js"></script>
+	<script type="text/javascript">
+	var islogin = <?php if($notlogin) echo '0'; else echo '1'; ?>;
+	$(function(){ $("#navbar li:nth-child(8)").addClass("active"); $("#setting-bar li:nth-child(5)").addClass("active"); });
+	$(function(){
+		var $window = $(window);
+			$('.bs-docs-sidenav').affix({
+		        offset: {
+		            top: function () { return $window.width() <= 980 ? 290 : 210 }
+		          , bottom: 270
+		          }
+		        });
+			$("span[data-toggle=popover]")
+      			.popover()
+      			.click(function(e) {
+        			e.preventDefault()
+      		});
+	});
+	</script>
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <include file="Base:navbar" />
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>活动报名中心</h1>
+    <p class="lead">Activity Center</p>
+    <div id="carbonads-container"></div>
+  </div>
+</header>
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list bs-docs-sidenav">
+          <li class="active" id="reFresh0"><a href="javascript:reFresh(0);"><i class="icon-chevron-right"></i> 活动列表</a></li>
+          <li id="reFresh1"<?php if($notlogin) echo ' class="disabled"'; ?>><a<?php if(!$notlogin) echo ' href="javascript:reFresh(1);"'; ?>><i class="icon-chevron-right"></i> 我已报名的活动</a></li>
+        </ul>
+      </div>
+      
+      <div class="span9">
+      	<section>
+		<div class="page-header" id="header1">
+            <h1>活动列表</h1>
+        </div>
+        <div class="page-header hide" id="header2">
+        	<blockquote><p id="header-title"></p></blockquote>
+        	<div class="btn-group">
+					<a onClick="reFresh(now_page)" title="返回" class="btn btn-add btn-large btn-tool"><i class="icon-arrow-left"></i></a>
+					<a onClick="load_contestants()" title="刷新" class="btn btn-large btn-edit btn-tool"><i class="icon-refresh"></i></a>
+			</div>
+        </div>
+        <div class="row">
+            <div class="span9" style="min-height:10px"> </div>
+            <div id="table-content-index" class="span9 table-content">
+  				<table id="data-table" class="data-table table table-bordered table-striped table-condensed table-hover"><thead><tr class="align-center"><th class="sorter-false" width="50%">活动名称</th><th class="sorter-false" width="20%">报名截止时间</th><th class="sorter-false" width="10%">参加人数</th><th width="20%" class="sorter-false">操作</th></tr></thead><tbody></tbody></table>
+            </div>
+            <!-- pager -->
+            <div id="pager" class="span9 pagination text-center" style="margin-top:0px">
+              	<ul>
+                    <li class="first"><a href="javascript:void(0)"><i class="icon-step-backward"></i></a></li>
+                    <li class="prev"><a href="javascript:void(0)"><i class="icon-backward"></i></a></li>
+                    <li><span class="pagedisplay"></span></li>
+                    <li class="next"><a href="javascript:void(0)"><i class="icon-forward"></i></a></li>
+                    <li class="last"><a href="javascript:void(0)"><i class="icon-step-forward"></i></a></li>
+                    <select class="pagesize input-mini inline">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                	</select>
+                </ul>
+            </div>
+        </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="alert"></div>
+  <div class="modal hide fade" id="activity-modal" data-cache='false' data-backdrop="true" data-keyboard="true" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  	<div class="modal-header">
+    	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    	<h3 id="activity-modal-title">活动中心</h3>
+  	</div>
+    <form class="form-inline" id="activity-form" method="post" action="" enctype="multipart/form-data">
+  	<div class="modal-body" id="activity-modal-body"></div>
+    </form>
+  	<div class="modal-footer">
+    	<button class="btn btn-large" data-dismiss="modal" aria-hidden="true">关闭</button>
+    	<button id="activity-btn-submit" type="submit" class="btn btn-primary btn-large">提交</button>
+  	</div>
+  </div>
+<include file="Base:footer" />
