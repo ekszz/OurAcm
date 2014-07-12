@@ -34,7 +34,7 @@ class BaseAction extends Action {
     
     protected function getconfig($key) {  //获取某个参数
         $data = S($key);
-        if($data === false) { $this -> init(); $data = $data = S($key); }  //增加一次容错重试
+        if($data === false) { $this -> init(); $data = S($key); }  //增加一次容错重试
         if($data === false) return null;
         else return $data;
     }

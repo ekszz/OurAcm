@@ -774,9 +774,11 @@ class SettingAction extends BaseAction {
             }
             else if($data['type'] == 1) {  //文本-转义
                 $dat = I('post.v', '', 'htmlspecialchars');
+                if(!$dat) $dat = null;
             }
             else {  //文本-不转义
                 $dat = I('post.v', '', false);
+                if(!$dat) $dat = null;
             }
             if(false === $settingDB -> where($c) -> setField('v', $dat)) {
                 $this -> ajaxReturn(null, '[错误]保存参数错误，请重试！', 2);
