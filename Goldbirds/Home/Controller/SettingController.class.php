@@ -1170,7 +1170,6 @@ class SettingController extends BaseController {
             $data['category'] = I('post.category', '', false);
             $data['content'] = I('post.content', '', false) == '' ? null : I('post.content', '', false);
             $data['author'] = intval(session('goldbirds_uid'));
-            //$data['createtime'] = date("Y-m-d h:i:s");
             $data['top'] = (I('post.top', '', false) ? 1 : 0);
             $data['permission'] = (I('post.permission', '', false) ? 1 : 0);
 
