@@ -12,4 +12,4 @@ CREATE TABLE IF NOT EXISTS `codepool` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='码池表' AUTO_INCREMENT=1 ;
 
 INSERT INTO `setting` (`k`, `name`, `v`, `desc`, `type`) VALUES
-('codepool_exptime', '码池-代码保留时间', '2592000', '码池功能中用户提交的代码保留的时间，单位为秒', 2);
+('codepool_exptime', '码池-代码保留时间', '2592000', '码池功能中用户提交的代码保留的时间，单位为秒。注意：修改此参数不会改变已提交的代码的保留时间。', 2);
