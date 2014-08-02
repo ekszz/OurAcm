@@ -26,6 +26,7 @@ class CodepoolController extends BaseController {
 
                 $verify = new \Think\Verify();
                 if(!($verify -> check(I('post.verify', '', false)))) $this -> index_show($k, '[错误]验证码错误。');
+                else if(strlen($dat['code']) > intval($this -> getconfig('codepool_maxlength'))) $this -> index_show($k, '[错误]你提交的代码长度太长了。');
                 else if(!$dat['code']) $this -> index_show($k, '[错误]你提交的代码是空的-__-||');
                 else {
                     $codepoolDB = M('Codepool');
