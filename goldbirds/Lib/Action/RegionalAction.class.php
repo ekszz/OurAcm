@@ -61,7 +61,7 @@ class RegionalAction extends BaseAction {
             
             $contestDB = D('Contest');
             if(intval($this -> getconfig('config_contest_sort'))) {  //按奖项优先排序
-                $oridata = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 1') -> order('medal ASC, holdtime DESC, team ASC') -> select();
+                $oridata = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 1') -> order('y DESC, medal ASC, holdtime DESC, team ASC') -> select();
             }
             else {  //按时间优先排序
                 $oridata = $contestDB -> relation(true) -> field('*, YEAR(holdtime) AS y, MONTH(holdtime) AS m') -> where('type = 1') -> order('holdtime DESC, medal ASC, team ASC') -> select();
