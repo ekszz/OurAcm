@@ -859,6 +859,26 @@ class SettingController extends BaseController {
                 if($v !== null && strpos($var, $k) !== false) $files[$k] = null;
             }
             
+            //判断“我们”模块中是否有图片关联
+            $var1 = strtolower($this -> getconfig('we_icpc_introduce'));
+            $var2 = strtolower($this -> getconfig('we_team_introduce'));
+            foreach($files as $k => $v) {
+                if($v !== null && (strpos($var1, $k) !== false || strpos($var2, $k) !== false)) $files[$k] = null;
+            }
+            
+            //判断新闻中心中是否有图片关联
+            $newsDB = M('News');
+            $news = $newsDB -> field('content') -> select();
+            foreach($files as $k => $v) {
+                if($v === null) continue;
+                foreach ($news as $n) {  //每条新闻遍历
+                    if(stripos($n['content'], $k) !== false) {
+                        $files[$k] = null;
+                        break;
+                    }
+                }
+            }
+            
             //整理结果
             $ret = array();
             foreach ($files as $k => $v) {
