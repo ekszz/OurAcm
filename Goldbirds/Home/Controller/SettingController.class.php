@@ -91,7 +91,7 @@ class SettingController extends BaseController {
                 echo json_encode(array('info' => '[错误]写入数据库出错！', 'status' => 2));
             }
             else {
-                unlink($oldphoto);
+                if($oldphoto) unlink($oldphoto);
                 echo json_encode(array('data' => 'upload/'.$fileinfo['savename'], 'info' => '[成功]上传头像成功，文件大小'.sprintf("%.2lf", intval($fileinfo['size'])/1024).'KB.', 'status' => 0));
             }
         }
