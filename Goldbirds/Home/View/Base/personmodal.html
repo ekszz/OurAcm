@@ -31,6 +31,7 @@
 								if(data.data.contest[i].medal == 0) conteststr += 'img/golden.png';
 								else if(data.data.contest[i].medal == 1) conteststr += 'img/silver.png';
 								else if(data.data.contest[i].medal == 2) conteststr += 'img/bronze.png';
+								else if(data.data.contest[i].medal == 4) conteststr += 'img/norank.png';
 								else conteststr += 'img/honorable.png';
 							}
 							conteststr = conteststr + '"> ' + data.data.contest[i].y + '.' + data.data.contest[i].m + (data.data.contest[i].type == 0 ? ' WorldFianl' : ' Regional') + ' @ ' + data.data.contest[i].site + ' <span class="label">' + data.data.contest[i].team + '</span></a></div></div>';
