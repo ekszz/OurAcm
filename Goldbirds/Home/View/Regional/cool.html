@@ -71,12 +71,12 @@
           </div>
           <div class="row">
             <div class="span4">
-              <p class="text-success"><font size="+3"><img style="width:20%" src="<?php switch($d['medal']) { case 0: echo 'img/golden.png'; break; case 1: echo 'img/silver.png'; break; case 2: echo 'img/bronze.png'; break; default: echo 'img/honorable.png'; } ?>" /> <strong><?php echo $d['team']; ?></strong></font></p>
+              <p class="text-success"><font size="+3"><img style="width:20%" src="<?php switch($d['medal']) { case 0: echo 'img/golden.png'; break; case 1: echo 'img/silver.png'; break; case 2: echo 'img/bronze.png'; break; case 4: echo 'img/norank.png'; break; default: echo 'img/honorable.png'; } ?>" /> <strong><?php echo $d['team']; if($d['medal'] == 4) echo ' *'; ?></strong></font></p>
             </div>
             <div class="span5 text-right">
               <p><span class="alert alert-info"><i class="icon-map-marker"></i> <?php echo $d['university'].', '.$d['site'].' @ '.$d['y'].'.'.$d['m']; ?></span></p>
               <Br />
-              <p><?php $temp = ''; if($d['medal'] == 0) $temp = '金牌'; else if($d['medal'] == 1) $temp = '银牌'; else if($d['medal'] == 2) $temp = '铜牌'; if($d['title']) { if($temp) $temp = $temp.', '.$d['title']; else $temp = $d['title']; } if($temp) echo '<span class="alert alert-warning"><strong>'.$temp.'</strong></span>'; if($d['ranking']) echo ' <span class="alert alert-success"><strong>第'.$d['ranking'].'名</strong></span>'; ?></p>
+              <p><?php $temp = ''; if($d['medal'] == 0) $temp = '金牌'; else if($d['medal'] == 1) $temp = '银牌'; else if($d['medal'] == 2) $temp = '铜牌'; else if($d['medal'] == 4) $temp = '旅游队*（不计排名）'; if($d['title']) { if($temp) $temp = $temp.', '.$d['title']; else $temp = $d['title']; } if($temp) echo '<span class="alert alert-warning"><strong>'.$temp.'</strong></span>'; if($d['ranking']) echo ' <span class="alert alert-success"><strong>第'.$d['ranking'].'名</strong></span>'; ?></p>
             </div>
           </div>
           <hr class="soften" />

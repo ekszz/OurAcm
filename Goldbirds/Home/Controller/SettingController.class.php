@@ -565,7 +565,8 @@ class SettingController extends BaseController {
             $data['site'] = I('post.site', '', false);
             $data['university'] = I('post.university', '', false);
             $data['type'] = (intval(I('post.type')) >= 0 && intval(I('post.type')) <= 2) ? intval(I('post.type')) : 1;
-            $data['medal'] = (intval(I('post.medal')) >= 0 && intval(I('post.medal')) <= 3) ? intval(I('post.medal')) : 3;
+            $data['medal'] = (intval(I('post.medal')) >= 0 && intval(I('post.medal')) <= 4) ? intval(I('post.medal')) : 3;
+            if($data['type'] == 0 && $data['medal'] == 4) $data['medal'] = 3;
             $data['ranking'] = I('post.ranking', '', false) == '' ? null : I('post.ranking', '', false);
             $data['title'] = I('post.title', '', false) == '' ? null : I('post.title', '', false);
             
@@ -677,7 +678,8 @@ class SettingController extends BaseController {
             $data['site'] = I('post.site', '', false);
             $data['university'] = I('post.university', '', false);
             $data['type'] = (intval(I('post.type')) >= 0 && intval(I('post.type')) <= 2) ? intval(I('post.type')) : 1;
-            $data['medal'] = (intval(I('post.medal')) >= 0 && intval(I('post.medal')) <= 3) ? intval(I('post.medal')) : 3;
+            $data['medal'] = (intval(I('post.medal')) >= 0 && intval(I('post.medal')) <= 4) ? intval(I('post.medal')) : 3;
+            if($data['type'] == 0 && $data['medal'] == 4) $data['medal'] = 3;
             $data['ranking'] = I('post.ranking', '', false) == '' ? null : I('post.ranking', '', false);
             $data['title'] = I('post.title', '', false) == '' ? null : I('post.title', '', false);
             

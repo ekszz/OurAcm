@@ -86,13 +86,14 @@
                             if($d['medal'] == 0) echo 'golden.png';
                             else if($d['medal'] == 1) echo 'silver.png';
                             else if($d['medal'] == 2) echo 'bronze.png';
+							else if($d['medal'] == 4) echo 'norank.png';
                             else echo 'honorable.png';
                             echo '"></td>';
                             
                             //时间地点
                             echo '<td><strong>'.$d['y'].'-'.$d['m'].'</strong></td><td><p>'.$d['university'].'</p><p><span class="label label-important">'.$d['site'].'</span></p></td>';
                             //队伍名
-                            echo '<td><span class="badge"><h5>'.$d['team'].'</h5></span></td><td style="text-align:left !important; padding-left:20px">';
+                            echo '<td><span class="badge"><h5>'.($d['medal'] == 4 ? $d['team'].' *' : $d['team']).'</h5></span></td><td style="text-align:left !important; padding-left:20px">';
                             //队员
                             echo '<p><span class="label label-warning">Leader</span> ';
                             if($d['leader_detail']['sex'] != 1) echo '<span class="label">♂</span> '; 
@@ -128,6 +129,7 @@
                             if($d['medal'] == 0) $temp = '金牌'; 
                             else if($d['medal'] == 1) $temp = '银牌'; 
                             else if($d['medal'] == 2) $temp = '铜牌'; 
+							else if($d['medal'] == 4) $temp = '旅游队*';
                             else $temp = '鼓励奖';
                             $temp = '<p>'.$temp.'</p>';
                             echo $temp;
