@@ -13,36 +13,42 @@
     <!-- Le javascript -->
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script src="js/prettify/prettify.js"></script>
     <script src="js/setting_common.js"></script>
 	<script type="text/javascript">
 	$(function(){
 		$("#navbar li:nth-child(9)").addClass("active");
 		var $window = $(window);
-		$('.bs-docs-sidenav').affix({
-		    offset: {
-		        top: function () { return $window.width() <= 980 ? 290 : 210 }
-		      	, bottom: 270
-		    }
-		});
-		$("span[data-toggle=popover]")
-      		.popover()
-      		.click(function(e) {
-        		e.preventDefault()
+			$('.bs-docs-sidenav').affix({
+		        offset: {
+		            top: function () { return $window.width() <= 980 ? 290 : 210 }
+		          , bottom: 270
+		          }
+		        });
+			$("span[data-toggle=popover]")
+      			.popover()
+      			.click(function(e) {
+        			e.preventDefault()
       		});
-		
+		prettyPrint();
 		$('#code').val(null);
 		$('#verify').val(null);
 		$('#tag').val(null);
 		$('#submit').click(function(e) {
-			$.post("?z=codepool-ajax_submit", {verify:$('#verify').val(), tag:$('#tag').val(), code:$('#code').val()} )
+			$.post("?z=codepool-ajax_submit", {verify:$('#verify').val(), tag:$('#tag').val(), code:$('#code').val(), k:'<?php echo $key; ?>'} )
 			.done(function (data) {
 				if(data.status == 0) {
+					$('#code-content section').eq(-1).before('<section id="' + data.data.tag_id + '"><div class="page-header"><h1>' + data.data.tag + '</h1></div><div class="row"><div class="span9"><div class="control-group"><span class="label label-info">代码URL</span> <a href="' + data.data.tag_id + '"><span class="label label-warning"><?php echo $url."#"; ?>' + data.data.tag_id + '</span></a></div><pre class="prettyprint linenums" style="width:100%">' + data.data.code + '</pre></div></div></section>');
+					$('#tags li').eq(-1).before('<li><a href="#' + data.data.tag_id + '"><i class="icon-chevron-right"></i> '+ data.data.tag + '</a></li>');
+					$('#code').val(null);
+					$('#verify').val(null);
+					$('#tag').val(null);
+					$('#verify-img').attr('src', '?z=codepool-verify-t-'+Math.random());
+					$('[data-spy="scroll"]').each(function () {
+  						var $spy = $(this).scrollspy('refresh');
+					});
+					prettyPrint();
 					alert("[成功]你的代码提交到码池了！");
-					$('#url1').attr('href', data.data);
-					$('#url2').html(data.data);
-					$('#moresubmit').removeClass('disabled');
-					$('#todo').fadeOut(1000);
-					$('#result').fadeIn(1000);
 				}
 				else {
 					$('#verify-img').attr('src', '?z=codepool-verify-t-'+Math.random());
@@ -53,15 +59,7 @@
 				alert('[错误]请检查网络连接。', "error");
 			});
 		});
-		$('#moresubmit').click(function(e){
-			$('#moresubmit').addClass('disabled');
-			$('#code').val(null);
-			$('#verify').val(null);
-			$('#tag').val(null);
-			$('#verify-img').attr('src', '?z=codepool-verify-t-'+Math.random());
-			$('#todo').fadeIn(1000);
-		});
-		<?php if($invalidkey) echo $invalidkey; ?>
+		<?php if($issamelogin == 1) echo '$("#appendcode").show(); $("#tags li").eq(-1).show();'; ?>
 	});
 	function fakesubmit() {return false;}
 	</script>
@@ -86,39 +84,38 @@
     ================================================== -->
     <div class="row">
       <div class="span3 bs-docs-sidebar">
-        <ul class="nav nav-list bs-docs-sidenav">
-        	<li><a href="#tips"><i class="icon-chevron-right"></i> Tips</a></li>
-          	<li><a href="#insertcode"><i class="icon-chevron-right"></i> 提交代码</a></li>
+        <ul class="nav nav-list bs-docs-sidenav" id="tags">
+          <?php foreach($data as $k => $d) {
+          	echo '<li><a href="#'.$d['tag_id'].'"><i class="icon-chevron-right"></i> '.$d['tag'].'</a></li>';
+          } ?>
+          <li class="hide"><a href="#appendcode"><i class="icon-chevron-right"></i> 追加代码</a></li>
         </ul>
       </div>
-      <div class="span9">
+      <div class="span9" id="code-content">
 
-        <section id="tips">
+        <?php foreach($data as $k => $d) { ?>
+        <section id="<?php echo $d['tag_id']; ?>">
           <div class="page-header">
-            <h1>Tips</h1>
+            <h1><?php echo $d['tag']; ?></h1>
           </div>
 
           <div class="row">
             <div class="span9">
-            	<div class="alert alert-success alert-block"><p><strong>欢迎来到码池 o(-"-)o</strong></p>
-                <p>在这里，你可以提交自己的代码或其它备忘信息，系统会在一段时间内保存你的代码，并自动生成一个URL。</p>
-                <p>分享该URL给其他人，分享你的代码吧~</p>
-                <p>登录OJ后提交的代码，进入该URL还可以追加代码哟~</p>
-                </div>
+              <div class="control-group"><span class="label label-info">代码URL</span> <a href="<?php echo $url.'#'.$d['tag_id']; ?>"><span class="label label-warning"><?php echo $url.'#'.$d['tag_id']; ?></span></a></div>
+              <pre class="prettyprint linenums" style="width:100%"><?php echo $d['code']; ?></pre>
             </div>
           </div>
         </section>
+		<?php } ?>
 
-        <section id="insertcode">
+        <section id="appendcode" class="hide">
           <div class="page-header">
             <h1>提交代码</h1>
           </div>
 
           <div class="row">
-          	<div class="span9 hide" id="result"><div class="alert alert-info alert-block">
-            	<div class="control-group"><p>分享该URL，就可以查看提交的代码咯。登录OJ后提交，还可以追加代码哦~<button class="btn btn-success pull-right" id="moresubmit">我还要提交</button></p><p><span class="label label-info">代码URL</span> <a href="URL" id="url1"><span class="label label-warning" id="url2">URL</span></a></p></div>
-            </div></div>
-            <div class="span9" id="todo">
+            <div class="span9">
+              <?php echo '<div class="control-group"><span class="label label-info">代码URL</span> <a href="'.$url.'"><span class="label label-warning">'.$url.'</span></a></div>'; ?>
               <form method="post" name="insertcode" class="form-inline" action="#" onSubmit="return fakesubmit();">
               <div class="control-group"><textarea id="code" rows="16" class="input-xxlarge" style="width:100%"></textarea></div>
               	<label for="verify"><img id="verify-img" alt="验证码" src="?z=codepool-verify" /></label> <input id="verify" type="text" name="verify" class="input-mini" placeholder="验证码" />
