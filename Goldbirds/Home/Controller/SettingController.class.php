@@ -1286,6 +1286,8 @@ class SettingController extends BaseController {
             $data = $personDB -> field('chsname, engname, email, phone, address, grade, introduce, detail, photo') -> where('uid = '.$uid.' AND `group` < 2') -> find();  //获取个人信息
             if(!$data) $this -> myajaxReturn(null, '[错误]UID参数不正确。', 1);
             else {
+                $data['chsname'] = htmlspecialchars($data['chsname']);
+                $data['engname'] = htmlspecialchars($data['engname']);
                 if(session('goldbirds_islogin')) $data['email'] = htmlspecialchars($data['email']);
                 else $data['email'] = '[登录后可见]';
                 $data['address'] = htmlspecialchars($data['address']);

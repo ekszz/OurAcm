@@ -31,6 +31,12 @@ class WfController extends BaseController {
                 $data[$i]['university'] = htmlspecialchars($data[$i]['university']);
                 $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
                 $data[$i]['team'] = htmlspecialchars($data[$i]['team']);
+                $data[$i]['leader_detail']['chsname'] = htmlspecialchars($data[$i]['leader_detail']['chsname']);
+                $data[$i]['leader_detail']['engname'] = htmlspecialchars($data[$i]['leader_detail']['engname']);
+                $data[$i]['teamer1_detail']['chsname'] = htmlspecialchars($data[$i]['teamer1_detail']['chsname']);
+                $data[$i]['teamer1_detail']['engname'] = htmlspecialchars($data[$i]['teamer1_detail']['engname']);
+                $data[$i]['teamer2_detail']['chsname'] = htmlspecialchars($data[$i]['teamer2_detail']['chsname']);
+                $data[$i]['teamer2_detail']['engname'] = htmlspecialchars($data[$i]['teamer2_detail']['engname']);
                 
                 //如果不存在缩略图，则生成
                 if($data[$i]['pic1'] && !file_exists('upload/thumb/'.substr($data[$i]['pic1'], 7))) {
@@ -59,6 +65,12 @@ class WfController extends BaseController {
                 $data[$i]['university'] = htmlspecialchars($data[$i]['university']);
                 $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
                 $data[$i]['team'] = htmlspecialchars($data[$i]['team']);
+                $data[$i]['leader_detail']['chsname'] = htmlspecialchars($data[$i]['leader_detail']['chsname']);
+                $data[$i]['leader_detail']['engname'] = htmlspecialchars($data[$i]['leader_detail']['engname']);
+                $data[$i]['teamer1_detail']['chsname'] = htmlspecialchars($data[$i]['teamer1_detail']['chsname']);
+                $data[$i]['teamer1_detail']['engname'] = htmlspecialchars($data[$i]['teamer1_detail']['engname']);
+                $data[$i]['teamer2_detail']['chsname'] = htmlspecialchars($data[$i]['teamer2_detail']['chsname']);
+                $data[$i]['teamer2_detail']['engname'] = htmlspecialchars($data[$i]['teamer2_detail']['engname']);
 		    }
 			$this -> assign('data', $data);
 			$this -> commonassign();
