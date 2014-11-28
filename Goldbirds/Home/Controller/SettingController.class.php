@@ -335,8 +335,8 @@ class SettingController extends BaseController {
             if(!$person['email'] || $person['ojaccount']) return 9;  //已注册用户，略过
             
             //发送邮件
-            Vendor('phpMailer.phpmailer');
-            $mail = new PHPMailer();
+            import('Vendor.phpMailer.phpmailer');
+            $mail = new \PHPMailer();
             $mail -> IsSMTP();
             $mail -> CharSet = 'UTF-8';
             $mail -> AddAddress($person['email'], $person['engname']);  //收件人地址
