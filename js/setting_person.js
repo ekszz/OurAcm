@@ -107,6 +107,10 @@ $(function () {
 		});
 	});
 	
+	$('#person-modal').on('click', '[data-func=del]', function (e) {  //“删除”按钮事件
+		$('#face_show').attr('src', 'img/nopic.jpg');
+	});
+	
 	$('#btn-submit').on('click', null, function(e) {
 		$('#face_fn').val($('#face_show').attr('src'));
 		var form_data = $('#person-form').serialize();

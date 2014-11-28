@@ -15,15 +15,15 @@ function alert(msg){
 	$('#alert').html("<div class='center alert message fade in hide'><a class='dismiss close' data-dismiss='alert'>x</a><label>"
 		+ msg + "</label></div>"
     );
-    $(".alert").show();
-    $(".alert").delay(5000).fadeIn(6000).fadeOut(1000);
+    $("#alert .alert").show();
+    $("#alert .alert").delay(5000).fadeIn(6000).fadeOut(1000);
 }
 function alert(msg,type){
 	$('#alert').html("<div class='center alert alert-"+type+" message fade in hide'><a class='dismiss close' data-dismiss='alert'>x</a><label>"
 		+ msg + "</label></div>"
     );
-    $(".alert").show();
-    $(".alert").delay(5000).fadeIn(6000).fadeOut(1000);
+    $("#alert .alert").show();
+    $("#alert .alert").delay(5000).fadeIn(6000).fadeOut(1000);
 }
 
 function loading(){

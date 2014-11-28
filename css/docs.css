@@ -159,7 +159,7 @@ hr.soften {
   bottom: 0;
   left: 0;
   background: url(../img/bs-docs-masthead-pattern.jpg) repeat center center;
-  opacity: .9;
+  opacity: .95;
 }
 @media
 only screen and (-webkit-min-device-pixel-ratio: 2),

@@ -1,0 +1,110 @@
+<include file="Base:header" />
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    <link href="css/setting.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    
+    <!-- Le javascript -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/setting_common.js"></script>
+    <script type="text/javascript">
+    	$(function(){ 
+			$("#navbar li:nth-child(10)").addClass("active");
+			$('#luckycode').focus();
+			$('#submit-btn').on('click', null, function() {
+				$('#luckycode').attr('readonly', true);
+				$('#submit-btn').attr('disabled', true);
+				$.post("?z=setting-ajax_verify_luckycode", {code:$('#luckycode').val()})
+				.done(function (data) {
+					if(data.status == 0) {
+						alert('[成功]有效的邀请码！请核对邀请码下方的信息无误后，点击“绑定”按钮绑定！注意：一个邀请码只能绑定一个OnlineJudge账号哦！');
+						$('#result').html('邀请码对应的用户信息： '+data.data.code+'<br />当前待绑定OnlineJudge账号：'+data.data.oj+'<br />请核对或补充下方信息：<br /><br />');
+						$('#submit-btn').addClass('hide');
+						$('#bind-btn').removeClass('hide');
+						$('#email').val(data.data.email);
+						$('#phone').val(data.data.phone);
+						$('#detail').removeClass('hide');
+					}
+					else {
+						alert(data.info, "error");
+						$('#luckycode').removeAttr('readonly');
+						$('#submit-btn').removeAttr('disabled');
+					}
+				})
+				.fail(function () {
+					alert('[错误]请检查网络连接。', "error");
+				});
+			});
+			$('#bind-btn').on('click', null, function() {
+				var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,5}$/;
+				var email = $('#email').val();
+				var phone = $('#phone').val();
+				if(!reg.test(email)) alert('[错误]E-mail格式不正确！请重试。', 'error');
+				else if(phone.length < 8 || phone.length > 11) alert('[错误]联系电话格式不正确！请重试。', 'error');
+				else {
+					$('#bind-btn').attr('disabled', true);
+					$.post("?z=setting-ajax_bind_luckycode", {code:$('#luckycode').val(), email:email, phone:phone})
+					.done(function (data) {
+						if(data.status == 0) {
+							$('#bind-btn').html('已绑定');
+							$('#email').prop('readonly', true);
+							$('#phone').prop('readonly', true);
+							alert('[成功]绑定成功！刷新本页面可进入个人信息设置。');
+						}
+						else {
+							alert(data.info, "error");
+							$('#bind-btn').removeAttr('disabled');
+						}
+					})
+					.fail(function () {
+						alert('[错误]请检查网络连接。', "error");
+					});
+				}
+			});
+		});
+    </script>
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <include file="Base:navbar" />
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>个人中心</h1>
+    <p class="lead">Personal Center</p>
+    <div id="carbonads-container"></div>
+  </div>
+</header>
+
+
+  <div class="container">
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span12 text-center"><h1><br />你暂时不允许访问该页面！<br /></h1><h2>请确保该OJ账户有关联获奖记录~~~<br />如果你已获得奖项，请向管理员索要邀请码~~</h2><br /><br /><h2>已有邀请码？请在下方输入：</h2><Br /></div>
+    </div>
+    <div class="row">
+      <div class="span12 text-center">
+          <div class="input-append">
+    		<input class="span3" id="luckycode" type="text" placeholder="在此输入邀请码">
+            <button class="btn btn-warning hide" type="submit" id="bind-btn">绑定</button>
+            <button class="btn btn-primary" type="submit" id="submit-btn">Go! Go! Go!</button>
+    	  </div>
+      </div>
+      <div class="span12 text-center text-info" id="result"></div>
+      <div class="span12 text-center hide" id="detail">
+            E-mail: <input class="span2" id="email" type="text" placeholder="E-mail here.">
+            联系电话: <input class="span2" id="phone" type="text" placeholder="请输入联系电话">
+      </div>
+    </div>
+  </div>
+  <div id="alert" class="row-fluid"></div> 
+<include file="Base:footer" />

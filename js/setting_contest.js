@@ -219,6 +219,7 @@ function reFresh() {  //reload table
 			if(vo.medal == 0) reshtml = reshtml + '金';
 			else if(vo.medal == 1) reshtml = reshtml + '银';
 			else if(vo.medal == 2) reshtml = reshtml + '铜';
+			else if(vo.medal == 4) reshtml = reshtml + '旅';
 			else reshtml = reshtml + '铁';
 			reshtml = reshtml + '</td><td>' + vo.team + '</td><td>';
 			var picnum = 0;
