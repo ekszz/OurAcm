@@ -26,12 +26,11 @@ OurAcm
 部署说明  
 ========  
   
-1、将所有文件拷贝到web目录下；  
-2、修改/Goldbirds/Home/Common/function.php中的4个OnlineJudge接口；  
-3、使用phpmyadmin或其它工具，导入/db目录下对应版本的数据库文件；  
-4、修改/Goldbirds/Home/Conf/config.php中的数据库配置选项；  
-5、删除/db目录；  
-6、请确保/upload、/Goldbirds/Runtime这2个目录具有写权限；  
-7、访问index.php尝试能否正常访问；  
-8、登录OnlineJudge，并访问index.php?z=setting，以邀请码"iloveacmiloveacm"关联带管理权的OnlineJudge账户；  
-9、关联后，点击"个人中心"，可在里面进行相应配置管理。  
+1、使用phpmyadmin或其它工具，导入/db目录下对应版本的数据库文件；  
+2、将www文件夹下所有文件拷贝到服务器的HTTP服务目录下；  
+3、修改服务器上/Goldbirds/Home/Common/function.php中的4个OnlineJudge接口；  
+4、修改服务器上/Goldbirds/Home/Conf/config.php中的数据库配置选项；  
+5、请确保服务器上/upload、/Goldbirds/Runtime（该文件夹首次访问时会创建）这2个目录具有写权限；  
+6、访问index.php尝试能否正常访问；  
+7、登录OnlineJudge，并访问index.php?z=setting，以邀请码"iloveacmiloveacm"关联带管理权的OnlineJudge账户；  
+8、关联后，点击"个人中心"，可在里面进行相应配置管理。  
