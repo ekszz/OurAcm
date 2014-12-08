@@ -6,7 +6,10 @@ class ActivityController extends BaseController {
     public function index() {
         
         $this -> commonassign();
-        if($this -> logincheck() == 0) $this -> assign('notlogin', true);
+        if($this -> logincheck() == 0) {
+            $this -> assign('notlogin', true);
+            $this -> assign('url', \OJLoginInterface::getLoginURL());
+        }
         
         $this -> display();
     }
