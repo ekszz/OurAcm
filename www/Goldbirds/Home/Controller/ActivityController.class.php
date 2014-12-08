@@ -384,7 +384,7 @@ class ActivityController extends BaseController {
         }
 
         $activitydataDB = M('Activitydata');
-        $regdata = $activitydataDB -> field('adid, ojaccount, data, state') -> where('aid = '.$aid) -> order('regtime DESC') -> select();
+        $regdata = $activitydataDB -> field('adid, ojaccount, data, state') -> where('aid = '.$aid) -> order('(3-state)%3 ASC, regtime DESC') -> select();
         if($regdata) {
             foreach($regdata as $r) {   //每一条用户注册信息$r
                 $tmp['adid'] = $r['adid'];
