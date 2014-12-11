@@ -374,13 +374,23 @@ class ActivityController extends BaseController {
         //获取报名者信息
         $dataid = array();  //公开字段序号-base64逗号隔开的注册信息中的序号
         $ruleid = array();  //公开字段序号-rule条目中对应的序号
+        if($ret['isadmin'] == 1) {
+            $dataid_private = array();  //非公开字段序号-base64逗号隔开的注册信息中的序号
+            $ruleid_private = array();  //非公开字段序号-rule条目中对应的序号
+            $title_private = array();
+        }
         $k = 0;
         for($i = 1; $i < count($rule); $i++) {
             if($rule[$i]['type'] == 1 || $rule[$i]['type'] == 2 || $rule[$i]['type'] == 3 || $rule[$i]['type'] == 5 || $rule[$i]['type'] == 6) {  //只有这些才有数据
-                if($rule[$i]['public'] == 1) {
+                if($rule[$i]['public'] == 1) {  //公开字段
                     array_push($ret['titles'], $rule[$i]['dis']);
                     array_push($ruleid, $i);
                     array_push($dataid, $k);
+                }
+                else {  //非公开字段
+                    array_push($title_private, $rule[$i]['dis']);
+                    array_push($ruleid_private, $i);
+                    array_push($dataid_private, $k);
                 }
                 $k++;
             }
@@ -393,9 +403,10 @@ class ActivityController extends BaseController {
                 $tmp['adid'] = $r['adid'];
                 $tmp['ojaccount'] = $r['ojaccount'];
                 $tmp['state'] = $r['state'];
+                $tmp['private_data'] = '';  //非公开字段信息，审核用
                 $tmp['data'] = array();
                 $perunit = explode(',', $r['data']);
-                for($j = 0; $j < count($ruleid); $j++) {
+                for($j = 0; $j < count($ruleid); $j++) {  //公开字段处理
                     $rulei = $ruleid[$j];
                     $datai = $dataid[$j];
                     if($rule[$rulei]['type'] != 5) {
@@ -404,6 +415,20 @@ class ActivityController extends BaseController {
                     else {
                         $no = intval(base64_decode($perunit[$datai]));
                         array_push($tmp['data'], htmlspecialchars($rule[$rulei]['item'][$no]));
+                    }
+                }
+                if($ret['isadmin'] == 1) {  //非公开字段处理
+                    for($j = 0; $j < count($ruleid_private); $j++) {
+                        $rulei = $ruleid_private[$j];
+                        $datai = $dataid_private[$j];
+                        if($j != 0) $tmp['private_data'] .= "\r\n";  //换行符，对应修改了bootstrap.css中.popover的white-space属性为pre-wrap
+                        if($rule[$rulei]['type'] != 5) {
+                            $tmp['private_data'] .= ('['.$title_private[$j].']：'.htmlspecialchars(base64_decode($perunit[$datai])));
+                        }
+                        else {
+                            $no = intval(base64_decode($perunit[$datai]));
+                            $tmp['private_data'] .= ($title_private[$j].'：'.htmlspecialchars($rule[$rulei]['item'][$no]));
+                        }
                     }
                 }
                 array_push($ret['contestants'], $tmp);
