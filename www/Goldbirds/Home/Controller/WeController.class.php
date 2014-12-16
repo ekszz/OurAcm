@@ -8,15 +8,15 @@ class WeController extends BaseController {
         $empty = true;
         $data = array();
         
-        if($this -> getconfig('we_icpc_introduce')) {
-            $empty = false;
-            $data['icpc']['title'] = 'ACM-ICPC赛事简介';
-            $data['icpc']['content'] = $this -> getconfig('we_icpc_introduce');
-        }
         if($this -> getconfig('we_team_introduce')) {
             $empty = false;
             $data['team']['title'] = 'ACM-ICPC集训队简介';
             $data['team']['content'] = $this -> getconfig('we_team_introduce');
+        }
+        if($this -> getconfig('we_icpc_introduce')) {
+            $empty = false;
+            $data['icpc']['title'] = 'ACM-ICPC赛事简介';
+            $data['icpc']['content'] = $this -> getconfig('we_icpc_introduce');
         }
 
         $this -> commonassign();
