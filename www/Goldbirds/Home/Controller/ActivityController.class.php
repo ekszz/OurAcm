@@ -499,7 +499,7 @@ class ActivityController extends BaseController {
                 else {
                     $file = ''; //文件内容
                     $activitydataDB = M('Activitydata');
-                    $data = $activitydataDB -> where('aid = '.$aid) -> order('regtime ASC') -> select();
+                    $data = $activitydataDB -> where('aid = '.$aid) -> order('(3-state)%3 ASC, regtime ASC') -> select();
                     $file .= 'OJ账号,审核状态(2-通过，1-拒绝，0-未审核),注册时间,';
                     for($i = 0; $i < count($rule); $i++) {  //标题
                         if($rule[$i]['type'] == 1 || $rule[$i]['type'] == 2 || $rule[$i]['type'] == 3 || $rule[$i]['type'] == 6)
