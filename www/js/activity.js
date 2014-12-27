@@ -228,17 +228,18 @@ function load_contestants() {
 					else reshtml += '<td><span class="badge">等待审核</span></td></tr>';
 				}
 				else {
-					reshtml = reshtml + '<td><div class="btn-group btn-ables" data-trigger="hover" data-content="' + vo.private_data + '" data-placement="top" data-toggle="popover" data-original-title="未公开字段">';
-					if(vo.state == 2) { reshtml += '<a data-adid="' + vo.adid + '" class="btn btn-small btn-enable btn-success disabled">通过</a><a data-adid="' + vo.adid + '" class="btn btn-small btn-disable">拒绝</a>'; accept++; }
-					else if(vo.state == 1) reshtml += '<a data-adid="' + vo.adid + '" class="btn btn-small btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-small btn-disable btn-warning disabled">拒绝</a>';
-					else reshtml += '<a data-adid="' + vo.adid + '" class="btn btn-small btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-small btn-disable">拒绝</a>';
-					reshtml += '</div> <button class="btn btn-small btn-danger" data-toggle="delcontestant" data-adid="' + vo.adid + '">删除</button></td></tr>';
+					reshtml = reshtml + '<td><span class="btn-group btn-ables"';
+					if(vo.private_data != "") reshtml += ' data-trigger="hover" data-content="' + vo.private_data + '" data-placement="right" data-toggle="popover" data-original-title="未公开字段"';
+					if(vo.state == 2) { reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-small btn-enable btn-success disabled">通过</a><a data-adid="' + vo.adid + '" class="btn btn-small btn-disable">拒绝</a>'; accept++; }
+					else if(vo.state == 1) reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-small btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-small btn-disable btn-warning disabled">拒绝</a>';
+					else reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-small btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-small btn-disable">拒绝</a>';
+					reshtml += '<button class="btn btn-small btn-danger" data-toggle="delcontestant" data-adid="' + vo.adid + '">删除</button></span></td></tr>';
 				}
 			}
 		});
 		$('#data-table tbody').html(reshtml);
 		$("#data-table").trigger("update");
-		$("div[data-toggle=popover]").popover();
+		$("span[data-toggle=popover]").popover();
 		$('#header-title').html('“' + data.data.title + '”的报名情况 <i>（人数：' + accept + '/' + total + '）</i>');
 	})
 	.fail(function() {
