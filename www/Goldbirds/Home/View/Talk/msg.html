@@ -1,0 +1,144 @@
+<include file="Base:header" />
+    <!-- Le styles -->
+    <link href="css/prettify.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    <link href="css/setting.css" rel="stylesheet">
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+    
+    <!-- Le javascript -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/setting_common.js"></script>
+	<script type="text/javascript">
+	$(function(){
+		$("#navbar li:nth-child(9)").addClass("active");
+		var $window = $(window);
+		$('.bs-docs-sidenav').affix({
+		    offset: {
+		        top: function () { return $window.width() <= 980 ? 290 : 210 }
+		      	, bottom: 270
+		    }
+		});
+		$("span[data-toggle=popover]")
+      		.popover()
+      		.click(function(e) {
+        		e.preventDefault()
+      		});
+		
+		$('#submit').click(function(e) {
+			$.post("?z=talk-ajax_replytalk", {verify:$('#verify').val(), tid:<?php echo $tid; ?>, title:$('#title').val(), content:$('#content').val()} )
+			.done(function (data) {
+				if(data.status == 0) {
+					$('#title').val(null);
+					$('#content').val(null);
+					$('#verify').val(null);
+					$('#verify-img').attr('src', '?z=talk-verify-t-'+Math.random());
+					alert('[成功]回复成功。');
+					window.location.href="?z=talk"; 
+				}
+				else {
+					$('#verify-img').attr('src', '?z=talk-verify-t-'+Math.random());
+					alert(data.info, "error");
+				}
+			})
+			.fail(function () {
+				$('#verify-img').attr('src', '?z=talk-verify-t-'+Math.random());
+				alert('[错误]请检查网络连接。', "error");
+			});
+		});
+	});
+	function fakesubmit() {return false;}
+	</script>
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <include file="Base:navbar" />
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>谈资</h1>
+    <p class="lead">Talk</p>
+    <div id="carbonads-container"></div>
+  </div>
+</header>
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span12">
+
+		<section id="detail">
+          <div class="page-header">
+            <h1><?php echo $title; ?></h1>
+          </div>
+          <div class="row">
+            <div class="span12">
+            	<?php echo $introduce; ?>
+            </div>
+            <?php if($content) { ?><div class="span12">
+            	<?php echo $content; ?>
+            </div><?php } ?>
+            <?php if(!$son) echo '<div class="span12 muted">Tips：本主题暂无回复。</div>'; ?>
+          </div>
+        </section>
+        
+        <?php if($son) { ?><section id="replylist">
+          <div class="page-header">
+            <h1>本主题的回复</h1>
+          </div>
+          <div class="row">
+            <div class="span12" style="font-size:16px">
+            	<ul class="unstyled" id="talk">
+                    <?php echo $son; ?>
+                </ul>
+            </div>
+          </div>
+        </section><?php } ?>
+
+		<?php if($ojaccount) { ?>
+        <section id="reply talk">
+          <div class="page-header">
+            <h1>Reply</h1>
+          </div>
+
+          <div class="row">
+            <div class="span9" id="todo">
+              <form method="post" name="reply" class="form-inline" action="#" onSubmit="return fakesubmit();">
+              <div class="control-group"><input id="title" type="text" class="input-xxlarge" name="title" placeholder="Title Here." value="Re: <?php echo $title; ?>" /> <span class="label label-success">Current User: [ <?php echo $ojaccount; ?> ]</span></div>
+              <div class="control-group">
+              	<textarea id="content" rows="10" class="input-xxlarge" style="width:80%" placeholder="Content Here. (Null is acceptable)"></textarea>
+              </div>
+              	<label for="verify"><img id="verify-img" alt="验证码" src="?z=talk-verify" /></label> <input id="verify" type="text" name="verify" class="input-mini" placeholder="验证码" />
+              	<input type="submit" value="回复" class="btn btn-primary" id="submit" />
+              </form>
+            </div>
+          </div>
+        </section>
+        <?php } else { ?>
+        <section id="login">
+          <div class="page-header">
+            <h1>Login</h1>
+          </div>
+
+          <div class="row">
+            <div class="span6" id="todo">
+              <div class="alert alert-success alert-block">登录OnlineJudge账号后可以发表和回复Talk~<a target="_blank" href="<?php echo $url; ?>" class="btn btn-large btn-primary pull-right">登录OnlineJudge</a><br />请点击右方按钮跳转至OnlineJudge登录页面。</div>
+            </div>
+          </div>
+        </section>
+		<?php } ?>
+      </div>
+    </div>
+
+  </div>
+  <div id="alert"></div>
+<include file="Base:footer" />
