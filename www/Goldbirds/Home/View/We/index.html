@@ -13,7 +13,8 @@
     <script src="js/bootstrap.js"></script>
 	<script type="text/javascript">
 	$(function(){
-		$("#navbar li:nth-child(2)").addClass("active");
+		$("#navbar>li:nth-child(2)").addClass("active");
+		$("#we-menu>li:nth-child(1)").addClass("active");
 		var $window = $(window);
 			$('.bs-docs-sidenav').affix({
 		        offset: {
@@ -53,6 +54,8 @@
           <?php foreach($data as $k => $d) {
           	echo '<li><a href="#'.$k.'"><i class="icon-chevron-right"></i> '.$d['title'].'</a></li>';
           } ?>
+          <li><a href="?z=coach"><i class="icon-chevron-right"></i> 教练团队</a></li>
+          <li><a href="?z=oj"><i class="icon-chevron-right"></i> OnlineJudge历史</a></li>
         </ul>
       </div>
       <div class="span9">
@@ -64,7 +67,7 @@
           </div>
 
           <div class="row">
-            <div class="span12">
+            <div class="span9">
               <?php echo $d['content']; ?>
             </div>
           </div>

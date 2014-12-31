@@ -21,10 +21,14 @@ class WeController extends BaseController {
 
         $this -> commonassign();
         
-        if($empty) $this -> display('nodata');
-	    else {
-	        $this -> assign('data', $data);
-	        $this -> display('index');
-	    }
+        if($empty) {
+            $data['team']['title'] = 'ACM-ICPC集训队简介';
+            $data['team']['content'] = '<div class="alert alert-success alert-block">
+                <p>队长还没有添加神秘的ACM-ICPC集训队的介绍，你可以发个邮件催他赶紧添加 o(-"-)o</p>
+                <p>或者先来 <a href="?z=coach" class="btn btn-small btn-success">教练团队</a> 和 <a href="?z=oj" class="btn btn-small btn-success">OnlineJudge历史</a> 看看吧~</p>
+                </div>';
+        }
+	    $this -> assign('data', $data);
+	    $this -> display('index');
     }
 }
