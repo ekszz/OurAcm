@@ -124,20 +124,7 @@ class CodepoolController extends BaseController {
             $this -> display('x');
         }
     }
-
-    public function verify() {  //生成验证码
-        
-        $config =    array(
-            'fontSize'    =>    15,    // 验证码字体大小
-            'length'      =>    4,     // 验证码位数
-            'useCurve'    =>    false, // 关闭验证码杂点
-            'codeSet'     =>    '01', //字符集
-        );
-        
-        $Verify = new \Think\Verify($config);
-        $Verify->entry();
-    }
-    
+ 
     public function _clean() {  //删除过期代码，计划任务调用
         
         if(strcmp(CODECLEANTOKEN, 'goldbirds') == 0) {
