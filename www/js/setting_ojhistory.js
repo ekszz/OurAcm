@@ -181,10 +181,12 @@ function loadvid() {  //加载OJ列表
 		async:false,
 		success:function(data) {
 			$('#vid').empty();
-			for(var i=0; i<data.data.length; i++) {
-				$('#vid').append('<option value="'+data.data[i].vid+'">'+data.data[i].mainname+'</option>');
+			if(data.data instanceof Array) {
+				for(var i=0; i<data.data.length; i++) {
+					$('#vid').append('<option value="'+data.data[i].vid+'">'+data.data[i].mainname+'</option>');
+				}
+				$('#vid option').first().prop('selected', true);
 			}
-			$('#vid option').first().prop('selected', true);
 			changevid();
 		},
 		error:function() {
