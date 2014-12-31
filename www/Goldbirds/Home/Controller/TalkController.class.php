@@ -10,7 +10,7 @@ class TalkController extends BaseController {
     static private $var_title_maxlen = 100;  //标题最长值
     static private $var_content_maxlen = 4096;  //内容最长值
     static private $var_num_perpage = 10;  //每页数量
-    static private $var_newlogo_second = 3600;  //显示新回复标志的时间差
+    static private $var_newlogo_second = 7200;  //显示新回复标志的时间差（秒）
     
     public function index() {
         
@@ -63,7 +63,7 @@ class TalkController extends BaseController {
             $this -> assign('title', htmlspecialchars($res['title']));
             $this -> assign('introduce', '<p><span class="text-warning"><strong>'
                 .strlen($res['content']).'B</strong></span> BY <span class="text-info"><strong>'
-                .$res['ojaccount'].'</strong></span> @ <span class="text-success">'
+                .htmlspecialchars($res['ojaccount']).'</strong></span> @ <span class="text-success">'
                 .$res['createtime'].'</span>'.
                 ($res['problemid'] ? ' IN <span class="text-error"><strong>Problem '.$res['problemid'].'</strong></span>' : '')
                 .(time() - strtotime($res['createtime']) <= TalkController::$var_newlogo_second ? ' <span class="label label-warning">New</span>' : '')
@@ -286,7 +286,7 @@ class TalkController extends BaseController {
         return '<a style="color:black" href="?z=talk-msg-tid-'.$this -> talk_arr[$idx]['tid'].'">'.htmlspecialchars($this -> talk_arr[$idx]['title'])
         .'</a> <small style="display:inline">(<span class="text-warning"><strong>'
         .intval($this -> talk_arr[$idx]['l']).'B</strong></span>) BY <span class="text-info"><strong>'
-        .$this -> talk_arr[$idx]['ojaccount'].'</strong></span> @ <span class="text-success">'
+        .htmlspecialchars($this -> talk_arr[$idx]['ojaccount']).'</strong></span> @ <span class="text-success">'
         .$this -> talk_arr[$idx]['createtime'].'</span>'.
         ($this -> talk_arr[$idx]['problemid'] ? ' IN <span class="text-error"><strong>Problem '.$this -> talk_arr[$idx]['problemid'].'</strong></span>' : '')
         .(time() - strtotime($this -> talk_arr[$idx]['createtime']) <= TalkController::$var_newlogo_second ? ' <span class="label label-warning">New</span>' : '')
