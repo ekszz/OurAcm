@@ -24,7 +24,7 @@ class Redis extends Cache {
      */
     public function __construct($options=array()) {
         if ( !extension_loaded('redis') ) {
-            E(L('_NOT_SUPPERT_').':redis');
+            E(L('_NOT_SUPPORT_').':redis');
         }
         if(empty($options)) {
             $options = array (
@@ -74,7 +74,7 @@ class Redis extends Cache {
         $name   =   $this->options['prefix'].$name;
         //对数组/对象数据进行缓存处理，保证数据完整性
         $value  =  (is_object($value) || is_array($value)) ? json_encode($value) : $value;
-        if(is_int($expire)) {
+        if(is_int($expire) && $expire) {
             $result = $this->handler->setex($name, $expire, $value);
         }else{
             $result = $this->handler->set($name, $value);
