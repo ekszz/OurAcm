@@ -14,13 +14,14 @@ OurAcm
 *操作简易、功能强大的后台管理功能  
 *用户系统OnlineJudge关联模式  
 *支持邀请码机制，快速添加新队员  
-  
+*“谈资”模块，一套精致的Web Board系统  
   
 系统要求  
 ========  
   
 建议使用PHP 5.3+环境，MySQL 5.1+数据库，  
 浏览器支持Chrome、Firefox、IE10+等，IE低版本显示不友好，会有提示信息。  
+注意：因ThinkPHP 3.2.3需要PHP的php_pdo_mysql扩展，如果服务器不支持，请将ThinkPHP替换为旧版本的ThinkPHP 3.2.2版本。  
   
   
 部署说明  
