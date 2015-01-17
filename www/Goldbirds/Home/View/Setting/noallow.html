@@ -13,7 +13,7 @@
 				.done(function (data) {
 					if(data.status == 0) {
 						alert('[成功]有效的邀请码！请核对邀请码下方的信息无误后，点击“绑定”按钮绑定！注意：一个邀请码只能绑定一个OnlineJudge账号哦！');
-						$('#result').html('<p><br />邀请码对应的用户信息： '+data.data.code+'<br />当前待绑定OnlineJudge账号：'+data.data.oj+'<br />请核对或补充下方信息：<br /></p>');
+						$('#result').html('<p><br />邀请码对应的用户信息： <strong>'+data.data.code+'</strong><br />当前待绑定OnlineJudge账号：<strong>'+data.data.oj+'</strong> [ 注意：绑定后不能更改绑定的OJ账号 ]<br />请核对或补充下方信息后，点击“绑定”按钮进行绑定：<br /></p>');
 						$('#submit-btn').hide();
 						$('#bind-btn').show();
 						$('#email').val(data.data.email);
@@ -84,9 +84,9 @@
     <div class="row">
       <div class="col-xs-12 text-center">
           <form class="form-inline">
-    		<input class="form-control" id="luckycode" type="text" placeholder="在此输入邀请码">
-            <button class="btn btn-warning" style="display:none" type="button" id="bind-btn">绑定</button>
-            <button class="btn btn-primary" type="submit" id="submit-btn" onSubmit="return fakesubmit();">Go! Go! Go!</button>
+    		<div class="input-group"><input class="form-control" id="luckycode" type="text" placeholder="在此输入邀请码">
+            <span class="input-group-btn"><button class="btn btn-warning" style="display:none" type="button" id="bind-btn">绑定</button><button class="btn btn-primary" type="submit" id="submit-btn" onSubmit="return fakesubmit();">Go! Go! Go!</button></span>
+            </div>
     	  </form>
       </div>
       <div class="col-xs-12 text-center text-info" id="result"></div>
