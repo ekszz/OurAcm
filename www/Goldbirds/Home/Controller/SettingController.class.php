@@ -1521,4 +1521,46 @@ class SettingController extends BaseController {
             }
         }
     }
+
+    //系统信息============================
+    public function sysinfo() {  //系统信息
+        
+        if(!session('goldbirds_islogin')) {  //未登录
+            $this -> profile();
+        }
+        else {
+            $info_sys = '<p>系统时间: '.date("Y-m-d H:i:s").'</p>
+                        <p>主机域名: '.$_SERVER['SERVER_NAME'].'</p>
+                        <p>主机端口: '.$_SERVER["SERVER_PORT"].'</p>
+                        <p>访问协议: '.$_SERVER["SERVER_PROTOCOL"].'</p>';
+            $isadmin = 3;
+            
+            if(intval(session('goldbirds_group')) >= 1) {  //带管理权限
+            
+                $isadmin = 10;
+                $info_sys .= '<p>PHP版本: '.phpversion().'</p>
+                    <p>时区: '.ini_get('date.timezone').'</p>
+                    <p>操作系统: '.php_uname().'</p>
+                    <p>PHP运行方式: '.php_sapi_name().'</p>
+                    <p>当前进程用户名: '.get_current_user().'</p>
+                    <p>操作系统目录: '.$_SERVER['SystemRoot'].'</p>
+                    <p>POST限制: '.ini_get('post_max_size').'</p>
+                    <p>运行时间限制: '.ini_get('max_execution_time').'</p>
+                    <p>运行内存限制: '.ini_get('memory_limit').'</p>';
+            
+                $info_mysql = '<p>MYSQL主机信息: '.mysql_get_host_info().'</p>
+                    <p>MYSQL服务器版本: '.mysql_get_server_info().'</p>
+                    <p>MYSQL协议版本: '.mysql_get_proto_info().'</p>
+                    <p>MYSQL客户端版本: '.mysql_get_client_info().'</p>';
+                $this -> assign('info_mysql', $info_mysql);
+            }
+            
+            $this -> assign('nid', $isadmin);
+            $info_sys .= '<hr /><p>客户端IP: '.get_client_ip().'</p>';
+            $this -> assign('info_sys', $info_sys);
+            $this -> commonassign();
+            $this -> display('info');
+        }
+    }
+
 }
