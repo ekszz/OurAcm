@@ -1,20 +1,9 @@
 <include file="Base:header" />
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/jquery.fancybox.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
-    
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-    
-    <!-- Le javascript -->
-    <script src="js/jquery.js"></script>
+<include file="Base:include" />
+	<link href="css/jquery.fancybox.css" rel="stylesheet">
+    <link href="css/setting.css" rel="stylesheet">
     <script src="js/jquery.fancybox.pack.js"></script>
     <script src="js/jquery.easing.pack.js"></script>
-    <script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-hover-dropdown.min.js"></script>
 	<script type="text/javascript">
 	$(function(){
 		$(function(){ $("#navbar>li:nth-child(5)").addClass("active"); });
@@ -40,7 +29,7 @@
 
 <!-- Subhead
 ================================================== -->
-<header class="jumbotron subhead" id="overview">
+<header class="bs-docs-header" id="overview">
   <div class="container">
     <h1>ACM-ICPC 区域赛</h1>
     <p class="lead">ACM-ICPC Regional</p>
@@ -54,48 +43,48 @@
     <!-- Docs nav
     ================================================== -->
     <div class="row">
-      <div class="span3 bs-docs-sidebar">
-        <ul class="nav nav-list bs-docs-sidenav">
-       	  <li class="selected"><a href="?z=regional-cool"><i class="icon-chevron-right"></i> 酷炫版</a></li>
+      <div class="col-xs-3 bs-docs-sidebar">
+        <ul class="nav bs-docs-sidenav">
+       	  <li class="selected"><a href="?z=regional-cool"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 酷炫版</a></li>
           <?php foreach($y as $vo) {
-          	if($vo['y'] == $year) echo '<li class="active"><a><i class="icon-chevron-right"></i> -- '.$vo['y'].'年</a></li>';
-          	else echo '<li><a href="?z=regional-cool-y-'.$vo['y'].'#top"><i class="icon-chevron-right"></i> -- '.$vo['y'].'年</a></li>';
+          	if($vo['y'] == $year) echo '<li class="active"><a><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> '.$vo['y'].'年</a></li>';
+          	else echo '<li><a href="?z=regional-cool-y-'.$vo['y'].'#top"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> '.$vo['y'].'年</a></li>';
 		  } ?>
-          <li><a href="?z=regional-data"><i class="icon-chevron-right"></i> 表单版</a></li>
+          <li><a href="?z=regional-data"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 表单版</a></li>
         </ul>
       </div>
-      <div class="span9">
+      <div class="col-xs-9">
       	<section id="top">
       	<?php foreach($data as $d) { ?>
           <div class="page-header">
             <h1><?php if($year) { echo 'Year '.$year; $year = 0; } else echo ' '; ?></h1>
           </div>
           <div class="row">
-            <div class="span4">
+            <div class="col-xs-6">
               <p class="text-success"><font size="+3"><img style="width:20%" src="<?php switch($d['medal']) { case 0: echo 'img/golden.png'; break; case 1: echo 'img/silver.png'; break; case 2: echo 'img/bronze.png'; break; case 4: echo 'img/norank.png'; break; default: echo 'img/honorable.png'; } ?>" /> <strong><?php echo $d['team']; if($d['medal'] == 4) echo ' *'; ?></strong></font></p>
             </div>
-            <div class="span5 text-right">
-              <p><span class="alert alert-info"><i class="icon-map-marker"></i> <?php echo $d['university'].', '.$d['site'].' @ '.$d['y'].'.'.$d['m']; ?></span></p>
-              <Br />
-              <p><?php $temp = ''; if($d['medal'] == 0) $temp = '金牌'; else if($d['medal'] == 1) $temp = '银牌'; else if($d['medal'] == 2) $temp = '铜牌'; else if($d['medal'] == 4) $temp = '旅游队*（不计排名）'; if($d['title']) { if($temp) $temp = $temp.', '.$d['title']; else $temp = $d['title']; } if($temp) echo '<span class="alert alert-warning"><strong>'.$temp.'</strong></span>'; if($d['ranking']) echo ' <span class="alert alert-success"><strong>第'.$d['ranking'].'名</strong></span>'; ?></p>
+            <div class="col-xs-6 text-right">
+              <h5><span class="alert alert-info"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <?php echo $d['university'].', '.$d['site'].' @ '.$d['y'].'.'.$d['m']; ?></span></h5>
+              <br />
+              <h5><?php $temp = ''; if($d['medal'] == 0) $temp = '金牌'; else if($d['medal'] == 1) $temp = '银牌'; else if($d['medal'] == 2) $temp = '铜牌'; else if($d['medal'] == 4) $temp = '旅游队*（不计排名）'; if($d['title']) { if($temp) $temp = $temp.', '.$d['title']; else $temp = $d['title']; } if($temp) echo '<span class="alert alert-warning"><strong>'.$temp.'</strong></span>'; if($d['ranking']) echo ' <span class="alert alert-success"><strong>第'.$d['ranking'].'名</strong></span>'; ?></h5>
             </div>
           </div>
           <hr class="soften" />
           <div class="row">
-          	<div class="span3">
-          	  <p><span class="label label-warning">Leader</span> <?php if($d['leader_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <a href="#" data-toggle="personmodal" data-uid="<?php echo $d['leader']; ?>"><?php if($d['leader_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['leader_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['leader_detail']['chsname'].' '.$d['leader_detail']['engname'].'">'; ?><?php echo $d['leader_detail']['chsname'].' '.$d['leader_detail']['engname']; ?><?php if($d['leader_detail']['introduce']) echo '</span>'; ?></a></p>
+          	<div class="col-xs-4">
+          	  <p><span class="label label-warning">Leader</span> <?php if($d['leader_detail']['sex'] != 1) echo '<span class="label label-success">♂</span>'; else echo '<span class="label label-danger">♀</span>'; ?> <a href="#" data-toggle="personmodal" data-uid="<?php echo $d['leader']; ?>"><?php if($d['leader_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['leader_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['leader_detail']['chsname'].' '.$d['leader_detail']['engname'].'">'; ?><?php echo $d['leader_detail']['chsname'].' '.$d['leader_detail']['engname']; ?><?php if($d['leader_detail']['introduce']) echo '</span>'; ?></a></p>
           	</div>
-          	<div class="span3">
-          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer1_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <a href="#" data-toggle="personmodal" data-uid="<?php echo $d['teamer1']; ?>"><?php if($d['teamer1_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer1_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname'].'">'; ?><?php echo $d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname']; ?><?php if($d['teamer1_detail']['introduce']) echo '</span>'; ?></a></p>
+          	<div class="col-xs-4">
+          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer1_detail']['sex'] != 1) echo '<span class="label label-success">♂</span>'; else echo '<span class="label label-danger">♀</span>'; ?> <a href="#" data-toggle="personmodal" data-uid="<?php echo $d['teamer1']; ?>"><?php if($d['teamer1_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer1_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname'].'">'; ?><?php echo $d['teamer1_detail']['chsname'].' '.$d['teamer1_detail']['engname']; ?><?php if($d['teamer1_detail']['introduce']) echo '</span>'; ?></a></p>
           	</div>
-          	<div class="span3">
-          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer2_detail']['sex'] != 1) echo '<span class="label">♂</span>'; else echo '<span class="label label-important">♀</span>'; ?> <a href="#" data-toggle="personmodal" data-uid="<?php echo $d['teamer2']; ?>"><?php if($d['teamer2_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer2_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname'].'">'; ?><?php echo $d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname']; ?><?php if($d['teamer2_detail']['introduce']) echo '</span>'; ?></a></p>
+          	<div class="col-xs-4">
+          	  <p><span class="label label-info">Teamer</span> <?php if($d['teamer2_detail']['sex'] != 1) echo '<span class="label label-success">♂</span>'; else echo '<span class="label label-danger">♀</span>'; ?> <a href="#" data-toggle="personmodal" data-uid="<?php echo $d['teamer2']; ?>"><?php if($d['teamer2_detail']['introduce']) echo '<span data-trigger="hover" data-content="'.$d['teamer2_detail']['introduce'].'" data-placement="top" data-toggle="popover" data-original-title="'.$d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname'].'">'; ?><?php echo $d['teamer2_detail']['chsname'].' '.$d['teamer2_detail']['engname']; ?><?php if($d['teamer2_detail']['introduce']) echo '</span>'; ?></a></p>
           	</div>
           </div>
           <hr class="soften" />
           <div class="row">
-          	<div class="<?php if(!$d['pic2']) echo 'span6'; else echo 'span4'; ?>"><a class="fancybox" href="<?php if($d['pic1']) echo $d['pic1']; else echo 'img/nopic.jpg'; ?>"><img src="<?php if($d['pic1']) echo 'upload/thumb/'.substr($d['pic1'], 7); else echo 'img/nopic.jpg'; ?>" class="img-polaroid" /></a></div>
-          	<?php if($d['pic2']) echo '<div class="span4"><a class="fancybox" href="'.$d['pic2'].'"><img src="upload/thumb/'.substr($d['pic2'], 7).'" class="img-polaroid" /></a></div>'; ?>
+          	<div class="<?php if(!$d['pic2']) echo 'col-xs-9'; else echo 'col-xs-6'; ?>"><a class="fancybox" href="<?php if($d['pic1']) echo $d['pic1']; else echo 'img/nopic.jpg'; ?>"><img src="<?php if($d['pic1']) echo 'upload/thumb/'.substr($d['pic1'], 7); else echo 'img/nopic.jpg'; ?>" class="thumbnail" style="max-width:100%" /></a></div>
+          	<?php if($d['pic2']) echo '<div class="col-xs-6"><a class="fancybox" href="'.$d['pic2'].'"><img src="upload/thumb/'.substr($d['pic2'], 7).'" class="thumbnail" style="max-width:100%" /></a></div>'; ?>
           </div>
        <?php } ?>
        </section>

@@ -1,19 +1,7 @@
 <include file="Base:header" />
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
+<include file="Base:include" />
     <link href="css/theme.bootstrap.css" rel="stylesheet">
     <link href="css/setting.css" rel="stylesheet">
-    
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-    
-    <!-- Le javascript -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-hover-dropdown.min.js"></script>
     <script src="js/jquery.tablesorter.min.js"></script>
     <script src="js/jquery.tablesorter.widgets.min.js"></script>
     <script src="js/jquery.tablesorter.pager.js"></script>
@@ -93,7 +81,7 @@
 
 <!-- Subhead
 ================================================== -->
-<header class="jumbotron subhead" id="overview">
+<header class="bs-docs-header" id="overview">
   <div class="container">
     <h1>通讯录</h1>
     <p class="lead">Contacts</p>
@@ -108,13 +96,13 @@
     ================================================== -->
     <div class="row">
       <include file="commonbar" />
-      <div class="span9 content">
+      <div class="col-xs-9 content">
       	<div class="page-header">
             <h1>教练团队</h1>
         </div>
         <div class="row">
-            <div class="span9" style="min-height:10px"> </div>
-            <div id="table-content-index" class="span9 table-content">
+            <div class="col-xs-12" style="min-height:10px"> </div>
+            <div id="table-content-index" class="col-xs-12 table-content">
   				<table id="data-table-teacher" class="data-table table table-bordered table-striped table-condensed table-hover">
   					<thead>
     					<tr class="align-center">
@@ -140,13 +128,13 @@
             <h1>队员通讯录</h1>
         </div>
         <div class="row">
-            <div class="span9">搜索任意内容：<input class="search input-xlarge" type="search" data-column="all"> <button type="button" class="reset btn btn-primary">还原过滤</button></div>
-            <div id="table-content-index" class="span9 table-content">
+            <div class="col-xs-12"><p><form class="form-inline"><span>搜索任意内容：</span><input class="search form-control" style="width:30%" type="search" data-column="all"> <button type="button" class="reset btn btn-primary">还原过滤</button></form></p></div>
+            <div id="table-content-index" class="col-xs-12 table-content">
   				<table id="data-table" class="data-table table table-bordered table-striped table-condensed table-hover">
   					<thead>
     					<tr class="align-center">
       						<th>中文姓名</th>
-                            <th width="40px">性别</th>
+                            <th width="60px">性别</th>
                             <th>Email</th>
                             <th>电话</th>
                             <th>本科年级</th>
@@ -165,19 +153,19 @@
 				</table>
             </div>
             <!-- pager -->
-            <div id="pager" class="span9 pagination text-center" style="margin-top:0px">
-              	<ul>
-                    <li class="first"><a href="javascript:void(0)"><i class="icon-step-backward"></i></a></li>
-                    <li class="prev"><a href="javascript:void(0)"><i class="icon-backward"></i></a></li>
+            <div id="pager" class="col-xs-12 text-center" style="margin-top:0px">
+              	<ul class="pagination">
+                    <li class="first"><a href="javascript:void(0)"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a></li>
+                    <li class="prev"><a href="javascript:void(0)"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
                     <li><span class="pagedisplay"></span></li>
-                    <li class="next"><a href="javascript:void(0)"><i class="icon-forward"></i></a></li>
-                    <li class="last"><a href="javascript:void(0)"><i class="icon-step-forward"></i></a></li>
-                    <select class="pagesize input-mini inline">
+                    <li class="next"><a href="javascript:void(0)"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></a></li>
+                    <li class="last"><a href="javascript:void(0)"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></a></li>
+                    <div class="col-xs-4" style="margin-left:-10px"><select class="pagesize inline form-control">
                         <option selected="selected" value="15">15</option>
                         <option value="30">30</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
-                	</select>
+                	</select></div>
                 </ul>
             </div>
         </div>

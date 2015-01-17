@@ -62,10 +62,10 @@ class TalkController extends BaseController {
             $this -> assign('tid', $tid);
             $this -> assign('title', htmlspecialchars($res['title']));
             $this -> assign('introduce', '<p><span class="text-warning"><strong>'
-                .strlen($res['content']).'B</strong></span> BY <span class="text-info"><strong>'
-                .htmlspecialchars($res['ojaccount']).'</strong></span> @ <span class="text-success">'
+                .strlen($res['content']).'B</strong></span> BY <span class="text-primary"><strong>'
+                .htmlspecialchars($res['ojaccount']).'</strong></span> @ <span class="text-muted">'
                 .$res['createtime'].'</span>'.
-                ($res['problemid'] ? ' IN <span class="text-error"><strong>Problem '.$res['problemid'].'</strong></span>' : '')
+                ($res['problemid'] ? ' IN <span class="text-danger"><strong>Problem '.$res['problemid'].'</strong></span>' : '')
                 .(time() - strtotime($res['createtime']) <= TalkController::$var_newlogo_second ? ' <span class="label label-warning">New</span>' : '')
                 .'</p>');
             if($res['content']) $this -> assign('content', '<pre style="font-size:16px">'.htmlspecialchars($res['content']).'</pre>');
@@ -285,10 +285,10 @@ class TalkController extends BaseController {
     private function buildtalk_perhtml($idx) {  //生成每条talk的html
         return '<a style="color:black" href="?z=talk-msg-tid-'.$this -> talk_arr[$idx]['tid'].'">'.htmlspecialchars($this -> talk_arr[$idx]['title'])
         .'</a> <small style="display:inline">(<span class="text-warning"><strong>'
-        .intval($this -> talk_arr[$idx]['l']).'B</strong></span>) BY <span class="text-info"><strong>'
-        .htmlspecialchars($this -> talk_arr[$idx]['ojaccount']).'</strong></span> @ <span class="text-success">'
+        .intval($this -> talk_arr[$idx]['l']).'B</strong></span>) BY <span class="text-primary"><strong>'
+        .htmlspecialchars($this -> talk_arr[$idx]['ojaccount']).'</strong></span> @ <span class="text-muted">'
         .$this -> talk_arr[$idx]['createtime'].'</span>'.
-        ($this -> talk_arr[$idx]['problemid'] ? ' IN <span class="text-error"><strong>Problem '.$this -> talk_arr[$idx]['problemid'].'</strong></span>' : '')
+        ($this -> talk_arr[$idx]['problemid'] ? ' IN <span class="text-danger"><strong>Problem '.$this -> talk_arr[$idx]['problemid'].'</strong></span>' : '')
         .(time() - strtotime($this -> talk_arr[$idx]['createtime']) <= TalkController::$var_newlogo_second ? ' <span class="label label-warning">New</span>' : '')
         .'</small>';
     }

@@ -1,18 +1,5 @@
 <include file="Base:header" />
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="assets/js/html5shiv.js"></script>
-    <![endif]-->
-    
-     <!-- Le javascript -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-hover-dropdown.min.js"></script>
+<include file="Base:include" />
     <script type="text/javascript">$(function(){ $("#navbar>li:nth-child(1)").addClass("active"); });</script>
   </head>
 
@@ -38,23 +25,23 @@
         $first = true;
     	foreach($recent as $r) {
         	if($r['type'] != 0 && $r['medal'] > 2) continue;
-            if($r['medal'] == 0) $medal = '<span class="badge badge-warning">金牌</span>';
-            else if($r['medal'] == 1) $medal = '<span class="badge">银牌</span>';
-            else if($r['medal'] == 2) $medal = '<span class="badge badge-important">铜牌</span>';
+            if($r['medal'] == 0) $medal = '<span class="label label-warning">金牌</span>';
+            else if($r['medal'] == 1) $medal = '<span class="label label-default">银牌</span>';
+            else if($r['medal'] == 2) $medal = '<span class="label label-danger">铜牌</span>';
             if($first) { $first = false; }
             else echo '<br />';
         	if($r['type'] == 0) {
-            	echo '@'.$r['holdtime'].' 恭喜<span class="badge badge-success">'.$r['team'].'</span>挺进<span class="badge badge-info">World Final</span>';
+            	echo '@'.$r['holdtime'].' 恭喜<span class="label label-success">'.$r['team'].'</span>挺进<span class="badge badge-info">World Final</span>';
                 if($r['medal'] < 3) echo '，并获得'.$medal.'！';
                 else echo '！';
             }
             else {
-            	echo '@'.$r['holdtime'].' 恭喜<span class="badge badge-success">'.$r['team'].'</span>获得区域赛'.$medal.'！';
+            	echo '@'.$r['holdtime'].' 恭喜<span class="label label-success">'.$r['team'].'</span>获得区域赛'.$medal.'！';
             }
 		}
 		echo '</h5><hr class="soften">';
     } ?>
-    <h4>至目前为止，World Final: <span class="badge badge-info"><big><?php echo $number['wf']; ?></big></span>， Regional: 金 <span class="badge badge-warning"><big><?php echo $number['regional'][0]; ?></big></span> 银 <span class="badge"><big><?php echo $number['regional'][1]; ?></big></span> 铜 <span class="badge badge-important"><big><?php echo $number['regional'][2]; ?></big></span></h4>
+    <h4>至目前为止，World Final: <span class="label label-info"><big><?php echo $number['wf']; ?></big></span>， Regional: 金 <span class="label label-warning"><big><?php echo $number['regional'][0]; ?></big></span> 银 <span class="label label-default"><big><?php echo $number['regional'][1]; ?></big></span> 铜 <span class="label label-danger"><big><?php echo $number['regional'][2]; ?></big></span></h4>
   </div>
 </div>
 

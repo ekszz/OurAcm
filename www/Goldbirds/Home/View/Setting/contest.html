@@ -1,22 +1,11 @@
 <include file="Base:header" />
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
+<include file="Base:include" />
     <link href="css/theme.bootstrap.css" rel="stylesheet">
     <link href="css/setting.css" rel="stylesheet">
-    
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-    
-     <!-- Le javascript -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-hover-dropdown.min.js"></script>
     <script src="js/jquery.tablesorter.min.js"></script>
     <script src="js/jquery.tablesorter.widgets.min.js"></script>
     <script src="js/jquery.tablesorter.pager.js"></script>
+    <script src="js/bootstrap3-typeahead.min.js"></script>
     <script src="js/ajaxfileupload.js"></script>
     <script src="js/setting_common.js"></script>
 	<script type="text/javascript">
@@ -44,7 +33,7 @@
 
 <!-- Subhead
 ================================================== -->
-<header class="jumbotron subhead" id="overview">
+<header class="bs-docs-header" id="overview">
   <div class="container">
     <h1>设置</h1>
     <p class="lead">Setting</p>
@@ -59,28 +48,28 @@
     ================================================== -->
     <div class="row">
       <include file="commonbar" />
-      <div class="span9 content">
+      <div class="col-xs-9 content">
 		<div class="page-header">
             <h1>获奖记录列表</h1>
         </div>
         <div class="row">
-			<div class="span9 pull-left">
+			<div class="col-xs-12 pull-left">
 				<div class="btn-group">
-					<a data-func="1" title="添加" data-target="#contest-modal" data-toggle="modal" role="button" class="btn btn-add btn-large btn-tool"><i class="icon-plus"></i></a>
-					<a data-func="3" title="编辑" data-target="#contest-modal" data-toggle="modal" role="button" class="btn btn-large btn-edit btn-tool" data-uid=""><i class="icon-edit"></i></a>
-					<a onClick="del_checked();" title="删除" class="btn btn-large btn-delete btn-tool"><i class="icon-trash"></i></a>
+					<button data-func="1" title="添加" data-target="#contest-modal" data-toggle="modal" role="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+					<button data-func="3" title="编辑" data-target="#contest-modal" data-toggle="modal" role="button" class="btn btn-default" data-uid=""><span class="glyphicon glyphicon-pencil"></span></button>
+					<button onClick="del_checked();" title="删除" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></a>
 				</div>
 		
 				<div class="btn-group">
-		    		<a style="margin-left: -1px;" data-target="#contest-modal" title="刷新" class="btn btn-large" onClick="reFresh();"><i class="icon-refresh"></i></a>
+		    		<button data-target="#contest-modal" title="刷新" class="btn btn-default" onClick="reFresh();"><span class="glyphicon glyphicon-refresh"></span></a>
 				</div>
 			</div>
-            <div class="span9" style="min-height:10px"> </div>
-            <div id="table-content-index" class="span9 table-content">
+            <div class="col-xs-12" style="min-height:10px"> </div>
+            <div id="table-content-index" class="col-xs-12 table-content">
   				<table id="data-table" class="data-table table table-bordered table-striped table-condensed table-hover">
   					<thead>
     					<tr class="align-center">
-      						<th><label class="checkbox"><input type="checkbox" class="select-all"></label></th>
+      						<th><label style="padding-right:15px"><input type="checkbox" class="select-all"></label></th>
                             <th>CID</th>
       						<th>比赛日期</th>
                             <th>地点</th>
@@ -96,19 +85,19 @@
 				</table>
             </div>
             <!-- pager -->
-            <div id="pager" class="span9 pagination text-center" style="margin-top:0px">
-              	<ul>
-                    <li class="first"><a href="javascript:void(0)"><i class="icon-step-backward"></i></a></li>
-                    <li class="prev"><a href="javascript:void(0)"><i class="icon-backward"></i></a></li>
+            <div id="pager" class="col-xs-12 text-center" style="margin-top:0px">
+              	<ul class="pagination">
+                    <li class="first"><a href="javascript:void(0)"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a></li>
+                    <li class="prev"><a href="javascript:void(0)"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
                     <li><span class="pagedisplay"></span></li>
-                    <li class="next"><a href="javascript:void(0)"><i class="icon-forward"></i></a></li>
-                    <li class="last"><a href="javascript:void(0)"><i class="icon-step-forward"></i></a></li>
-                    <select class="pagesize input-mini inline">
+                    <li class="next"><a href="javascript:void(0)"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></a></li>
+                    <li class="last"><a href="javascript:void(0)"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></a></li>
+                    <div class="col-xs-4" style="margin-left:-10px"><select class="pagesize inline form-control">
                         <option selected="selected" value="10">10</option>
-                        <option value="20">20</option>
+                        <option value="30">30</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
-                	</select>
+                	</select></div>
                 </ul>
             </div>
         </div>
@@ -117,64 +106,131 @@
   </div>
 
   <div id="alert"></div>
-  <div class="modal hide fade" id="contest-modal" data-cache='false' data-backdrop="true" data-keyboard="true" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal fade" id="contest-modal" data-cache='false' data-backdrop="true" data-keyboard="true" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true"><div class="modal-dialog" style="width:800px"><div class="modal-content">
   	<div class="modal-header">
     	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    	<h3 id="contest-modal-title">获奖记录管理</h3>
+    	<h4 class="modal-title" id="contest-modal-title">获奖记录管理</h4>
   	</div>
-    <form class="form-inline" id="contest-form" method="post" action="" enctype="multipart/form-data">
+    <form class="form-horizontal" id="contest-form" method="post" action="" enctype="multipart/form-data">
   	<div class="modal-body">
-		<label for="holdtime">比赛日期*</label><input type="text" id="holdtime" name="holdtime" placeholder="格式：2013-01-01">
-        <label for="team">队伍名*</label><input type="text" id="team" name="team" placeholder="建议用英文队名">
-        <label for="site">举办地点*</label><input type="text" id="site" name="site" placeholder="如“福州”">
-        <label for="university">举办单位*</label><input type="text" id="university" name="university" placeholder="如“福州大学”">
-        <label for="type">级别*</label><select class="input-medium" id="type" name="type"><option value="0">0-WF</option><option value="1">1-Regional</option><option value="2">2-省赛</option></select>
-        <label for="medal">奖项*</label><select class="input-small" id="medal" name="medal"><option value="0">0-金</option><option value="1">1-银</option><option value="2">2-铜</option><option value="3">3-铁</option><option value="4">4-旅</option></select>
-        <label for="ranking">排名</label><input class="input-mini" type="text" name="ranking" id="ranking">
-        <label for="title">附加奖项</label><input type="text" class="input-medium" id="title" name="title">
-		<label for="leader">队长*</label><div class="input-append"><input type="text" name="leader" id="leader" autocomplete="off" data-provide="typeahead" placeholder="格式：UID-中文姓名"><button class="btn" type="button" data-func="add_person" data-target="#leader">+</button></div>
-		<label for="teamer1">队员</label><div class="input-append"><input type="text" name="teamer1" id="teamer1" autocomplete="off" data-provide="typeahead" placeholder="格式：UID-中文姓名"><button class="btn" type="button" data-func="add_person" data-target="#teamer1">+</button></div><div class="input-append" style="margin-left:43px"><input type="text" name="teamer2" id="teamer2" autocomplete="off" data-provide="typeahead" placeholder="格式：UID-中文姓名"><button class="btn" type="button" data-func="add_person" data-target="#teamer2">+</button></div>
-        <div class="row hide" style="margin:5px 0px 5px 50px; color:green;" id="upload_notice"></div>
-        <div class="row" style="margin-left:20px"><img class="img-polaroid span2" src="img/nopic.jpg" id="pic1_show"><label>照片1</label><div class="input-append"><input type="file" class="input-small" name="pic1" id="pic1"><button class="btn" type="button" id="pic1_upload" data-func="upload">上传</button><button class="btn" type="button" id="pic1_del" data-func="del">删除</button></div></div>
-        <div class="row" style="margin-left:20px"><img class="img-polaroid span2" src="img/nopic.jpg" id="pic2_show"><label>照片2</label><div class="input-append"><input type="file" class="input-small" name="pic2" id="pic2"><button class="btn" type="button" id="pic2_upload" data-func="upload">上传</button><button class="btn" type="button" id="pic2_del" data-func="del">删除</button></div></div>
+    	<div class="form-group">
+			<label for="holdtime" class="col-xs-2 control-label">比赛日期*</label>
+            <div class="col-xs-4"><input type="text" class="form-control" id="holdtime" name="holdtime" placeholder="格式：2013-01-01"></div>
+        	<label for="team" class="col-xs-2 control-label">队伍名*</label>
+            <div class="col-xs-4"><input type="text" class="form-control" id="team" name="team" placeholder="建议用英文队名"></div>
+        </div>
+        <div class="form-group">
+        	<label for="site" class="col-xs-2 control-label">举办地点*</label>
+            <div class="col-xs-4"><input type="text" class="form-control" id="site" name="site" placeholder="如“福州”"></div>
+        	<label for="university" class="col-xs-2 control-label">举办单位*</label>
+            <div class="col-xs-4"><input type="text" class="form-control" id="university" name="university" placeholder="如“福州大学”"></div>
+        </div>
+        <div class="form-group">
+        	<label for="type" class="col-xs-2 control-label">级别*</label>
+            <div class="col-xs-3"><select class="form-control" id="type" name="type"><option value="0">0-WF</option><option value="1">1-Regional</option><option value="2">2-省赛</option></select></div>
+        	<label for="medal" class="col-xs-2 control-label">奖项*</label>
+            <div class="col-xs-2"><select class="form-control" id="medal" name="medal"><option value="0">0-金</option><option value="1">1-银</option><option value="2">2-铜</option><option value="3">3-铁</option><option value="4">4-旅</option></select></div>
+        	<label for="ranking" class="col-xs-1 control-label">排名</label>
+            <div class="col-xs-2"><input class="form-control" type="text" name="ranking" id="ranking"></div>
+        </div>
+        <div class="form-group">
+        	<label for="title" class="col-xs-2 control-label">附加奖项</label>
+            <div class="col-xs-4"><input type="text" class="form-control" id="title" name="title"></div>
+			<label for="leader" class="col-xs-2 control-label">队长*</label>
+            <div class="col-xs-4"><div class="input-group"><input type="text" class="form-control" name="leader" id="leader" autocomplete="off" data-provide="typeahead" placeholder="格式：UID-中文姓名"><span class="input-group-btn"><button type="button" class="btn btn-default" data-func="add_person" data-target="#leader">+</button></span></div></div>
+        </div>
+        <div class="form-group">
+			<label for="teamer1" class="col-xs-2 control-label">队员1</label>
+            <div class="col-xs-4"><div class="input-group"><input type="text" class="form-control" name="teamer1" id="teamer1" autocomplete="off" data-provide="typeahead" placeholder="格式：UID-中文姓名"><span class="input-group-btn"><button type="button" class="btn btn-default" data-func="add_person" data-target="#teamer1">+</button></span></div></div>
+            <label for="teamer2" class="col-xs-2 control-label">队员2</label>
+            <div class="col-xs-4"><div class="input-group"><input type="text" class="form-control" name="teamer2" id="teamer2" autocomplete="off" data-provide="typeahead" placeholder="格式：UID-中文姓名"><span class="input-group-btn"><button type="button" class="btn btn-default" data-func="add_person" data-target="#teamer2">+</button></span></div></div>
+        </div>
+        <hr />
+        <div class="row" style="margin:0px 0px 10px 60px; color:green;" id="upload_notice">sdfsdf</div>
+        <div class="form-group">
+        	<label class="col-xs-2 control-label">照片1</label>
+            <div class="col-xs-5"><img class="thumbnail col-xs-12" src="img/nopic.jpg" id="pic1_show"></div>
+            <div class="col-xs-5"><br /><p><input type="file" class="form-control" name="pic1" id="pic1"></p>
+            <button class="btn btn-warning" type="button" id="pic1_upload" data-func="upload">上传</button>
+            <button class="btn btn-danger" type="button" id="pic1_del" data-func="del">删除</button></div>
+       	</div>
+        <div class="form-group">
+        	<label class="col-xs-2 control-label">照片2</label>
+            <div class="col-xs-5"><img class="thumbnail col-xs-12" src="img/nopic.jpg" id="pic2_show"></div>
+            <div class="col-xs-5"><br /><p><input type="file" class="form-control" name="pic2" id="pic2"></p>
+            <button class="btn btn-warning" type="button" id="pic2_upload" data-func="upload">上传</button>
+            <button class="btn btn-danger" type="button" id="pic2_del" data-func="del">删除</button></div>
+       	</div>
         <input type="hidden" name="nowcid" id="nowcid">
         <input type="hidden" name="pic1_fn" id="pic1_fn">
         <input type="hidden" name="pic2_fn" id="pic2_fn">
     </div>
     </form>
   	<div class="modal-footer">
-    	<button class="btn btn-large" data-dismiss="modal" aria-hidden="true">关闭</button>
-    	<button id="contest-btn-submit" type="submit" class="btn btn-primary btn-large">保存</button>
+    	<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+    	<button id="contest-btn-submit" type="submit" class="btn btn-primary">保存</button>
   	</div>
-  </div>
+  </div></div></div>
   
-  <div class="modal hide fade" id="person-modal" data-cache='false' data-backdrop="true" data-keyboard="true" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal fade" id="person-modal" data-cache='false' data-backdrop="true" data-keyboard="true" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true"><div class="modal-dialog" style="width:800px"><div class="modal-content">
   	<div class="modal-header">
     	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    	<h3 id="person-modal-title">队员管理</h3>
+    	<h4 class="modal-title" id="person-modal-title">队员管理</h4>
   	</div>
-    <form class="form-inline" id="person-form" method="post" action="" enctype="multipart/form-data">
+    <form class="form-horizontal" id="person-form" method="post" action="" enctype="multipart/form-data">
   	<div class="modal-body">
-		<label for="chsname">中文姓名*</label><input type="text" id="chsname" name="chsname">
-        <label for="engname">英文姓名</label><input type="text" id="engname" name="engname" placeholder="强烈建议填写">
-        <label for="group">组别*</label><select class="input-medium" id="group" name="group"><option value="0">0-队员</option><option value="1">1-队长（管理权）</option><option value="2">3-教练（管理权）</option><option value="9">9-管理员（不展示）</option></select>
-        <label for="sex">性别*</label><select class="input-small" id="sex" name="sex"><option value="0">0-男</option><option value="1">1-女</option></select>
-        <label for="grade">本科年级</label><input class="input-mini" type="text" id="grade" name="grade" placeholder="如2013">
-		<label for="email">Email</label><input type="text" name="email" id="email">
-		<label for="phone">Phone</label><input type="text" name="phone" id="phone">
-		<label for="address">现所在地</label><input class="input-xxlarge" type="text" name="address" id="address">
-		<label for="introduce">简要介绍</label><input type="text" name="introduce" id="introduce" class="input-xxlarge">
-		<label for="detail">详细自白</label>
-		<textarea rows="5" class="input-xxlarge" name="detail" id="detail"><?php if($data['detail']) echo $data['detail']; ?></textarea>
-		<label for="luckycode">邀请码*</label><input type="text" id="luckycode" name="luckycode" placeholder="系统自动生成，无需填写" readonly>
-		<label for="ojaccount">关联OJ账号</label><input type="text" id="ojaccount" name="ojaccount" placeholder="不填写则由队员自行关联"> 
-        <input type="hidden" name="nowuid" id="nowuid">
-        <input type="hidden" id="result_pos">
+		<div class="form-group">
+        	<label for="chsname" class="col-xs-2 control-label">中文姓名*</label>
+            <div class="col-xs-4"><input type="text" id="chsname" name="chsname" class="form-control"></div>
+            <label for="engname" class="col-xs-2 control-label">英文姓名</label>
+            <div class="col-xs-4"><input type="text" id="engname" name="engname" class="form-control" placeholder="强烈建议填写"></div>
+        </div>
+        <div class="form-group">
+        	<label for="group" class="col-xs-2 control-label">组别*</label>
+            <div class="col-xs-2"><select class="form-control" id="group" name="group"><option value="0">0-队员</option><option value="1">1-队长（管理权）</option><option value="2">2-教练（管理权）</option><option value="9">9-管理员（不展示）</option></select></div>
+            <label for="sex" class="col-xs-2 control-label">性别*</label>
+            <div class="col-xs-2"><select class="form-control" id="sex" name="sex"><option value="0">0-男</option><option value="1">1-女</option></select></div>
+        	<label for="grade" class="col-xs-2 control-label">本科年级</label>
+            <div class="col-xs-2"><input class="form-control" type="text" id="grade" name="grade" placeholder="如2013"></div>
+        </div>
+        <div class="form-group">
+			<label for="email" class="col-xs-2 control-label">Email</label>
+            <div class="col-xs-4"><input type="text" name="email" id="email" class="form-control"></div>
+			<label for="phone" class="col-xs-2 control-label">Phone</label>
+            <div class="col-xs-4"><input type="text" name="phone" id="phone" class="form-control"></div>
+        </div>
+        <div class="form-group">
+			<label for="address" class="col-xs-2 control-label">现所在地</label>
+            <div class="col-xs-10"><input class="form-control" type="text" name="address" id="address"></div>
+        </div>
+        <div class="form-group">
+			<label for="introduce" class="col-xs-2 control-label">简要介绍</label>
+            <div class="col-xs-10"><input type="text" name="introduce" id="introduce" class="form-control"></div>
+        </div>
+        <div class="form-group">
+			<label for="detail" class="col-xs-2 control-label">详细自白</label>
+            <div class="col-xs-10"><textarea rows="5" class="form-control" name="detail" id="detail"></textarea></div>
+        </div>
+        <div class="form-group">
+			<label for="luckycode" class="col-xs-2 control-label">邀请码*</label>
+            <div class="col-xs-4"><input type="text" id="luckycode" name="luckycode" class="form-control" placeholder="系统自动生成，无需填写" readonly></div>
+			<label for="ojaccount" class="col-xs-2 control-label">关联OJ账号</label>
+            <div class="col-xs-4"><input type="text" id="ojaccount" name="ojaccount" class="form-control" placeholder="不填写则由队员自行关联"></div>
+        </div>
+        <div class="form-group">
+        	<label class="col-xs-2 control-label">个人照片<br />（预览图）</label>
+            <div class="col-xs-4"><img class="thumbnail col-xs-12" src="img/nopic.jpg" id="face_show"></div>
+            <div class="col-xs-6"><input type="file" class="form-control" name="face" id="face"><br />
+            <button class="btn btn-warning" type="button" id="face_upload" data-func="upload">上传</button>
+            <button class="btn btn-danger" type="button" id="face_del" data-func="del">删除</button></div>
+            <input type="hidden" name="nowuid" id="nowuid">
+       	 	<input type="hidden" name="face_fn" id="face_fn">
+        </div>
   	</div>
     </form>
   	<div class="modal-footer">
-    	<button class="btn btn-large" data-dismiss="modal" aria-hidden="true">关闭</button>
-    	<button id="person-btn-submit" type="submit" class="btn btn-primary btn-large">保存</button>
+    	<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+    	<button id="btn-submit" type="submit" class="btn btn-primary">保存</button>
   	</div>
-  </div>
+  </div></div></div>
 <include file="Base:footer" />

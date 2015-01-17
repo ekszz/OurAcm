@@ -1,18 +1,6 @@
 <include file="Base:header" />
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
+<include file="Base:include" />
     <link href="css/setting.css" rel="stylesheet">
-    
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-    
-    <!-- Le javascript -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-hover-dropdown.min.js"></script>
     <script src="js/ajaxfileupload.js"></script>
     <script src="js/setting_common.js"></script>
 	<script type="text/javascript">
@@ -74,7 +62,7 @@
 
 <!-- Subhead
 ================================================== -->
-<header class="jumbotron subhead" id="overview">
+<header class="bs-docs-header" id="overview">
   <div class="container">
     <h1>个人中心</h1>
     <p class="lead">Personal Center</p>
@@ -89,64 +77,64 @@
     ================================================== -->
     <div class="row">
       <include file="commonbar" />
-      <div class="span9">
+      <div class="col-xs-9">
 		<div class="page-header">
             <h1>个人资料修改</h1>
         </div>
         <form class="form-horizontal" id="profile-form" method="post" action="" enctype="multipart/form-data">
-        	<div class="control-group">
-				<label class="control-label" for="chsname">中文姓名</label>
-				<div class="controls">
-					<input type="text" id="chsname" value="<?php echo $data['chsname']; ?>" readonly>
+        	<div class="form-group">
+				<label class="control-label col-xs-2" for="chsname">中文姓名</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" id="chsname" value="<?php echo $data['chsname']; ?>" readonly>
 				</div>
 			</div>
-            <div class="control-group">
-				<label class="control-label" for="email">Email</label>
-				<div class="controls">
-					<input type="text" name="email" id="email" <?php if($data['email']) echo 'value="'.$data['email'].'"'; ?> placeholder="发送通知等，仅本系统用户可见">
+            <div class="form-group">
+				<label class="control-label col-xs-2" for="email">Email</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" name="email" id="email" <?php if($data['email']) echo 'value="'.$data['email'].'"'; ?> placeholder="发送通知等，仅本系统用户可见">
 				</div>
 			</div>
-            <div class="control-group">
-				<label class="control-label" for="phone">Phone</label>
-				<div class="controls">
-					<input type="text" name="phone" id="phone" <?php if($data['phone']) echo 'value="'.$data['phone'].'"'; ?> placeholder="手机号码，仅本系统用户可见">
+            <div class="form-group">
+				<label class="control-label col-xs-2" for="phone">Phone</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" name="phone" id="phone" <?php if($data['phone']) echo 'value="'.$data['phone'].'"'; ?> placeholder="手机号码，仅本系统用户可见">
 				</div>
 			</div>
-            <div class="control-group">
-				<label class="control-label" for="address">现所在地</label>
-				<div class="controls">
-					<input type="text" name="address" id="address" class="input-xlarge" <?php if($data['address']) echo 'value="'.$data['address'].'"'; ?>  placeholder="Hello, World.">
+            <div class="form-group">
+				<label class="control-label col-xs-2" for="address">现所在地</label>
+				<div class="col-xs-6">
+					<input type="text" class="form-control" name="address" id="address" <?php if($data['address']) echo 'value="'.$data['address'].'"'; ?>  placeholder="Hello, World.">
 				</div>
 			</div>
             <?php if(!$config_lock_person_introduce) { ?>
-            <div class="control-group">
-				<label class="control-label" for="introduce">简要介绍</label>
-				<div class="controls">
-					<input type="text" name="introduce" id="introduce" class="input-xxlarge" <?php if($data['introduce']) echo 'value="'.$data['introduce'].'"'; ?>>
+            <div class="form-group">
+				<label class="control-label col-xs-2" for="introduce">简要介绍</label>
+				<div class="col-xs-9">
+					<input type="text" class="form-control" name="introduce" id="introduce" <?php if($data['introduce']) echo 'value="'.$data['introduce'].'"'; ?>>
 				</div>
 			</div>
             <?php } ?>
-            <div class="control-group">
-				<label class="control-label" for="detail">详细自白</label>
-				<div class="controls">
-					<textarea rows="8" class="input-xxlarge" name="detail" id="detail"><?php if($data['detail']) echo $data['detail']; ?></textarea>
+            <div class="form-group">
+				<label class="control-label col-xs-2" for="detail">详细自白</label>
+				<div class="col-xs-9">
+					<textarea rows="8" class="form-control" name="detail" id="detail"><?php if($data['detail']) echo $data['detail']; ?></textarea>
 				</div>
 			</div>
-            <div class="control-group">
-				<label class="control-label" for="luckycode">邀请码</label>
-				<div class="controls">
-					<input type="text" id="luckycode" class="input-xlarge" <?php if($data['luckycode']) echo 'value="'.$data['luckycode'].'"'; ?> readonly>
+            <div class="form-group">
+				<label class="control-label col-xs-2" for="luckycode">邀请码</label>
+				<div class="col-xs-3">
+					<input type="text" id="luckycode" class="form-control" <?php if($data['luckycode']) echo 'value="'.$data['luckycode'].'"'; ?> readonly>
 				</div>
 			</div>
-            <div class="control-group">
-				<label class="control-label" for="ojaccount">关联的OJ账号</label>
-				<div class="controls">
-					<input type="text" id="ojaccount" class="input-xlarge" <?php if($data['ojaccount']) echo 'value="'.$data['ojaccount'].'"'; ?> readonly>
+            <div class="form-group">
+				<label class="control-label col-xs-2" for="ojaccount">关联的OJ账号</label>
+				<div class="col-xs-3">
+					<input type="text" id="ojaccount" class="form-control" <?php if($data['ojaccount']) echo 'value="'.$data['ojaccount'].'"'; ?> readonly>
 				</div>
 			</div>
-            <div class="control-group">
-				<label class="control-label"> </label>
-				<div class="controls">
+            <div class="form-group">
+				<label class="control-label col-xs-2"> </label>
+				<div class="col-xs-8">
 					<input type="button" value="点我更新个人资料" class="btn btn-primary" onClick="return onSubmit();">
 				</div>
 			</div>
@@ -156,21 +144,21 @@
             <h1>头像修改</h1>
         </div>
         <form class="form-horizontal" id="face-form" method="post" action="" enctype="multipart/form-data">
-        	<div class="control-group">
-				<label class="control-label">原个人照片</label>
-				<div class="controls">
-                    <img id="photo-view" src="<?php if($data['photo']) echo $data['photo']; else echo 'img/nopic.jpg'; ?>" class="span3 img-polaroid" />
+        	<div class="form-group">
+				<label class="control-label col-xs-2">原个人照片</label>
+				<div class="col-xs-8">
+                    <img id="photo-view" src="<?php if($data['photo']) echo $data['photo']; else echo 'img/nopic.jpg'; ?>" class="col-xs-6 thumbnail" />
 				</div>
 			</div>
-            <div class="control-group">
-				<label class="control-label" for="photo">更新个人照片</label>
-				<div class="controls">
-					<input type="file" name="photo" id="photo" class="input-xxlarge">
+            <div class="form-group">
+				<label class="control-label col-xs-2" for="photo">更新个人照片</label>
+				<div class="col-xs-6">
+					<input type="file" name="photo" id="photo" class="form-control">
 				</div>
 			</div>
-            <div class="control-group">
-				<label class="control-label"> </label>
-				<div class="controls">
+            <div class="form-group">
+				<label class="control-label col-xs-2"> </label>
+				<div class="col-xs-6">
 					<input type="button" value="点我上传头像" class="btn btn-primary" onClick="return onSubmitFace();">
 				</div>
 			</div>
