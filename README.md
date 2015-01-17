@@ -19,8 +19,8 @@ OurAcm
 系统要求  
 ========  
   
-建议使用PHP 5.3+环境，MySQL 5.1+数据库，  
-浏览器支持Chrome、Firefox、IE10+等，IE低版本显示不友好，会有提示信息。  
+建议使用PHP 5.3+环境，MySQL 5.1+数据库。  
+浏览器支持Chrome、Firefox、IE10+等；不支持IE低版本，使用这些旧版本浏览器访问，会跳转至提示页面。  
 注意：因ThinkPHP 3.2.3需要PHP的php_pdo_mysql扩展，如果服务器不支持，请将ThinkPHP替换为旧版本的ThinkPHP 3.2.2版本。  
   
   
