@@ -37,6 +37,8 @@ class WfController extends BaseController {
                 $data[$i]['teamer1_detail']['engname'] = htmlspecialchars($data[$i]['teamer1_detail']['engname']);
                 $data[$i]['teamer2_detail']['chsname'] = htmlspecialchars($data[$i]['teamer2_detail']['chsname']);
                 $data[$i]['teamer2_detail']['engname'] = htmlspecialchars($data[$i]['teamer2_detail']['engname']);
+                if(strtotime($data[$i]['holdtime']) > time()) $data[$i]['coming'] = 1;  //晋级，未比赛
+                else $data[$i]['coming'] = 0;  //已比赛
                 
                 //如果不存在缩略图，则生成
                 if($data[$i]['pic1'] && !file_exists('upload/thumb/'.substr($data[$i]['pic1'], 7))) {
@@ -71,6 +73,8 @@ class WfController extends BaseController {
                 $data[$i]['teamer1_detail']['engname'] = htmlspecialchars($data[$i]['teamer1_detail']['engname']);
                 $data[$i]['teamer2_detail']['chsname'] = htmlspecialchars($data[$i]['teamer2_detail']['chsname']);
                 $data[$i]['teamer2_detail']['engname'] = htmlspecialchars($data[$i]['teamer2_detail']['engname']);
+                if(strtotime($data[$i]['holdtime']) > time()) $data[$i]['coming'] = 1;  //晋级，未比赛
+                else $data[$i]['coming'] = 0;  //已比赛
 		    }
 			$this -> assign('data', $data);
 			$this -> commonassign();

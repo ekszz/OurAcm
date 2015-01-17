@@ -62,12 +62,16 @@
 
           <div class="row">
             <div class="col-xs-6">
+              <?php if($d['coming'] == 1) { ?>
+              <p class="text-warning"><font size="+3"><img style="width:25%" src="img/promotion.png" /> <strong><?php echo $d['team']; ?></strong></font></p>
+              <?php } else { ?>
               <p class="text-success"><font size="+3"><img style="width:25%" src="img/final.png" /> <strong><?php echo $d['team']; ?></strong></font></p>
+              <?php } ?>
             </div>
             <div class="col-xs-6 text-right">
               <h5><span class="alert alert-info"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <?php echo $d['university'].', '.$d['site'].' @ '.$d['y'].'.'.$d['m']; ?></span></h5>
               <br />
-              <h5><?php $temp = ''; if($d['medal'] == 0) $temp = '金牌'; else if($d['medal'] == 1) $temp = '银牌'; else if($d['medal'] == 2) $temp = '铜牌'; if($d['title']) { if($temp) $temp = $temp.', '.$d['title']; else $temp = $d['title']; } if($temp) echo '<span class="alert alert-warning"><strong>'.$temp.'</strong></span>'; if($d['ranking']) echo ' <span class="alert alert-success"><strong>第'.$d['ranking'].'名</strong></span>'; ?></h5>
+              <h5><?php if($d['coming'] == 0) { $temp = ''; if($d['medal'] == 0) $temp = '金牌'; else if($d['medal'] == 1) $temp = '银牌'; else if($d['medal'] == 2) $temp = '铜牌'; if($d['title']) { if($temp) $temp = $temp.', '.$d['title']; else $temp = $d['title']; } if($temp) echo '<span class="alert alert-warning"><strong>'.$temp.'</strong></span>'; if($d['ranking']) echo ' <span class="alert alert-success"><strong>第'.$d['ranking'].'名</strong></span>'; } else { echo '<span class="alert alert-danger"><strong><span class="glyphicon glyphicon-tower"></span> 晋级WF，期待奇迹</strong></span>'; } ?></h5>
             </div>
           </div>
           <hr class="soften" />

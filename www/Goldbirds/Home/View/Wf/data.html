@@ -68,7 +68,7 @@
   					</thead>
   					<tbody>
                     	<?php foreach($data as $d) {
-                        	echo '<tr><td><img style="width:80%" src="img/final.png"></td>';
+                        	echo '<tr><td><img style="width:80%" src="'.($d['coming'] == 1 ? 'img/promotion.png' : 'img/final.png').'"></td>';
                             echo '<td><strong>'.$d['y'].'-'.$d['m'].'</strong></td><td><p>'.$d['university'].'</p><p><span class="label label-danger">'.$d['site'].'</span></p></td>';
                             echo '<td><span class="badge"><h5>'.$d['team'].'</h5></span></td><td style="text-align:left !important; padding-left:20px">';
                             echo '<p><span class="label label-warning">Leader</span> ';
@@ -99,15 +99,20 @@
                             echo '</a></p>';
                             
                             echo '</td><td>';
-                            $temp = ''; 
-                            if($d['medal'] == 0) $temp = '金牌'; 
-                            else if($d['medal'] == 1) $temp = '银牌'; 
-                            else if($d['medal'] == 2) $temp = '铜牌'; 
-                            else $temp = '鼓励奖';
-                            $temp = '<p>'.$temp.'</p>';
-                            echo $temp;
-                            if($d['title']) echo '<p>'.$d['title'].'</p>';
-                            if($d['ranking']) echo '<p>第'.$d['ranking'].'名</p>';
+                            if($d['coming'] == 1) {
+                            	echo '<p>已晋级</p><p>期待奇迹</p>';
+                            }
+                            else {
+                                $temp = ''; 
+                                if($d['medal'] == 0) $temp = '金牌'; 
+                                else if($d['medal'] == 1) $temp = '银牌'; 
+                                else if($d['medal'] == 2) $temp = '铜牌'; 
+                                else $temp = '鼓励奖';
+                                $temp = '<p>'.$temp.'</p>';
+                                echo $temp;
+                                if($d['title']) echo '<p>'.$d['title'].'</p>';
+                                if($d['ranking']) echo '<p>第'.$d['ranking'].'名</p>';
+                            }
                             echo '</td></tr>';
                         } ?>
                     </tbody>
