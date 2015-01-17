@@ -39,17 +39,7 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-	var strcookie=document.cookie;
-	var arrcookie=strcookie.split("; ");
-	var iealert;
-	for(var i=0;i<arrcookie.length;i++){
-		var arr=arrcookie[i].split("=");
-		if("iealert"==arr[0]){
-			iealert=arr[1];
-			break;
-		}
-	}
-	if(iealert!="killie" && (!-[1,])) { alert("[提示]你可能正在使用IE浏览器，访问效果很差，赶紧换掉吧~,~"); var date=new Date(); var expireDays=1; date.setTime(date.getTime()+expireDays*24*3600*1000); document.cookie="iealert=killie;expires="+date.toGMTString(); }
+	if((!-[1,])) { window.location.href="ienotice.html"; }
 	</script>
   </body><?php echo $footer_additional_code == null ? "" : $footer_additional_code; ?>
 </html>
