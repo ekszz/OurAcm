@@ -1717,7 +1717,7 @@ blockquote {
 .panel-default>.panel-heading {
 	background-color: #fff;
 }
-.table-bordered>thead>tr>th, .table-bordered>thead>tr>td {
+.table>thead>tr>th {
 	border-bottom-width: 1px;
 }
 .bs-docs-sidebar .nav > li.disabled > a {
