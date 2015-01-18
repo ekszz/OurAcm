@@ -69,9 +69,8 @@
               <?php } ?>
             </div>
             <div class="col-xs-7 text-right">
-              <h5><span class="alert alert-info"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <?php echo $d['university'].', '.$d['site'].' @ '.$d['y'].'.'.$d['m']; ?></span></h5>
-              <br />
-              <h5><?php if($d['coming'] == 0) { $temp = ''; if($d['medal'] == 0) $temp = '金牌'; else if($d['medal'] == 1) $temp = '银牌'; else if($d['medal'] == 2) $temp = '铜牌'; if($d['title']) { if($temp) $temp = $temp.', '.$d['title']; else $temp = $d['title']; } if($temp) echo '<span class="alert alert-warning"><strong>'.$temp.'</strong></span>'; if($d['ranking']) echo ' <span class="alert alert-success"><strong>第'.$d['ranking'].'名</strong></span>'; } else { echo '<span class="alert alert-danger"><strong><span class="glyphicon glyphicon-tower"></span> 晋级WF，期待奇迹</strong></span>'; } ?></h5>
+              <div class="row"><div class="col-xs-12 alert alert-info pull-right" style="width:auto"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> <?php echo $d['university'].', '.$d['site'].' @ '.$d['y'].'.'.$d['m']; ?></span></div></div>
+              <div class="row"><?php if($d['coming'] == 0) { $temp = ''; if($d['medal'] == 0) $temp = '金牌'; else if($d['medal'] == 1) $temp = '银牌'; else if($d['medal'] == 2) $temp = '铜牌'; if($d['title']) { if($temp) $temp = $temp.', '.$d['title']; else $temp = $d['title']; } if($temp) echo '<span class="alert alert-warning"><strong>'.$temp.'</strong></span>'; if($d['ranking']) echo ' <span class="alert alert-success"><strong>第'.$d['ranking'].'名</strong></span>'; } else { echo '<span class="alert alert-danger"><strong><span class="glyphicon glyphicon-tower"></span> 晋级WF，期待奇迹</strong></span>'; } ?></div>
             </div>
           </div>
           <hr class="soften" />
