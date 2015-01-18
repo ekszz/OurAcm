@@ -1721,6 +1721,9 @@ blockquote {
 .panel-default>.panel-heading {
 	background-color: #fff;
 }
+.panel-title {
+	font-size: 15px;
+}
 .table>thead>tr>th {
 	border-bottom-width: 1px;
 }
