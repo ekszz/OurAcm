@@ -229,7 +229,7 @@ function load_contestants() {
 				}
 				else {
 					reshtml = reshtml + '<td><span class="btn-group btn-ables"';
-					if(vo.private_data != "") reshtml += ' data-trigger="hover" data-content="' + vo.private_data + '" data-placement="right" data-container="body" data-toggle="popover" data-original-title="未公开字段"';
+					if(vo.private_data != "") reshtml += ' data-trigger="hover" data-content="' + vo.private_data + '" data-placement="' + ($(window).width() < 1380 ? "left" : "right") + '" data-container="body" data-toggle="popover" data-original-title="未公开字段"';
 					if(vo.state == 2) { reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-enable btn-success disabled">通过</a><a data-adid="' + vo.adid + '" class="btn btn-xs btn-default btn-disable">拒绝</a>'; accept++; }
 					else if(vo.state == 1) reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-disable btn-warning disabled">拒绝</a>';
 					else reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-disable">拒绝</a>';
