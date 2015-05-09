@@ -10,18 +10,9 @@ $(function() {
 		finish();
 	});
 });
-
-function alert(msg){
-	$('#alert').html("<div class='center alert message fade in hide'><a class='dismiss close' data-dismiss='alert'>x</a><label>"
-		+ msg + "</label></div>"
-    );
-    $("#alert .alert").show();
-    $("#alert .alert").delay(5000).fadeIn(6000).fadeOut(1000);
-}
-function alert(msg,type){
-	$('#alert').html("<div class='center alert alert-"+type+" message fade in hide'><a class='dismiss close' data-dismiss='alert'>x</a><label>"
-		+ msg + "</label></div>"
-    );
+function alert(msg, t){
+	if(t == 'error') { $('#alert').html("<div class='center alert alert-danger message fade in'><a class='dismiss close' data-dismiss='alert'>x</a>" + msg + "</div>"); }
+	else { $('#alert').html("<div class='center alert alert-warning message fade in'><a class='dismiss close' data-dismiss='alert'>x</a>" + msg + "</div>"); }
     $("#alert .alert").show();
     $("#alert .alert").delay(5000).fadeIn(6000).fadeOut(1000);
 }

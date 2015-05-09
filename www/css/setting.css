@@ -35,13 +35,15 @@ td select, td textarea, td input[type="text"], td input[type="password"]{
 }
 table{
 	width: 100%;
-	overflow:hidden;
 }
 th{
 	text-align: center!important;
 	font-weight: bold;
 	background-color: #F5F5F5;
-    background-image: -moz-linear-gradient(center top , #FFFFFF, #E6E6E6);
+    background-image: -moz-linear-gradient(center bottom, rgb(255, 255, 255), rgb(230, 230, 230));
+	background-image: -webkit-linear-gradient(bottom, rgb(255, 255, 255), rgb(230, 230, 230));
+	background-image:     -ms-linear-gradient(bottom, rgb(255, 255, 255), rgb(230, 230, 230));
+  	background-image:      -o-linear-gradient(bottom, rgb(255, 255, 255), rgb(230, 230, 230));
     background-repeat: repeat-x;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
     cursor: pointer;
@@ -56,14 +58,10 @@ td{
 	vertical-align:middle !important;
 }
 td label{
-
     word-break: break-all; 
-	word-wrap:break-word;
-
-	overflow:hidden; 
+	word-wrap:break-word;; 
 	text-overflow:ellipsis;
 }
-
 
 .loading-bg{
 	background: #fffffe;
@@ -208,61 +206,10 @@ td label{
 	0%{background-color:#000000}
 	100%{background-color:#FFFFFF}
 }
-
-#person-modal label {
-	width:80px;
-	margin-left:50px;
-	margin-bottom:15px;
-}
-#person-modal textarea {
-	margin-bottom:15px;
-	margin-left:-4px;
-}
-#person-modal {
-	width:800px;
-	margin:0 0 0 -400px; 
-}
-#news-modal {
-	width:800px;
-	margin:0 0 0 -400px; 
-}
-#news-modal label {
-	width:80px;
-	margin-left:50px;
-	margin-bottom:15px;
-}
-#news-modal textarea {
-	margin-bottom:15px;
-	margin-left:0px;
-}
-#contest-modal label {
-	width:80px;
-	margin-left:50px;
-	margin-bottom:15px;
-}
-#contest-modal textarea {
-	margin-bottom:15px;
-	margin-left:-4px;
-}
-#contest-modal {
-	width:800px;
-	margin:0 0 0 -400px; 
-}
-#photo-modal label {
-	width:90px;
-	margin-left:40px;
-	margin-bottom:15px;
-}
-#activity-modal {
-	width:800px;
-	margin:0 0 0 -400px; 
-}
-#activity-modal label {
-	width:80px;
-	margin-left:50px;
-	margin-bottom:15px;
-}
-#activity-modal textarea {
-	margin-bottom:15px;
-	margin-left:0px;
+#person-modal .form-group,
+#contest-modal .form-group,
+#news-modal .form-group,
+#activity-modal .form-group {
+	margin-right: 20px;
+	margin-bottom: 5px;
 }

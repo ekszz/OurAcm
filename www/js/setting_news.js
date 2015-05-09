@@ -3,7 +3,7 @@ var typeahead_data = Array();  //自动提示数据
 
 KindEditor.ready(function(K) {
 	editor = K.create('#content', {
-		width : '200px',
+		width : '100%',
 		allowPreviewEmoticons : false,
 		allowImageUpload : false,
 		items : [
@@ -28,7 +28,7 @@ $(function () {
 		output: '{page}/{totalPages}',
 		page: 0,
 		savePages : true,
-		fixedHeight: true,
+		fixedHeight: false,
 		removeRows: false,
 		cssNext: '.next', // next page arrow
 		cssPrev: '.prev', // previous page arrow
@@ -50,8 +50,8 @@ $(function () {
 		footerCells: '',
 		icons      : '', // add "icon-white" to make them white; this icon class is added to the <i> in the header
 		sortNone   : 'd',
-		sortAsc    : 'icon-chevron-up',
-		sortDesc   : 'icon-chevron-down',
+		sortAsc    : 'glyphicon glyphicon-chevron-up',
+		sortDesc   : 'glyphicon glyphicon-chevron-down',
 		active     : '', // applied when column is sorted
 		hover      : '', // use custom css here - bootstrap class may not override it
 		filterRow  : '', // filter row class
@@ -131,11 +131,7 @@ $(function () {
 	.done( function(data) {
 		if(data.status == 0) {
 			for(var i=0;i<data.data.length;i++) { typeahead_data[i] = data.data[i]; }
-			$('#category').typeahead({
-				source: function(query, process) {
-					return typeahead_data;
-				}
-			});
+			$('#category').typeahead({source:typeahead_data});
 		}
 		else alert(data.info, "error");
 	})
@@ -164,10 +160,10 @@ function reFresh() {
 	.done(function(data) {
 		var reshtml = "";
 		$.each(data.data, function(i, vo) {
-			reshtml = reshtml + '<tr><td><label class="checkbox"><input type="checkbox" id="' + vo.nid + '" data-id="id"></label></td><td>' + vo.nid + '</td><td>' + vo.category + '</td><td>';
-			reshtml = reshtml + (vo.permission == 0 ? '':'<span class="label label-info">内</span>') + (vo.top == 1 ? '<span class="label label-success">顶</span>':'') + (isnew(vo.createtime) ? '<span class="label label-warning">新</span>':'');
+			reshtml = reshtml + '<tr><td><label style="padding-right:15px"><input type="checkbox" id="' + vo.nid + '" data-id="id"></label></td><td>' + vo.nid + '</td><td>' + vo.category + '</td><td>';
+			reshtml = reshtml + (vo.permission == 0 ? '':' <span class="label label-info">内</span>') + (vo.top == 1 ? ' <span class="label label-success">顶</span>':'') + (isnew(vo.createtime) ? ' <span class="label label-warning">新</span>':'');
 			reshtml = reshtml + '</td><td>' + (vo.title.length>20?(vo.title.substr(0,20) + '...'):vo.title) + '</td><td>' + vo.author_detail.chsname + '</td><td>' + vo.createtime;
-			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-nid="' + vo.nid + '" data-func="0" data-target="#news-modal" data-toggle="modal" class="btn btn-small btn-view" title="查看" data-trigger="hover"><i class="icon-zoom-in"></i> </a><a data-nid="' + vo.nid + '" data-func="2" data-target="#news-modal" data-toggle="modal" class="btn btn-small btn-edit" title="编辑" data-trigger="hover" data-placement="bottom"><i class="icon-edit"></i> </a><a data-toggle="del_news" data-nid="' + vo.nid + '" class="btn btn-small btn-delete" title="删除"><i class="icon-trash"></i> </a></div></td></tr>';  
+			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-nid="' + vo.nid + '" data-func="0" data-target="#news-modal" data-toggle="modal" class="btn btn-default btn-xs" title="查看" data-trigger="hover"><span class="glyphicon glyphicon-zoom-in"></a><a data-nid="' + vo.nid + '" data-func="2" data-target="#news-modal" data-toggle="modal" class="btn btn-default btn-xs" title="编辑" data-trigger="hover" data-placement="bottom"><span class="glyphicon glyphicon-pencil"></span></a><a data-toggle="del_news" data-nid="' + vo.nid + '" class="btn btn-default btn-xs" title="删除"><span class="glyphicon glyphicon-remove"></span></a></div></td></tr>';  
 		});
 		$('#data-table tbody').html(reshtml);
 		$("#data-table").trigger("update");

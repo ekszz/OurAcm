@@ -19,8 +19,8 @@ OurAcm
 系统要求  
 ========  
   
-建议使用PHP 5.3+环境，MySQL 5.1+数据库，  
-浏览器支持Chrome、Firefox、IE10+等，IE低版本显示不友好，会有提示信息。  
+建议使用PHP 5.3+环境，MySQL 5.1+数据库。  
+浏览器支持Chrome、Firefox、IE10+等；不支持IE低版本，使用这些旧版本浏览器访问，会跳转至提示页面。  
 注意：因ThinkPHP 3.2.3需要PHP的php_pdo_mysql扩展，如果服务器不支持，请将ThinkPHP替换为旧版本的ThinkPHP 3.2.2版本。  
   
   
@@ -29,7 +29,7 @@ OurAcm
   
 1、使用phpmyadmin或其它工具，导入/db目录下对应版本的数据库文件；  
 2、将www文件夹下所有文件拷贝到服务器的HTTP服务目录下；  
-3、修改服务器上/Goldbirds/Home/Common/function.php中的4个OnlineJudge接口；  
+3、修改服务器上/Goldbirds/Home/Common/function.php中的7个OnlineJudge接口；  
 4、修改服务器上/Goldbirds/Home/Conf/config.php中的数据库配置选项；  
 5、请确保服务器上/upload、/Goldbirds/Runtime（该文件夹首次访问时会创建）这2个目录具有写权限；  
 6、访问index.php尝试能否正常访问；  

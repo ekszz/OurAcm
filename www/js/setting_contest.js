@@ -6,7 +6,7 @@ $(function () {
 		output: '{page}/{totalPages}',
 		page: 0,
 		savePages : true,
-		fixedHeight: true,
+		fixedHeight: false,
 		removeRows: false,
 		cssNext: '.next', // next page arrow
 		cssPrev: '.prev', // previous page arrow
@@ -26,8 +26,8 @@ $(function () {
 		footerCells: '',
 		icons      : '', // add "icon-white" to make them white; this icon class is added to the <i> in the header
 		sortNone   : 'd',
-		sortAsc    : 'icon-chevron-up',
-		sortDesc   : 'icon-chevron-down',
+		sortAsc    : 'glyphicon glyphicon-chevron-up',
+		sortDesc   : 'glyphicon glyphicon-chevron-down',
 		active     : '', // applied when column is sorted
 		hover      : '', // use custom css here - bootstrap class may not override it
 		filterRow  : '', // filter row class
@@ -179,21 +179,9 @@ $(function () {
 	.done( function(data) {
 		if(data.status == 0) {
 			for(var i=0;i<data.data.length;i++) { typeahead_data[i] = data.data[i]; }
-			$('#leader').typeahead({
-				source: function(query, process) {
-					return typeahead_data;
-				}
-			});
-			$('#teamer1').typeahead({
-				source: function(query, process) {
-					return typeahead_data;
-				}
-			});
-			$('#teamer2').typeahead({
-				source: function(query, process) {
-					return typeahead_data;
-				}
-			});
+			$('#leader').typeahead({source:typeahead_data});
+			$('#teamer1').typeahead({source:typeahead_data});
+			$('#teamer2').typeahead({source:typeahead_data});
 		}
 		else alert(data.info, "error");
 	})
@@ -208,7 +196,7 @@ function reFresh() {  //reload table
 	.done(function(data) {
 		var reshtml = "";
 		$.each(data.data, function(i, vo) {
-			reshtml = reshtml + '<tr><td><label class="checkbox"><input type="checkbox" id="' + vo.cid + '" data-id="id"></label></td><td>' + vo.cid + '</td><td>' + vo.holdtime + '</td><td>' + vo.site + '</td><td>' + vo.university + '</td><td>';
+			reshtml = reshtml + '<tr><td><label style="padding-right:15px"><input type="checkbox" id="' + vo.cid + '" data-id="id"></label></td><td>' + vo.cid + '</td><td>' + vo.holdtime + '</td><td>' + vo.site + '</td><td>' + vo.university + '</td><td>';
 			if(vo.type == 0) reshtml = reshtml + 'WF';
 			else if(vo.type == 1) reshtml = reshtml + 'R';
 			else if(vo.type == 2) reshtml = reshtml + 'P';
@@ -225,7 +213,7 @@ function reFresh() {  //reload table
 			var picnum = 0;
 			if(vo.pic1 != null) picnum++;
 			if(vo.pic2 != null) picnum++;
-			reshtml = reshtml + picnum + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-cid="' + vo.cid + '" data-func="0" data-target="#contest-modal" data-toggle="modal" class="btn btn-small btn-view" title="查看" data-trigger="hover"><i class="icon-zoom-in"></i> </a><a data-cid="' + vo.cid + '" data-func="2" data-target="#contest-modal" data-toggle="modal" class="btn btn-small btn-edit" title="编辑" data-trigger="hover" data-placement="bottom"><i class="icon-edit"></i> </a><a data-toggle="del_contest" data-cid="' + vo.cid + '" class="btn btn-small btn-delete" title="删除"><i class="icon-trash"></i> </a></div></td></tr>';  
+			reshtml = reshtml + picnum + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-cid="' + vo.cid + '" data-func="0" data-target="#contest-modal" data-toggle="modal" class="btn btn-xs btn-default" title="查看" data-trigger="hover"><span class="glyphicon glyphicon-zoom-in"></span></a><a data-cid="' + vo.cid + '" data-func="2" data-target="#contest-modal" data-toggle="modal" class="btn btn-xs btn-default" title="编辑" data-trigger="hover" data-placement="bottom"><span class="glyphicon glyphicon-pencil"></span></a><a data-toggle="del_contest" data-cid="' + vo.cid + '" class="btn btn-xs btn-default" title="删除"><span class="glyphicon glyphicon-remove"></span></a></div></td></tr>';  
 		});
 		$('#data-table tbody').html(reshtml);
 		$("#data-table").trigger("update");
@@ -262,9 +250,9 @@ function set_contest_modal(func, cid) {  //填充modal中的数据，0-查看,1-
 					$('#pic2_del').removeAttr('disabled');
 					$('[data-func=add_person]').removeAttr('disabled');
 					$('#contest-modal-title').html('获奖记录管理 - CID: ' + cid);
-					$('#contest-btn-submit').removeClass('hide');
-					$('#upload_notice').html('提示：请选上传或删除要修改的照片文件，再点击保存按钮提交~');
-					$('#upload_notice').removeClass('hide');
+					$('#contest-btn-submit').show();
+					$('#upload_notice').html('<span class="label label-warning">提示</span> 请选上传或删除要修改的照片文件，再点击保存按钮提交~');
+					$('#upload_notice').show();
 				}
 				else {
 					$('#pic1_upload').attr('disabled', true);
@@ -273,8 +261,8 @@ function set_contest_modal(func, cid) {  //填充modal中的数据，0-查看,1-
 					$('#pic2_del').attr('disabled', true);
 					$('[data-func=add_person]').attr('disabled', true);
 					$('#contest-modal-title').html('查看获奖记录 - CID: ' + cid);
-					$('#contest-btn-submit').addClass('hide');
-					$('#upload_notice').addClass('hide');
+					$('#contest-btn-submit').hide();
+					$('#upload_notice').hide();
 				}
 			}
 			else {
@@ -302,10 +290,9 @@ function set_contest_modal(func, cid) {  //填充modal中的数据，0-查看,1-
 		$('#pic2').val(null);
 		$('#pic1_show').attr('src', 'img/nopic.jpg');
 		$('#pic2_show').attr('src', 'img/nopic.jpg');
-		$('#upload_notice').html('提示：请先选择要上传的照片，并点击上传按钮，最后再点保存按钮提交。');
-		$('#upload_notice').removeClass('hide');
-		
-		$('#btn-submit').removeClass('hide');
+		$('#upload_notice').html('<span class="label label-warning">提示</span> 请选上传或删除要修改的照片文件，再点击保存按钮提交~');
+		$('#upload_notice').show();
+		$('#contest-btn-submit').show();
 		$('#contest-modal-title').html('新增获奖记录');
 		$('#pic1_upload').removeAttr('disabled');
 		$('#pic2_upload').removeAttr('disabled');

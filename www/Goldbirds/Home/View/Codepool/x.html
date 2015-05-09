@@ -1,19 +1,7 @@
 <include file="Base:header" />
-    <!-- Le styles -->
+<include file="Base:include" />
     <link href="css/prettify.css" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
     <link href="css/setting.css" rel="stylesheet">
-    
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-    
-    <!-- Le javascript -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-hover-dropdown.min.js"></script>
     <script src="js/prettify/prettify.js"></script>
     <script src="js/setting_common.js"></script>
 	<script type="text/javascript">
@@ -39,8 +27,8 @@
 			$.post("?z=codepool-ajax_submit", {verify:$('#verify').val(), tag:$('#tag').val(), code:$('#code').val(), k:'<?php echo $key; ?>'} )
 			.done(function (data) {
 				if(data.status == 0) {
-					$('#code-content section').eq(-1).before('<section id="' + data.data.tag_id + '"><div class="page-header"><h1>' + data.data.tag + '</h1></div><div class="row"><div class="span9"><div class="control-group"><span class="label label-info">代码URL</span> <a href="' + data.data.tag_id + '"><span class="label label-warning"><?php echo $url."#"; ?>' + data.data.tag_id + '</span></a></div><pre class="prettyprint linenums" style="width:100%">' + data.data.code + '</pre></div></div></section>');
-					$('#tags li').eq(-1).before('<li><a href="#' + data.data.tag_id + '"><i class="icon-chevron-right"></i> '+ data.data.tag + '</a></li>');
+					$('#code-content section').eq(-1).before('<section id="' + data.data.tag_id + '"><div class="page-header"><h1>' + data.data.tag + '</h1></div><div class="row"><div class="col-xs-12"><p><span class="label label-info">代码URL</span> <a href="' + data.data.tag_id + '"><span class="label label-warning"><?php echo $url."#"; ?>' + data.data.tag_id + '</span></a></p></div><div class="col-xs-12"><pre class="prettyprint linenums" style="width:100%">' + data.data.code + '</pre></div></div></section>');
+					$('#tags li').eq(-1).before('<li><a href="#' + data.data.tag_id + '"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '+ data.data.tag + '</a></li>');
 					$('#code').val(null);
 					$('#verify').val(null);
 					$('#tag').val(null);
@@ -70,7 +58,7 @@
     <include file="Base:navbar" />
 <!-- Subhead
 ================================================== -->
-<header class="jumbotron subhead" id="overview">
+<header class="bs-docs-header" id="overview">
   <div class="container">
     <h1>码池</h1>
     <p class="lead">Code Pool</p>
@@ -84,15 +72,15 @@
     <!-- Docs nav
     ================================================== -->
     <div class="row">
-      <div class="span3 bs-docs-sidebar">
-        <ul class="nav nav-list bs-docs-sidenav" id="tags">
+      <div class="col-xs-3 bs-docs-sidebar">
+        <ul class="nav bs-docs-sidenav" id="tags">
           <?php foreach($data as $k => $d) {
-          	echo '<li><a href="#'.$d['tag_id'].'"><i class="icon-chevron-right"></i> '.$d['tag'].'</a></li>';
+          	echo '<li><a href="#'.$d['tag_id'].'"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '.$d['tag'].'</a></li>';
           } ?>
-          <li class="hide"><a href="#appendcode"><i class="icon-chevron-right"></i> 追加代码</a></li>
+          <li class="hide"><a href="#appendcode"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 追加代码</a></li>
         </ul>
       </div>
-      <div class="span9" id="code-content">
+      <div class="col-xs-9" id="code-content">
 
         <?php foreach($data as $k => $d) { ?>
         <section id="<?php echo $d['tag_id']; ?>">
@@ -101,26 +89,24 @@
           </div>
 
           <div class="row">
-            <div class="span9">
-              <div class="control-group"><span class="label label-info">代码URL</span> <a href="<?php echo $url.'#'.$d['tag_id']; ?>"><span class="label label-warning"><?php echo $url.'#'.$d['tag_id']; ?></span></a></div>
-              <pre class="prettyprint linenums" style="width:100%"><?php echo $d['code']; ?></pre>
-            </div>
+            <div class="col-xs-12"><p><span class="label label-info">代码URL</span> <a href="<?php echo $url.'#'.$d['tag_id']; ?>"><span class="label label-warning"><?php echo $url.'#'.$d['tag_id']; ?></span></a></p></div>
+            <div class="col-xs-12"><pre class="prettyprint linenums" style="width:100%"><?php echo $d['code']; ?></pre></div>
           </div>
         </section>
 		<?php } ?>
 
-        <section id="appendcode" class="hide">
+        <section id="appendcode" style="display:none">
           <div class="page-header">
             <h1>提交代码</h1>
           </div>
 
           <div class="row">
-            <div class="span9">
-              <?php echo '<div class="control-group"><span class="label label-info">代码URL</span> <a href="'.$url.'"><span class="label label-warning">'.$url.'</span></a></div>'; ?>
+            <div class="col-xs-12">
+              <?php echo '<div class="row"><div class="col-xs-12"><p><span class="label label-info">代码URL</span> <a href="'.$url.'"><span class="label label-warning">'.$url.'</span></a></p></div></div>'; ?>
               <form method="post" name="insertcode" class="form-inline" action="#" onSubmit="return fakesubmit();">
-              <div class="control-group"><textarea id="code" rows="16" class="input-xxlarge" style="width:100%"></textarea></div>
-              	<label for="verify"><img id="verify-img" alt="验证码" src="?z=codepool-verify" /></label> <input id="verify" type="text" name="verify" class="input-mini" placeholder="验证码" />
-                <input id="tag" type="text" name="tag" class="input-large" placeholder="标签（可选）" maxlength="20" />
+              	<textarea id="code" rows="16" class="form-control" style="width:100%"></textarea>
+              	<label for="verify"><img id="verify-img" alt="验证码" src="?z=codepool-verify" /></label> <input id="verify" type="text" name="verify" maxlength="4" class="form-control" style="width:10%;min-width:60px" placeholder="验证码" />
+              	<input id="tag" type="text" name="tag" class="form-control" placeholder="标签（可选）" maxlength="20" />
               	<input type="submit" value="提交代码" class="btn btn-primary" id="submit" />
               </form>
             </div>

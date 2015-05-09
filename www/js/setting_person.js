@@ -4,7 +4,7 @@ $(function () {
 		output: '{page}/{totalPages}',
 		page: 0,
 		savePages : true,
-		fixedHeight: true,
+		fixedHeight: false,
 		removeRows: false,
 		cssNext: '.next', // next page arrow
 		cssPrev: '.prev', // previous page arrow
@@ -26,8 +26,8 @@ $(function () {
 		footerCells: '',
 		icons      : '', // add "icon-white" to make them white; this icon class is added to the <i> in the header
 		sortNone   : 'd',
-		sortAsc    : 'icon-chevron-up',
-		sortDesc   : 'icon-chevron-down',
+		sortAsc    : 'glyphicon glyphicon-chevron-up',
+		sortDesc   : 'glyphicon glyphicon-chevron-down',
 		active     : '', // applied when column is sorted
 		hover      : '', // use custom css here - bootstrap class may not override it
 		filterRow  : '', // filter row class
@@ -143,12 +143,13 @@ function reFresh() {
 	.done(function(data) {
 		var reshtml = "";
 		$.each(data.data, function(i, vo) {
-			reshtml = reshtml + '<tr><td><label class="checkbox"><input type="checkbox" id="' + vo.uid + '" data-id="id"></label></td><td>' + vo.uid + '</td><td>' + vo.chsname + '</td><td>';
+			reshtml = reshtml + '<tr><td><label style="padding-right:15px"><input type="checkbox" id="' + vo.uid + '" data-id="id"></label></td><td>' + vo.uid + '</td><td>' + vo.chsname + '</td><td>';
 			reshtml = reshtml + (vo.sex == 1 ? '女':'男');
 			reshtml = reshtml + '</td><td>' + (vo.email == null?'':vo.email) + '</td><td>' + (vo.phone == null?'':vo.phone) + '</td><td>' + (vo.grade == null?'':vo.grade) + '</td> <td>' + (vo.ojaccount == null?'':vo.ojaccount) + '</td><td>';
 			if(vo.group == 1) reshtml += '队长'; else if(vo.group == 2) reshtml += '教练'; else if(vo.group == 9) reshtml += '管理员'; else reshtml += '队员';
-			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-uid="' + vo.uid + '" data-func="0" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-view" title="查看" data-trigger="hover"><i class="icon-zoom-in"></i> </a><a data-uid="' + vo.uid + '" data-func="2" data-target="#person-modal" data-toggle="modal" class="btn btn-small btn-edit" title="编辑" data-trigger="hover" data-placement="bottom"><i class="icon-edit"></i> </a><a data-toggle="del_person" data-uid="' + vo.uid + '" class="btn btn-small btn-delete" title="删除"><i class="icon-trash"></i> </a><a data-toggle="show_code" data-code="' + vo.luckycode + '" data-chsname="' + vo.chsname + '" class="btn btn-small btn-delete" title="显示邀请码"><i class="icon-barcode"></i> </a>';
-			if(vo.email != null && vo.ojaccount == null) reshtml = reshtml + '<a data-toggle="sendinv" data-uid="' + vo.uid + '"  class="btn btn-small btn-delete" title="发送邀请邮件"><i class="icon-envelope"></i> </a>';
+			reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><a data-uid="' + vo.uid + '" data-func="0" data-target="#person-modal" data-toggle="modal" class="btn btn-default btn-xs" title="查看" data-trigger="hover"><span class="glyphicon glyphicon-zoom-in"></span></a><a data-uid="' + vo.uid + '" data-func="2" data-target="#person-modal" data-toggle="modal" class="btn btn-default btn-xs" title="编辑" data-trigger="hover" data-placement="bottom"><span class="glyphicon glyphicon-pencil"></span></a><a data-toggle="del_person" data-uid="' + vo.uid + '" class="btn btn-default btn-xs" title="删除"><span class="glyphicon glyphicon-remove"></span></a><a data-toggle="show_code" data-code="' + vo.luckycode + '" data-chsname="' + vo.chsname + '" class="btn btn-default btn-xs" title="显示邀请码"><span class="glyphicon glyphicon-barcode"></span></a>';
+			if(vo.email != null && vo.ojaccount == null) reshtml = reshtml + '<a data-toggle="sendinv" data-uid="' + vo.uid + '"  class="btn btn-default btn-xs" title="发送邀请邮件"><span class="glyphicon glyphicon-envelope"></span></a>';
+			else reshtml = reshtml + '<a data-toggle="sendinv" data-uid="' + vo.uid + '"  class="btn btn-default btn-xs" title="发送邀请邮件" disabled><span class="glyphicon glyphicon-envelope"></span></a>';
 			reshtml = reshtml + '</div></td></tr>';  
 		});
 		$('#data-table tbody').html(reshtml);

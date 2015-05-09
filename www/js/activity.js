@@ -153,7 +153,7 @@ function reFresh(type) {
 			$.each(data.data, function(i, vo) {
 				reshtml = reshtml + '<tr><td>' + (vo.title.length>20?(vo.title.substr(0,20) + '...'):vo.title) + (vo.isinner == 0 ? '':' <span class="label label-info">队内</span>') + (vo.isneedreview != 0 ? ' <span class="label label-warning">需审核</span>':'') + '</td><td>' + vo.deadline + '</td><td>';
 				reshtml = reshtml + vo.accept;
-				reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><button data-aid="' + vo.aid + '" data-func="0" data-target="#activity-modal" data-toggle="modal" class="btn btn-small" title="活动详情" data-trigger="hover"' + (vo.desc == null ? ' disabled="disabled"' : '') + '>详情</button><button data-aid="' + vo.aid + '" data-func="1" data-target="#activity-modal" data-toggle="modal" class="btn btn-small" title="' + (islogin == 0 ? '请先在OJ上登录' : '报名或修改报名信息') + '" data-trigger="hover" data-placement="bottom"' + (islogin == 0 ? ' disabled="disabled"' : '') + '>报名</button><button data-aid="' + vo.aid + '" data-toggle="showlist" class="btn btn-small" title="查看已报名的同学" data-trigger="hover" data-placement="bottom"' + ((vo.ispublic == 0 && vo.adminuid != 1) ? ' disabled="disabled"' : '') + '>名单</button>' + (vo.adminuid == 1 ? ('<a href="?z=activity-export_contestants-aid-' + vo.aid + '" class="btn btn-small" title="导出已报名的名单为csv文件" data-trigger="hover" data-placement="bottom">导出</a>') : '') + '</div></td></tr>';
+				reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><button data-aid="' + vo.aid + '" data-func="0" data-target="#activity-modal" data-toggle="modal" class="btn btn-default btn-xs" title="活动详情" data-trigger="hover"' + (vo.desc == null ? ' disabled="disabled"' : '') + '>详情</button><button data-aid="' + vo.aid + '" data-func="1" data-target="#activity-modal" data-toggle="modal" class="btn btn-default btn-xs" title="' + (islogin == 0 ? '请先在OJ上登录' : '报名或修改报名信息') + '" data-trigger="hover" data-placement="bottom"' + (islogin == 0 ? ' disabled="disabled"' : '') + '>报名</button><button data-aid="' + vo.aid + '" data-toggle="showlist" class="btn btn-default btn-xs" title="查看已报名的同学" data-trigger="hover" data-placement="bottom"' + ((vo.ispublic == 0 && vo.adminuid != 1) ? ' disabled="disabled"' : '') + '>名单</button>' + (vo.adminuid == 1 ? ('<a href="?z=activity-export_contestants-aid-' + vo.aid + '" class="btn btn-default btn-xs" title="导出已报名的名单为csv文件" data-trigger="hover" data-placement="bottom">导出</a>') : '') + '</div></td></tr>';
 			});
 			$('#data-table tbody').html(reshtml);
 			$("#data-table").trigger("update");
@@ -177,15 +177,15 @@ function reFresh(type) {
 				return ;
 			}
 			$.each(data.data, function(i, vo) {
-				if(vo.isneedreview == 0) review = ' <span class="badge">无需审核</span>';
+				if(vo.isneedreview == 0) review = ' <span class="label label-default">无需审核</span>';
 				else {
-					if(vo.state == 2) review = ' <span class="badge badge-success">审核通过</span>';
-					else if(vo.state == 1) review = ' <span class="badge badge-warning">拒绝申请</span>';
-					else review = ' <span class="badge">等待审核</span>';
+					if(vo.state == 2) review = ' <span class="label label-success">审核通过</span>';
+					else if(vo.state == 1) review = ' <span class="label label-warning">拒绝申请</span>';
+					else review = ' <span class="label label-default">等待审核</span>';
 				}
 				reshtml = reshtml + '<tr><td>' + (vo.title.length>20?(vo.title.substr(0,20) + '...'):vo.title) + (vo.isinner == 0 ? '':' <span class="label label-info">队内</span>') + review + '</td><td>' + vo.deadline + '</td><td>';
 				reshtml = reshtml + vo.accept;
-				reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><button data-aid="' + vo.aid + '" data-func="0" data-target="#activity-modal" data-toggle="modal" class="btn btn-small" title="活动详情" data-trigger="hover"' + (vo.desc == null ? ' disabled="disabled"' : '') + '>详情</button><button data-aid="' + vo.aid + '" data-func="1" data-target="#activity-modal" data-toggle="modal" class="btn btn-small" title="修改报名信息" data-trigger="hover" data-placement="bottom">修改</button><button data-aid="' + vo.aid + '" data-toggle="showlist" class="btn btn-small" title="查看已报名的同学" data-trigger="hover" data-placement="bottom"' + ((vo.ispublic == 0 && vo.adminuid != 1) ? ' disabled="disabled"' : '') + '>名单</button>' + (vo.adminuid == 1 ? ('<a href="?z=activity-export_contestants-aid-' + vo.aid + '" class="btn btn-small" title="导出已报名的名单为csv文件" data-trigger="hover" data-placement="bottom">导出</a>') : '') + '</div></td></tr>';
+				reshtml = reshtml + '</td><td class="text-center inline"><div class="btn-group" id="table-toolbar-operate"><button data-aid="' + vo.aid + '" data-func="0" data-target="#activity-modal" data-toggle="modal" class="btn btn-xs btn-default" title="活动详情" data-trigger="hover"' + (vo.desc == null ? ' disabled="disabled"' : '') + '>详情</button><button data-aid="' + vo.aid + '" data-func="1" data-target="#activity-modal" data-toggle="modal" class="btn btn-xs btn-default" title="修改报名信息" data-trigger="hover" data-placement="bottom">修改</button><button data-aid="' + vo.aid + '" data-toggle="showlist" class="btn btn-xs btn-default" title="查看已报名的同学" data-trigger="hover" data-placement="bottom"' + ((vo.ispublic == 0 && vo.adminuid != 1) ? ' disabled="disabled"' : '') + '>名单</button>' + (vo.adminuid == 1 ? ('<a href="?z=activity-export_contestants-aid-' + vo.aid + '" class="btn btn-xs btn-default" title="导出已报名的名单为csv文件" data-trigger="hover" data-placement="bottom">导出</a>') : '') + '</div></td></tr>';
 			});
 			$('#data-table tbody').html(reshtml);
 			$("#data-table").trigger("update");
@@ -215,25 +215,25 @@ function load_contestants() {
 		}
 		$.each(data.data.contestants, function(i, vo) {
 			total++;
-			reshtml = reshtml + '<tr><td><span class="badge badge-info">' + vo.ojaccount + '</span></td>';
+			reshtml = reshtml + '<tr><td><span class="badge">' + vo.ojaccount + '</span></td>';
 			$.each(vo.data, function(j, v){reshtml = reshtml + '<td>' + v + '</td>';});
 			if(data.data.isneedreview == 0) {
 				if(data.data.isadmin == 0) reshtml = reshtml + '<td><span class="badge">无需审核</span></td></tr>';
-				else reshtml = reshtml + '<td><span class="badge">无需审核</span> <button class="btn btn-small btn-danger" data-toggle="delcontestant" data-adid="' + vo.adid + '">删除</button></td></tr>';
+				else reshtml = reshtml + '<td><span class="badge">无需审核</span> <button class="btn btn-xs btn-danger" data-toggle="delcontestant" data-adid="' + vo.adid + '">删除</button></td></tr>';
 			}
 			else {
 				if(data.data.isadmin == 0) {
-					if(vo.state == 2) { reshtml += '<td><span class="badge badge-success">审核通过</span></td></tr>'; accept++; }
-					else if(vo.state == 1) reshtml += '<td><span class="badge badge-warning">拒绝申请</span></td></tr>';
-					else reshtml += '<td><span class="badge">等待审核</span></td></tr>';
+					if(vo.state == 2) { reshtml += '<td><span class="label label-success">审核通过</span></td></tr>'; accept++; }
+					else if(vo.state == 1) reshtml += '<td><span class="label label-warning">拒绝申请</span></td></tr>';
+					else reshtml += '<td><span class="label label-default">等待审核</span></td></tr>';
 				}
 				else {
 					reshtml = reshtml + '<td><span class="btn-group btn-ables"';
-					if(vo.private_data != "") reshtml += ' data-trigger="hover" data-content="' + vo.private_data + '" data-placement="right" data-toggle="popover" data-original-title="未公开字段"';
-					if(vo.state == 2) { reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-small btn-enable btn-success disabled">通过</a><a data-adid="' + vo.adid + '" class="btn btn-small btn-disable">拒绝</a>'; accept++; }
-					else if(vo.state == 1) reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-small btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-small btn-disable btn-warning disabled">拒绝</a>';
-					else reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-small btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-small btn-disable">拒绝</a>';
-					reshtml += '<button class="btn btn-small btn-danger" data-toggle="delcontestant" data-adid="' + vo.adid + '">删除</button></span></td></tr>';
+					if(vo.private_data != "") reshtml += ' data-trigger="hover" data-content="' + vo.private_data + '" data-placement="' + ($(window).width() < 1380 ? "left" : "right") + '" data-container="body" data-toggle="popover" data-original-title="未公开字段"';
+					if(vo.state == 2) { reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-enable btn-success disabled">通过</a><a data-adid="' + vo.adid + '" class="btn btn-xs btn-default btn-disable">拒绝</a>'; accept++; }
+					else if(vo.state == 1) reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-disable btn-warning disabled">拒绝</a>';
+					else reshtml += '><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-enable">通过</a><a data-adid="' + vo.adid + '" class="btn btn-default btn-xs btn-disable">拒绝</a>';
+					reshtml += '<button class="btn btn-xs btn-danger" data-toggle="delcontestant" data-adid="' + vo.adid + '">删除</button></span></td></tr>';
 				}
 			}
 		});

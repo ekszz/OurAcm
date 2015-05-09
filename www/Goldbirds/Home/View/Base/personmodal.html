@@ -13,19 +13,19 @@
 					$('#p_name').html(data.data.chsname + ' <span class="muted"><small>' + data.data.engname + '</small></span>');
 					$('#p_introduce').html(data.data.introduce);
 					gradestr = '';
-					if(data.data.grade) gradestr = gradestr + '<i class="icon-home"></i> ' + data.data.grade + '级';
+					if(data.data.grade) gradestr = gradestr + '<span class="glyphicon glyphicon-home" aria-hidden="true"></span></i> ' + data.data.grade + '级';
 					if(data.data.grade && data.data.address) gradestr += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-					if(data.data.address) gradestr = gradestr + '<i class="icon-map-marker"></i> ' + data.data.address;
+					if(data.data.address) gradestr = gradestr + '<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> ' + data.data.address;
 					$('#p_grade').html(gradestr);
-					$('#p_email').html('<i class="icon-envelope"></i> ' + data.data.email);
-					$('#p_phone').html('<i class="icon-user"></i> ' + data.data.phone);
+					$('#p_email').html('<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> ' + data.data.email);
+					$('#p_phone').html('<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ' + data.data.phone);
 					conteststr = '';
 					if(data.data.contest) {
 						for(i = 0; i < data.data.contest.length; i++) {
-							conteststr = conteststr + '<div class="row-fluid"><div class="span12" style="margin-bottom:5px;"><a href="';
+							conteststr = conteststr + '<div class="col-xs-12" style="margin-bottom:5px;"><a href="';
 							if(data.data.contest[i].type == 0) conteststr = conteststr + '?z=wf#year' + data.data.contest[i].y;
 							else conteststr = conteststr + '?z=regional-cool-y-' + data.data.contest[i].y;
-							conteststr += '" class="btn span12"><img style="height:20px;" src="';
+							conteststr += '" class="btn btn-default col-xs-12"><img style="height:20px;" src="';
 							if(data.data.contest[i].type == 0) conteststr += 'img/final.png';
 							else {
 								if(data.data.contest[i].medal == 0) conteststr += 'img/golden.png';
@@ -34,10 +34,10 @@
 								else if(data.data.contest[i].medal == 4) conteststr += 'img/norank.png';
 								else conteststr += 'img/honorable.png';
 							}
-							conteststr = conteststr + '"> ' + data.data.contest[i].y + '.' + data.data.contest[i].m + (data.data.contest[i].type == 0 ? ' WorldFianl' : ' Regional') + ' @ ' + data.data.contest[i].site + ' <span class="label">' + data.data.contest[i].team + '</span></a></div></div>';
+							conteststr = conteststr + '"> ' + data.data.contest[i].y + '.' + data.data.contest[i].m + (data.data.contest[i].type == 0 ? ' WorldFianl' : ' Regional') + ' @ ' + data.data.contest[i].site + ' <span class="label label-default">' + data.data.contest[i].team + '</span></a></div></div>';
 						}
 					}
-					conteststr = conteststr + '<div class="row-fluid"><div class="hero-unit">' + data.data.detail + '</div></div>';
+					conteststr = conteststr + '<div class="col-xs-12"><div class="bs-callout bs-callout-info">' + data.data.detail + '</div></div>';
 					$('#p_contest').html(conteststr);
 					$('#person-modal').modal();
 				}
@@ -49,15 +49,15 @@
 		});
 	});
 </script>
-<div id="person-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:800px;margin:0 0 0 -400px;">
+<div id="person-modal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg" style="width:800px"><div class="modal-content">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="personmodaltitle"></h3>
+    <h4 class="modal-title" id="personmodaltitle"></h4>
   </div>
-  <div class="modal-body" style="min-height:200px;">
-    <div class="row-fluid">
-    	<div class="span4">
-        	<div class="row-fluid">
+  <div class="modal-body">
+    <div class="container-fluid"><div class="row">
+    	<div class="col-xs-4">
+        	<div class="row">
             	<div class="thumbnail">
                   <img id="p_face" src="img/nopic.jpg" alt="">
                   <div class="caption">
@@ -70,10 +70,10 @@
                 </div>
             </div>
         </div>
-        <div class="span8" id="p_contest"></div>
-    </div>
+        <div class="col-xs-8"><div class="row" id="p_contest"></div></div>
+    </div></div>
   </div>
   <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
   </div>
-</div>
+</div></div></div>

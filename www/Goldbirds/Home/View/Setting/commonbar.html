@@ -1,14 +1,14 @@
-	  <div class="span3 bs-docs-sidebar">
-        <ul class="nav nav-list bs-docs-sidenav" id="setting-bar">
-          <li><a href="?z=setting-profile"><i class="icon-chevron-right"></i> 个人资料</a></li>
-		  <li><a href="?z=setting-contacts"><i class="icon-chevron-right"></i> 通讯录</a></li>
-          <?php if(session('goldbirds_group') > 0) { ?><li><a href="?z=setting-setting"><i class="icon-chevron-right"></i> 全局参数设置</a></li>
-          <li><a href="?z=setting-person"><i class="icon-chevron-right"></i> 用户管理</a></li>
-          <li><a href="?z=setting-contest"><i class="icon-chevron-right"></i> 获奖记录管理</a></li>
-          <li><a href="?z=setting-image"><i class="icon-chevron-right"></i> 照片管理</a></li>
-          <li><a href="?z=setting-ojhistory"><i class="icon-chevron-right"></i> OnlineJudge历史管理</a></li>
-		  <li><a href="?z=setting-news"><i class="icon-chevron-right"></i> 新闻管理</a></li>
-          <li><a href="?z=setting-activity"><i class="icon-chevron-right"></i> 活动管理</a></li><?php } ?>
-		  <li class="disabled"><a><i class="icon-chevron-right"></i> 系统版本：OurAcm <?php echo $GOLDBIRDS_VER_DIS; ?></a></li>
+	  <div class="col-xs-3 bs-docs-sidebar">
+        <ul class="nav bs-docs-sidenav" id="setting-bar">
+          <li><a href="?z=setting-profile"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 个人资料</a></li>
+		  <li><a href="?z=setting-contacts"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 通讯录</a></li>
+          <?php if(session('goldbirds_group') > 0) { ?><li><a href="?z=setting-setting"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 全局参数设置</a></li>
+          <li><a href="?z=setting-person"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 用户管理</a></li>
+          <li><a href="?z=setting-contest"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 获奖记录管理</a></li>
+          <li><a href="?z=setting-image"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 照片管理</a></li>
+          <li><a href="?z=setting-ojhistory"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> OnlineJudge历史管理</a></li>
+		  <li><a href="?z=setting-news"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 新闻管理</a></li>
+          <li><a href="?z=setting-activity"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 活动管理</a></li><?php } ?>
+		  <li><a href="?z=setting-sysinfo"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 系统版本: OURACM <?php echo GOLDBIRDS_VER; ?></a></li>
         </ul>
       </div>

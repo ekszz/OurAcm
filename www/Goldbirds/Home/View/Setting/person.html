@@ -1,19 +1,7 @@
 <include file="Base:header" />
-    <!-- Le styles -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
+<include file="Base:include" />
     <link href="css/theme.bootstrap.css" rel="stylesheet">
     <link href="css/setting.css" rel="stylesheet">
-    
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-    
-    <!-- Le javascript -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-hover-dropdown.min.js"></script>
     <script src="js/jquery.tablesorter.min.js"></script>
     <script src="js/jquery.tablesorter.widgets.min.js"></script>
     <script src="js/jquery.tablesorter.pager.js"></script>
@@ -44,7 +32,7 @@
 
 <!-- Subhead
 ================================================== -->
-<header class="jumbotron subhead" id="overview">
+<header class="bs-docs-header" id="overview">
   <div class="container">
     <h1>设置</h1>
     <p class="lead">Setting</p>
@@ -59,29 +47,29 @@
     ================================================== -->
     <div class="row">
       <include file="commonbar" />
-      <div class="span9 content">
+      <div class="col-xs-9 content">
 		<div class="page-header">
             <h1>用户列表</h1>
         </div>
         <div class="row">
-			<div class="span9 pull-left">
-				<div class="btn-group">
-					<a data-func="1" title="添加" data-target="#person-modal" data-toggle="modal" role="button" class="btn btn-add btn-large btn-tool"><i class="icon-plus"></i></a>
-					<a data-func="3" title="编辑" data-target="#person-modal" data-toggle="modal" role="button" class="btn btn-large btn-edit btn-tool" data-uid=""><i class="icon-edit"></i></a>
-					<a onClick="del_checked();" title="删除" class="btn btn-large btn-delete btn-tool"><i class="icon-trash"></i></a>
+			<div class="col-xs-12 pull-left">
+				<div class="btn-group" role="group">
+					<button type="button" data-func="1" title="添加" data-target="#person-modal" data-toggle="modal" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+					<button type="button" data-func="3" title="编辑" data-target="#person-modal" data-toggle="modal" class="btn btn-default" data-uid=""><span class="glyphicon glyphicon-pencil"></span></button>
+					<button type="button" onClick="del_checked();" title="删除" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
 				</div>
-				<div class="btn-group">
-                	<a style="margin-left: -1px;" title="发送邀请函" rel="tooltip" data-placement="bottom" class="btn btn-large" onClick="sendinv_checked();"><i class="icon-envelope"></i></a>
-		    		<a style="margin-left: -1px;" title="刷新" rel="tooltip" data-placement="bottom" class="btn btn-large" onClick="reFresh();"><i class="icon-refresh"></i></a>
+				<div class="btn-group" role="group">
+                	<button type="button" title="发送邀请函" class="btn btn-default" onClick="sendinv_checked();"><span class="glyphicon glyphicon-send"></span></button>
+		    		<button type="button" title="刷新" class="btn btn-default" onClick="reFresh();"><span class="glyphicon glyphicon-refresh"></span></button>
 				</div>
                 <div id="lucky-code-show" class="label label-warning" style="margin-left:50px"></div>
 			</div>
-            <div class="span9" style="min-height:10px"> </div>
-            <div id="table-content-index" class="span9 table-content">
-  				<table id="data-table" class="data-table table table-bordered table-striped table-condensed table-hover">
+            <div class="col-xs-12" style="min-height:10px"> </div>
+            <div id="table-content-index" class="col-xs-12 table-content">
+  				<table id="data-table" class="data-table table table-bordered table-striped table-condensed table-hover text-center">
   					<thead>
-    					<tr class="align-center">
-      						<th><label class="checkbox"><input type="checkbox" class="select-all"></label></th>
+    					<tr>
+      						<th><label style="padding-right:15px"><input type="checkbox" class="select-all"></label></th>
                             <th>UID</th>
       						<th>中文姓名</th>
                             <th>性别</th>
@@ -97,19 +85,19 @@
 				</table>
             </div>
             <!-- pager -->
-            <div id="pager" class="span9 pagination text-center" style="margin-top:0px">
-              	<ul>
-                    <li class="first"><a href="javascript:void(0)"><i class="icon-step-backward"></i></a></li>
-                    <li class="prev"><a href="javascript:void(0)"><i class="icon-backward"></i></a></li>
+            <div id="pager" class="col-xs-12 text-center" style="margin-top:0px">
+              	<ul class="pagination">
+                    <li class="first"><a href="javascript:void(0)"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a></li>
+                    <li class="prev"><a href="javascript:void(0)"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>
                     <li><span class="pagedisplay"></span></li>
-                    <li class="next"><a href="javascript:void(0)"><i class="icon-forward"></i></a></li>
-                    <li class="last"><a href="javascript:void(0)"><i class="icon-step-forward"></i></a></li>
-                    <select class="pagesize input-mini inline">
+                    <li class="next"><a href="javascript:void(0)"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></a></li>
+                    <li class="last"><a href="javascript:void(0)"><span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span></a></li>
+                    <div class="col-xs-4" style="margin-left:-10px"><select class="pagesize inline form-control">
                         <option selected="selected" value="10">10</option>
-                        <option value="20">20</option>
+                        <option value="30">30</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
-                	</select>
+                	</select></div>
                 </ul>
             </div>
         </div>
@@ -118,34 +106,65 @@
   </div>
 
   <div id="alert"></div>
-  <div class="modal hide fade" id="person-modal" data-cache='false' data-backdrop="true" data-keyboard="true" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+  <div class="modal fade" id="person-modal" data-cache='false' data-backdrop="true" data-keyboard="true" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true"><div class="modal-dialog" style="width:800px"><div class="modal-content">
   	<div class="modal-header">
     	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    	<h3 id="person-modal-title">队员管理</h3>
+    	<h4 class="modal-title" id="person-modal-title">队员管理</h4>
   	</div>
-    <form class="form-inline" id="person-form" method="post" action="" enctype="multipart/form-data">
+    <form class="form-horizontal" id="person-form" method="post" action="" enctype="multipart/form-data">
   	<div class="modal-body">
-		<label for="chsname">中文姓名*</label><input type="text" id="chsname" name="chsname">
-        <label for="engname">英文姓名</label><input type="text" id="engname" name="engname" placeholder="强烈建议填写">
-        <label for="group">组别*</label><select class="input-medium" id="group" name="group"><option value="0">0-队员</option><option value="1">1-队长（管理权）</option><option value="2">2-教练（管理权）</option><option value="9">9-管理员（不展示）</option></select>
-        <label for="sex">性别*</label><select class="input-small" id="sex" name="sex"><option value="0">0-男</option><option value="1">1-女</option></select>
-        <label for="grade">本科年级</label><input class="input-mini" type="text" id="grade" name="grade" placeholder="如2013">
-		<label for="email">Email</label><input type="text" name="email" id="email">
-		<label for="phone">Phone</label><input type="text" name="phone" id="phone">
-		<label for="address">现所在地</label><input class="input-xxlarge" type="text" name="address" id="address">
-		<label for="introduce">简要介绍</label><input type="text" name="introduce" id="introduce" class="input-xxlarge">
-		<label for="detail">详细自白</label>
-		<textarea rows="5" class="input-xxlarge" name="detail" id="detail"></textarea>
-		<label for="luckycode">邀请码*</label><input type="text" id="luckycode" name="luckycode" placeholder="系统自动生成，无需填写" readonly>
-		<label for="ojaccount">关联OJ账号</label><input type="text" id="ojaccount" name="ojaccount" placeholder="不填写则由队员自行关联">
-        <div class="row" style="margin-left:20px"><img class="img-polaroid span2" src="img/nopic.jpg" id="face_show"><label>个人照片</label><div class="input-append"><input type="file" class="input-small" name="face" id="face"><button class="btn" type="button" id="face_upload" data-func="upload">上传</button><button class="btn" type="button" id="face_del" data-func="del">删除</button></div></div>
-        <input type="hidden" name="nowuid" id="nowuid">
-        <input type="hidden" name="face_fn" id="face_fn">
+		<div class="form-group">
+        	<label for="chsname" class="col-xs-2 control-label">中文姓名*</label>
+            <div class="col-xs-4"><input type="text" id="chsname" name="chsname" class="form-control"></div>
+            <label for="engname" class="col-xs-2 control-label">英文姓名</label>
+            <div class="col-xs-4"><input type="text" id="engname" name="engname" class="form-control" placeholder="强烈建议填写"></div>
+        </div>
+        <div class="form-group">
+        	<label for="group" class="col-xs-2 control-label">组别*</label>
+            <div class="col-xs-2"><select class="form-control" id="group" name="group"><option value="0">0-队员</option><option value="1">1-队长（管理权）</option><option value="2">2-教练（管理权）</option><option value="9">9-管理员（不展示）</option></select></div>
+            <label for="sex" class="col-xs-2 control-label">性别*</label>
+            <div class="col-xs-2"><select class="form-control" id="sex" name="sex"><option value="0">0-男</option><option value="1">1-女</option></select></div>
+        	<label for="grade" class="col-xs-2 control-label">本科年级</label>
+            <div class="col-xs-2"><input class="form-control" type="text" id="grade" name="grade" placeholder="如2013"></div>
+        </div>
+        <div class="form-group">
+			<label for="email" class="col-xs-2 control-label">Email</label>
+            <div class="col-xs-4"><input type="text" name="email" id="email" class="form-control"></div>
+			<label for="phone" class="col-xs-2 control-label">Phone</label>
+            <div class="col-xs-4"><input type="text" name="phone" id="phone" class="form-control"></div>
+        </div>
+        <div class="form-group">
+			<label for="address" class="col-xs-2 control-label">现所在地</label>
+            <div class="col-xs-10"><input class="form-control" type="text" name="address" id="address"></div>
+        </div>
+        <div class="form-group">
+			<label for="introduce" class="col-xs-2 control-label">简要介绍</label>
+            <div class="col-xs-10"><input type="text" name="introduce" id="introduce" class="form-control"></div>
+        </div>
+        <div class="form-group">
+			<label for="detail" class="col-xs-2 control-label">详细自白</label>
+            <div class="col-xs-10"><textarea rows="5" class="form-control" name="detail" id="detail"></textarea></div>
+        </div>
+        <div class="form-group">
+			<label for="luckycode" class="col-xs-2 control-label">邀请码*</label>
+            <div class="col-xs-4"><input type="text" id="luckycode" name="luckycode" class="form-control" placeholder="系统自动生成，无需填写" readonly></div>
+			<label for="ojaccount" class="col-xs-2 control-label">关联OJ账号</label>
+            <div class="col-xs-4"><input type="text" id="ojaccount" name="ojaccount" class="form-control" placeholder="不填写则由队员自行关联"></div>
+        </div>
+        <div class="form-group">
+        	<label class="col-xs-2 control-label">个人照片<br />（预览图）</label>
+            <div class="col-xs-4"><img class="thumbnail col-xs-12" src="img/nopic.jpg" id="face_show"></div>
+            <div class="col-xs-6"><input type="file" class="form-control" name="face" id="face"><br />
+            <button class="btn btn-warning" type="button" id="face_upload" data-func="upload">上传</button>
+            <button class="btn btn-danger" type="button" id="face_del" data-func="del">删除</button></div>
+            <input type="hidden" name="nowuid" id="nowuid">
+       	 	<input type="hidden" name="face_fn" id="face_fn">
+        </div>
   	</div>
     </form>
   	<div class="modal-footer">
-    	<button class="btn btn-large" data-dismiss="modal" aria-hidden="true">关闭</button>
-    	<button id="btn-submit" type="submit" class="btn btn-primary btn-large">保存</button>
+    	<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+    	<button id="btn-submit" type="submit" class="btn btn-primary">保存</button>
   	</div>
-  </div>
+  </div></div></div>
 <include file="Base:footer" />

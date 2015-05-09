@@ -1,19 +1,6 @@
 <include file="Base:header" />
-    <!-- Le styles -->
-    <link href="css/prettify.css" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
+<include file="Base:include" />
     <link href="css/setting.css" rel="stylesheet">
-    
-    <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-    <![endif]-->
-    
-    <!-- Le javascript -->
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-hover-dropdown.min.js"></script>
     <script src="js/setting_common.js"></script>
 	<script type="text/javascript">
 	$(function(){
@@ -72,7 +59,7 @@
     <include file="Base:navbar" />
 <!-- Subhead
 ================================================== -->
-<header class="jumbotron subhead" id="overview">
+<header class="bs-docs-header" id="overview">
   <div class="container">
     <h1>码池</h1>
     <p class="lead">Code Pool</p>
@@ -86,13 +73,13 @@
     <!-- Docs nav
     ================================================== -->
     <div class="row">
-      <div class="span3 bs-docs-sidebar">
-        <ul class="nav nav-list bs-docs-sidenav">
-        	<li><a href="#tips"><i class="icon-chevron-right"></i> Tips</a></li>
-          	<li><a href="#insertcode"><i class="icon-chevron-right"></i> 提交代码</a></li>
+      <div class="col-xs-3 bs-docs-sidebar">
+        <ul class="nav bs-docs-sidenav">
+        	<li><a href="#tips"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Tips</a></li>
+          	<li><a href="#insertcode"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 提交代码</a></li>
         </ul>
       </div>
-      <div class="span9">
+      <div class="col-xs-9">
 
         <section id="tips">
           <div class="page-header">
@@ -100,11 +87,11 @@
           </div>
 
           <div class="row">
-            <div class="span9">
-            	<div class="alert alert-success alert-block"><p><strong>欢迎来到码池 o(-"-)o</strong></p>
-                <p>在这里，你可以提交自己的代码或其它备忘信息，系统会在一段时间内保存你的代码，并自动生成一个URL。</p>
-                <p>分享该URL给其他人，分享你的代码吧~</p>
-                <p>登录OJ后提交的代码，进入该URL还可以追加代码哟~</p>
+            <div class="col-xs-12">
+            	<div class="bs-callout bs-callout-warning"><h4>欢迎来到码池 o(-"-)o</h4>
+                在这里，你可以提交自己的代码或其它备忘信息，系统会在一段时间内保存你的代码，并自动生成一个URL。<br />
+                分享该URL给其他人，分享你的代码吧~<br />
+                登录OJ后提交的代码，进入该URL还可以追加代码哟~
                 </div>
             </div>
           </div>
@@ -116,14 +103,14 @@
           </div>
 
           <div class="row">
-          	<div class="span9 hide" id="result"><div class="alert alert-info alert-block">
+          	<div class="col-xs-12" id="result" style="display:none"><div class="alert alert-info alert-block">
             	<div class="control-group"><p>分享该URL，就可以查看提交的代码咯。登录OJ后提交，还可以追加代码哦~<button class="btn btn-success pull-right" id="moresubmit">我还要提交</button></p><p><span class="label label-info">代码URL</span> <a href="URL" id="url1"><span class="label label-warning" id="url2">URL</span></a></p></div>
             </div></div>
-            <div class="span9" id="todo">
+            <div class="col-xs-12" id="todo">
               <form method="post" name="insertcode" class="form-inline" action="#" onSubmit="return fakesubmit();">
-              <div class="control-group"><textarea id="code" rows="16" class="input-xxlarge" style="width:100%"></textarea></div>
-              	<label for="verify"><img id="verify-img" alt="验证码" src="?z=codepool-verify" /></label> <input id="verify" type="text" name="verify" class="input-mini" placeholder="验证码" />
-                <input id="tag" type="text" name="tag" class="input-large" placeholder="标签（可选）" maxlength="20" />
+              	<textarea id="code" rows="16" class="form-control" style="width:100%"></textarea>
+              	<label for="verify"><img id="verify-img" alt="验证码" src="?z=codepool-verify" /></label> <input id="verify" type="text" name="verify" maxlength="4" class="form-control" style="width:10%;min-width:60px" placeholder="验证码" />
+              	<input id="tag" type="text" name="tag" class="form-control" placeholder="标签（可选）" maxlength="20" />
               	<input type="submit" value="提交代码" class="btn btn-primary" id="submit" />
               </form>
             </div>
