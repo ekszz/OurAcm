@@ -27,7 +27,7 @@ class OJLoginInterface {  //OJ登录接口，请根据自己的OJ修改
     }
     
     static public function getUserURL($uname) {  //返回用户名为$uname的详细信息，返回null则禁用相关功能
-        return 'fasast/user.php?uname='.$uname;
+        return '/fasast/user.php?uname='.$uname;
     }
 
 	static public function getOJURL() {  //返回OJ主页地址

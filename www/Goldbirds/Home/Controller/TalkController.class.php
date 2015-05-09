@@ -285,10 +285,11 @@ class TalkController extends BaseController {
     private function buildtalk_perhtml($idx) {  //生成每条talk的html
         return '<a style="color:black" href="?z=talk-msg-tid-'.$this -> talk_arr[$idx]['tid'].'">'.htmlspecialchars($this -> talk_arr[$idx]['title'])
         .'</a> <small style="display:inline">(<span class="text-warning"><strong>'
-        .intval($this -> talk_arr[$idx]['l']).'B</strong></span>) BY <span class="text-primary"><strong>'
-        .htmlspecialchars($this -> talk_arr[$idx]['ojaccount']).'</strong></span> @ <span class="text-muted">'
+        .intval($this -> talk_arr[$idx]['l']).'B</strong></span>) BY <strong>'
+        .(\OJLoginInterface::getUserUrl($this -> talk_arr[$idx]['ojaccount']) == null ? '<span class="text-primary">'.htmlspecialchars($this -> talk_arr[$idx]['ojaccount']).'</span>' : '<a href="'.\OJLoginInterface::getUserUrl($this -> talk_arr[$idx]['ojaccount']).'"><span class="text-primary">'.htmlspecialchars($this -> talk_arr[$idx]['ojaccount']).'</span></a>')
+        .'</strong> @ <span class="text-muted">'
         .$this -> talk_arr[$idx]['createtime'].'</span>'.
-        ($this -> talk_arr[$idx]['problemid'] ? ' IN <span class="text-danger"><strong>Problem '.$this -> talk_arr[$idx]['problemid'].'</strong></span>' : '')
+        ($this -> talk_arr[$idx]['problemid'] ? ' IN <strong>'.(\OJLoginInterface::getProblemUrl($this -> talk_arr[$idx]['problemid']) == null ? '<span class="text-danger">Problem '.$this -> talk_arr[$idx]['problemid'].'</span>' : '<a href="'.\OJLoginInterface::getProblemUrl($this -> talk_arr[$idx]['problemid']).'"><span class="text-danger">Problem '.$this -> talk_arr[$idx]['problemid'].'</span></a>').'</strong>' : '')
         .(time() - strtotime($this -> talk_arr[$idx]['createtime']) <= TalkController::$var_newlogo_second ? ' <span class="label label-warning">New</span>' : '')
         .'</small>';
     }
