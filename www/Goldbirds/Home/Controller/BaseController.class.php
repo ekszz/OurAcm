@@ -5,8 +5,8 @@ use Think\Controller;
 class BaseController extends Controller {
     
     protected function _initialize() {
-        define('GOLDBIRDS_VER', '0.8.0');
-        define('GOLDBIRDS_VER_DIS', '0.8.0 beta1');
+        define('GOLDBIRDS_VER', '0.9.0');
+        define('GOLDBIRDS_VER_DIS', '0.9.0 Trunk');
         if(version_compare(PHP_VERSION, '5.4.0') < 0) {  //PHP 5.4版本以下，判断magic_quotes_gpc是否打开，打开则关闭
             if(get_magic_quotes_gpc()) {
                 $_GET = BaseController::stripslashesRecursive($_GET);
