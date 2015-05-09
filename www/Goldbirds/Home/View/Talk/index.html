@@ -8,7 +8,7 @@
 	$(function(){
 		$("#navbar>li:nth-child(8)").addClass("active");
 		var $window = $(window);
-		$('.bs-docs-sidenav').affix({
+		if($window.width() >= 768) $('.bs-docs-sidenav').affix({
 		    offset: {
 		        top: function () { return $window.width() <= 980 ? 290 : 210 }
 		      	, bottom: 270
@@ -104,7 +104,7 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-7" id="todo">
+            <div class="col-xs-12 col-sm-7" id="todo">
               <form method="post" name="inserttalk" class="form-inline" action="#" onSubmit="return fakesubmit();">
               <input id="title" type="text" class="form-control" style="width:65%" name="title" placeholder="Title Here." /> <span class="label label-success">Current User: [ <?php echo $ojaccount; ?> ]</span>
               <textarea id="content" rows="12" class="form-control" style="width:100%" placeholder="Content Here. (Null is acceptable)"></textarea>
@@ -122,7 +122,7 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-7" id="todo">
+            <div class="col-xs-12 col-sm-7" id="todo">
               <div class="alert alert-success alert-block">登录OnlineJudge账号后可以发表和回复Talk~<a target="_blank" href="<?php echo $url; ?>" class="btn btn-large btn-success pull-right">登录OnlineJudge</a><br />请点击右方按钮跳转至OnlineJudge登录页面。</div>
             </div>
           </div>

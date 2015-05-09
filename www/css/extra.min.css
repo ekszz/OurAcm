@@ -1742,3 +1742,28 @@ blockquote {
 	font-weight: bold;
 	font-size: 18px;
 }
+@media (min-width: 768px) {
+	.media-text-right {
+		text-align:right;
+	}
+	.media-pull-right {
+		float: right !important;
+	}
+}
+@media (max-width: 767px) {
+  .hidden-desktop {
+    display: inherit !important;
+  }
+  .visible-desktop {
+    display: none !important;
+  }
+  .visible-phone {
+    display: inherit !important;
+  }
+  .hidden-phone {
+    display: none !important;
+  }
+  .width-full {
+	width: 100% !important;
+  }
+}

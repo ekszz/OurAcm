@@ -5,7 +5,7 @@
 		$("#navbar>li:nth-child(2)").addClass("active");
 		$("#we-menu>li:nth-child(2)").addClass("active");
 		var $window = $(window);
-			$('.bs-docs-sidenav').affix({
+		if($window.width() >= 768) $('.bs-docs-sidenav').affix({
 		        offset: {
 		            top: function () { return $window.width() <= 980 ? 290 : 210 }
 		          , bottom: 270
@@ -38,14 +38,14 @@
     <!-- Docs nav
     ================================================== -->
     <div class="row">
-      <div class="col-xs-3 bs-docs-sidebar">
+      <div class="col-xs-12 col-sm-3 bs-docs-sidebar">
         <ul class="nav bs-docs-sidenav">
           <?php foreach($data as $d) {
           	echo '<li><a href="#'.substr($d['id'], 0, 6).'"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '.$d['chsname'].'&nbsp;&nbsp;'.$d['engname'].'</a></li>';
           } ?>
         </ul>
       </div>
-      <div class="col-xs-9">
+      <div class="col-xs-12 col-sm-9">
 
         <?php foreach($data as $d) { ?>
         <section id="<?php echo substr($d['id'], 0, 6); ?>">
@@ -54,10 +54,10 @@
           </div>
 
           <div class="row">
-            <div class="col-xs-4">
+            <div class="col-xs-12 col-sm-4">
               <img style="width:100%" src="<?php if($d['photo']) echo $d['photo']; else echo 'img/nopic.jpg'; ?>" class="thumbnail" />
             </div>
-            <div class="col-xs-8">
+            <div class="col-xs-12 col-sm-8">
               <?php if($d['introduce']) { echo '<p>'.$d['introduce'].'</p><hr class="soften">'; } ?>
               <p><?php if($d['detail']) echo $d['detail']; ?></p>
             </div>

@@ -8,7 +8,7 @@
 	$(function(){
 		$(function(){ $("#navbar>li:nth-child(5)").addClass("active"); });
 		var $window = $(window);
-			$('.bs-docs-sidenav').affix({
+		if($window.width() >= 768) $('.bs-docs-sidenav').affix({
 		        offset: {
 		            top: function () { return $window.width() <= 980 ? 290 : 210 }
 		          , bottom: 270
@@ -42,7 +42,7 @@
     <!-- Docs nav
     ================================================== -->
     <div class="row">
-      <div class="col-xs-3 bs-docs-sidebar">
+      <div class="col-xs-12 col-sm-3 bs-docs-sidebar">
         <ul class="nav bs-docs-sidenav">
        	  <li><a href="?z=regional-cool"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 酷炫版</a></li>
           <li class="selected"><a href="?z=regional-data"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 表单版</a></li>
@@ -51,7 +51,7 @@
 		  } ?>
         </ul>
       </div>
-      <div class="col-xs-9">
+      <div class="col-xs-12 col-sm-9">
         <?php foreach($data as $vk => $vd) { ?>
           <section id="year<?php echo $vk; ?>">
       	  <div class="page-header">

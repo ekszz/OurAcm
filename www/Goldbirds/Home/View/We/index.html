@@ -5,7 +5,7 @@
 		$("#navbar>li:nth-child(2)").addClass("active");
 		$("#we-menu>li:nth-child(1)").addClass("active");
 		var $window = $(window);
-			$('.bs-docs-sidenav').affix({
+		if($window.width() >= 768) $('.bs-docs-sidenav').affix({
 		        offset: {
 		            top: function () { return $window.width() <= 980 ? 290 : 210 }
 		          , bottom: 270
@@ -38,7 +38,7 @@
     <!-- Docs nav
     ================================================== -->
     <div class="row">
-      <div class="col-xs-3 bs-docs-sidebar">
+      <div class="col-xs-12 col-sm-3 bs-docs-sidebar">
         <ul class="nav bs-docs-sidenav">
           <?php foreach($data as $k => $d) {
           	echo '<li><a href="#'.$k.'"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '.$d['title'].'</a></li>';
@@ -47,7 +47,7 @@
           <li><a href="?z=oj"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> OnlineJudge历史</a></li>
         </ul>
       </div>
-      <div class="col-xs-9">
+      <div class="col-xs-12 col-sm-9">
 
         <?php foreach($data as $k => $d) { ?>
         <section id="<?php echo $k ?>">

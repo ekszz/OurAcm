@@ -8,7 +8,7 @@
 	$(function(){ $("#navbar>li:nth-child(9)").addClass("active"); $("#setting-bar li:nth-child(6)").addClass("active"); });
 	$(function(){
 		var $window = $(window);
-			$('.bs-docs-sidenav').affix({
+		if($window.width() >= 768) $('.bs-docs-sidenav').affix({
 		        offset: {
 		            top: function () { return $window.width() <= 980 ? 290 : 210 }
 		          , bottom: 270
@@ -43,20 +43,20 @@
     ================================================== -->
     <div class="row">
       <include file="commonbar" />
-      <div class="col-xs-9">
+      <div class="col-xs-12 col-sm-9">
 		<div class="page-header">
             <h1>上传图片</h1>
         </div>
         
         <form class="form-horizontal" method="post" action="" enctype="multipart/form-data">
         	<div class="form-group">
-				<label class="control-label col-xs-2">待上传照片</label>
-				<div class="col-xs-5"><input type="file" class="form-control" id="fn" name="fn"></div>
-                <div class="col-xs-2"><button class="btn btn-primary" type="button" id="upload-btn">上传</button></div>
+				<label class="control-label col-xs-12 col-sm-2">待上传照片</label>
+				<div class="col-xs-12 col-sm-5"><input type="file" class="form-control" id="fn" name="fn"></div>
+                <div class="col-xs-12 col-sm-2"><button class="btn btn-primary" type="button" id="upload-btn">上传</button></div>
 			</div>
             <div class="form-group">
-				<label class="control-label col-xs-2"> </label>
-				<div class="col-xs-8">
+				<label class="control-label col-xs-12 col-sm-2"> </label>
+				<div class="col-xs-12 col-sm-8">
                     <span id="upload-res" class="label label-info" style="margin-bottom:20px">Tips：请先选择待上传的照片，再点击上传按钮上传。</span>
 				</div>
 			</div>
@@ -67,19 +67,19 @@
         </div>
         
         <div class="row">
-        	<div class="col-xs-4">
+        	<div class="col-xs-12 col-sm-4">
             	未引用图片（双击可移至待删除）：
             	<p><select id="unlink" style="height:200px" class="form-control" multiple></select></p>
                 <p><input type="button" class="btn btn-success btn-sm" id="btn-reload" value="刷新" />
                 <input type="button" class="btn btn-primary btn-sm" id="movright" value="全部移至右框&gt;&gt;" /></p>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-12 col-sm-4">
             	待删除图片（双击移至左框）：
             	<p><select id="todel" style="height:200px" class="form-control" multiple></select></p>
                 <p><input type="button" class="btn btn-primary btn-sm" id="movleft" value="&lt;&lt;全部移至左框" />
                 <input type="button" class="btn btn-danger btn-sm" id="delall" value="全部删除" /></p>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-12 col-sm-4">
             	图像预览（选择单张图片可预览）：<img id="preview" src="img/nopic.jpg" class="thumbnail" width="100%" />
             </div>
         </div>
