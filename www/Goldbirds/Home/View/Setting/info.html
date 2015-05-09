@@ -1,0 +1,81 @@
+<include file="Base:header" />
+<include file="Base:include" />
+    <link href="css/setting.css" rel="stylesheet">
+    <script src="js/setting_common.js"></script>
+	<script type="text/javascript">
+	$(function(){ $("#navbar>li:nth-child(9)").addClass("active"); $("#setting-bar li:nth-child(<?php echo $nid; ?>)").addClass("active"); });
+	$(function(){
+		var $window = $(window);
+			$('.bs-docs-sidenav').affix({
+		        offset: {
+		            top: function () { return $window.width() <= 980 ? 290 : 210 }
+		          , bottom: 270
+		          }
+		        });
+	})
+  	</script>
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <include file="Base:navbar" />
+
+<!-- Subhead
+================================================== -->
+<header class="bs-docs-header" id="overview">
+  <div class="container">
+    <h1>系统信息</h1>
+    <p class="lead">System Information</p>
+    <div id="carbonads-container"></div>
+  </div>
+</header>
+
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <include file="commonbar" />
+      <div class="col-xs-9">
+		<div class="page-header">
+            <h1>系统信息</h1>
+        </div>
+       	<div class="row">
+        	<div class="col-xs-12">
+            	<div class="alert alert-success">
+                	<strong>OURACM Project</strong><hr />
+                    <div style="font-family:Consolas,'Microsoft YaHei'; font-size:14px">
+                        <p>版本号: <?php echo GOLDBIRDS_VER; ?></p>
+                        <p>版本描述: <?php echo GOLDBIRDS_VER_DIS; ?></p>
+                        <p>作者: Ekszz [ code@ekszz.com ]</p>
+                        <p>项目主页: <a href="https://github.com/ekszz/OurAcm">https://github.com/ekszz/OurAcm</a></p>
+                        <p>LICENSE: <a href="http://www.gnu.org/licenses/gpl.html">GPLv3</a></p>
+                        <hr />
+                        <p>Designed and built with all the love in the world by <a href="http://weibo.com/ekszz">@Ekszz</a>.</p>
+                    </div>
+                </div>
+                
+                <?php if($info_sys) { ?>
+                <div class="alert alert-warning">
+                	<strong>Server Information</strong><hr />
+                    <div style="font-family:Consolas,'Microsoft YaHei'; font-size:14px">
+                        <?php echo $info_sys; ?>
+                    </div>
+                </div>
+                <?php } ?>
+                
+                <?php if($info_mysql) { ?>
+                <div class="alert alert-info">
+                	<strong>Database Information</strong><hr />
+                    <div style="font-family:Consolas,'Microsoft YaHei'; font-size:14px">
+                        <?php echo $info_mysql; ?>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+		</div>
+      </div>
+    </div>
+  </div>
+  <div id="alert"></div>
+<include file="Base:footer" />
