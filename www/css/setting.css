@@ -1,10 +1,9 @@
 .message {
-    left: 0;
-	right: 0;
     position: fixed;
     top: 50px;
     z-index: 7000;
 	max-width: 500px;
+	min-width: 300px;
 	text-align: center;
 }
 .center {
