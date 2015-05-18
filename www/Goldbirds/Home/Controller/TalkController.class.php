@@ -62,10 +62,11 @@ class TalkController extends BaseController {
             $this -> assign('tid', $tid);
             $this -> assign('title', htmlspecialchars($res['title']));
             $this -> assign('introduce', '<p><span class="text-warning"><strong>'
-                .strlen($res['content']).'B</strong></span> BY <span class="text-primary"><strong>'
-                .htmlspecialchars($res['ojaccount']).'</strong></span> @ <span class="text-muted">'
+                .strlen($res['content']).'B</strong></span> BY <strong>'
+                .(\OJLoginInterface::getUserUrl($res['ojaccount']) == null ? '<span class="text-primary">'.htmlspecialchars($res['ojaccount']).'</span>' : '<a href="'.\OJLoginInterface::getUserUrl($res['ojaccount']).'"><span class="text-primary">'.htmlspecialchars($res['ojaccount']).'</span></a>')
+                .'</strong></span> @ <span class="text-muted">'
                 .$res['createtime'].'</span>'.
-                ($res['problemid'] ? ' IN <span class="text-danger"><strong>Problem '.$res['problemid'].'</strong></span>' : '')
+                ($res['problemid'] ? ' IN <strong>'.(\OJLoginInterface::getProblemUrl($res['problemid']) == null ? '<span class="text-danger">Problem '.$res['problemid'].'</span>' : '<a href="'.\OJLoginInterface::getProblemUrl($res['problemid']).'"><span class="text-danger">Problem '.$res['problemid'].'</span></a>').'</strong>' : '')
                 .(time() - strtotime($res['createtime']) <= TalkController::$var_newlogo_second ? ' <span class="label label-warning">New</span>' : '')
                 .'</p>');
             if($res['content']) $this -> assign('content', '<pre style="font-size:16px">'.htmlspecialchars($res['content']).'</pre>');
