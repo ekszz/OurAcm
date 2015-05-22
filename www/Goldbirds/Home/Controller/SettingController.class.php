@@ -1415,7 +1415,7 @@ class SettingController extends BaseController {
             if(!$res) $data['adminuid'] = 0;
             else $data['adminuid'] = $c['uid'];
     
-            $activitylistDB = M('Activitylist');
+            $activitylistDB = D('Activitylist');
             if(!$activitylistDB -> create($data)) {
                 $this -> myajaxReturn(null, $activitylistDB -> getError(), 1);
             }
@@ -1507,7 +1507,7 @@ class SettingController extends BaseController {
             if(!$res) $data['adminuid'] = 0;
             else $data['adminuid'] = $c['uid'];
     
-            $activitylistDB = M('Activitylist');
+            $activitylistDB = D('Activitylist');
             if(!$activitylistDB -> create($data)) {  //自动验证失败
                 $this -> myajaxReturn(null, $activitylistDB -> getError(), 1);
             }
