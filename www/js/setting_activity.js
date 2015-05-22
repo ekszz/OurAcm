@@ -194,7 +194,7 @@ function set_activity_modal(func, aid) {  //0-查看,1-增加,2-修改
 	}
 	else {  //1 - 新增
 		$('#nowaid').val(9999);
-		$('#deadline').val('2014-8-8 23:59:59');
+		$('#deadline').val(null);
 		$('#title').val(null);
 		$('#admin').val(null);
 		editor.html('');

@@ -1,11 +1,14 @@
 <include file="Base:header" />
 <include file="Base:include" />
     <link href="css/theme.bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="css/setting.css" rel="stylesheet">
     <script src="js/jquery.tablesorter.min.js"></script>
     <script src="js/jquery.tablesorter.widgets.min.js"></script>
     <script src="js/jquery.tablesorter.pager.js"></script>
     <script src="js/bootstrap3-typeahead.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
     <script src="js/ajaxfileupload.js"></script>
     <script src="js/kindeditor/kindeditor-min.js"></script>
     <script src="js/setting_common.js"></script>
@@ -20,7 +23,10 @@
 		          , bottom: 270
 		          }
 		        });
-			$("span[data-toggle=popover]").popover();	
+			$("span[data-toggle=popover]").popover();
+		$('#deadline').datetimepicker({
+       		format: 'YYYY-MM-DD HH:mm:ss'
+      	});
 	});
 	</script>
   </head>
@@ -109,7 +115,7 @@
   	<div class="modal-body">
     	<div class="form-group">
 			<label for="deadline" class="col-xs-2 control-label">截止时间*</label>
-            <div class="col-xs-3"><input type="text" id="deadline" name="deadline" class="form-control" placeholder="格式：2014-8-8 23:59:59"></div>
+            <div class="col-xs-3"><input type="text" id="deadline" name="deadline" class="form-control" placeholder="2015-01-01 23:59:59"></div>
         	<label class="col-xs-2 control-label"><input type="checkbox" id="isinner" name="isinner" value="1"> 队内</label>
             <label class="col-xs-3 control-label"><input type="checkbox" id="ispublic" name="ispublic" value="1"> 公开注册信息</label>
             <label class="col-xs-2 control-label"><input type="checkbox" id="isneedreview" name="isneedreview" value="1"> 需审核</label>
