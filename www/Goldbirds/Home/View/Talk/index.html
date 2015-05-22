@@ -32,16 +32,16 @@
 					$('#verify-img').attr('src', '?z=talk-verify-t-'+Math.random());
 					$('#prev-btn a').removeAttr('href');
 					$('#prev-btn').addClass('disabled');
-					alert('[成功]提交成功。');
+					alert('成功', '提交成功。', 'success');
 				}
 				else {
 					$('#verify-img').attr('src', '?z=talk-verify-t-'+Math.random());
-					alert(data.info, "error");
+					alert('错误', data.info, "error");
 				}
 			})
 			.fail(function () {
 				$('#verify-img').attr('src', '?z=talk-verify-t-'+Math.random());
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		});
 		if(page == 1) {

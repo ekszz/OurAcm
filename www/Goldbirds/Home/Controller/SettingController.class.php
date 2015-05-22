@@ -36,7 +36,7 @@ class SettingController extends BaseController {
     
     public function ajax_modify_profile() {  //更新个人资料
         
-        if(!session('goldbirds_islogin')) $this -> myajaxReturn(null, '[错误]还未登录，无权限。', 2);  //无权限处理
+        if(!session('goldbirds_islogin')) $this -> myajaxReturn(null, '还未登录，无权限。', 2);  //无权限处理
         
         $personDB = D('Person');
         if(I('post.email', '', false) === '') $data['email'] = null;
@@ -68,7 +68,7 @@ class SettingController extends BaseController {
     public function ajax_upload_face() {  //上传头像
         
         //使用iframe模拟AJAX上传图片，导致该函数无法使用myajaxReturn，请注意。
-        if(!session('goldbirds_islogin')) $this -> myajaxReturn(null, '[错误]还未登录，无权限。', 2);  //无权限处理
+        if(!session('goldbirds_islogin')) $this -> myajaxReturn(null, '还未登录，无权限。', 2);  //无权限处理
         
         $upload = new \Think\Upload();  //实例化上传类
         $upload -> maxSize = 10485760 ;  //设置附件上传大小
@@ -77,7 +77,7 @@ class SettingController extends BaseController {
         $upload -> savePath = '';
         $upload -> autoSub = false;
         if(!($info = $upload -> upload())) {  //上传错误提示错误信息
-            echo json_encode(array('info' => ('[错误]'.$upload -> getError()), 'status' => 1));
+            echo json_encode(array('info' => (''.$upload -> getError()), 'status' => 1));
         } 
         else {  //上传成功
             $fileinfo = current($info);
@@ -88,23 +88,23 @@ class SettingController extends BaseController {
             
             if(false === $personDB -> where('uid = '.session('goldbirds_uid')) -> setField('photo', $newphoto)) {
                 unlink($newphoto);
-                echo json_encode(array('info' => '[错误]写入数据库出错！', 'status' => 2));
+                echo json_encode(array('info' => '写入数据库出错！', 'status' => 2));
             }
             else {
                 if($oldphoto) unlink($oldphoto);
-                echo json_encode(array('data' => 'upload/'.$fileinfo['savename'], 'info' => '[成功]上传头像成功，文件大小'.sprintf("%.2lf", intval($fileinfo['size'])/1024).'KB.', 'status' => 0));
+                echo json_encode(array('data' => 'upload/'.$fileinfo['savename'], 'info' => '上传头像成功，文件大小'.sprintf("%.2lf", intval($fileinfo['size'])/1024).'KB.', 'status' => 0));
             }
         }
     }
     
     public function ajax_verify_luckycode() {  //验证邀请码
         
-        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '[错误]还未登录，无权限。', 2);  //无权限处理
+        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '还未登录，无权限。', 2);  //无权限处理
         
         $code = I('post.code');
         sleep(1);
         if(strlen($code) != 16)
-            $this -> myajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
+            $this -> myajaxReturn(null, '无效的邀请码，请重试！', 1);
         
         $personDB = M('Person');
         $c['luckycode'] = $code;
@@ -117,16 +117,16 @@ class SettingController extends BaseController {
                 $r['phone'] = $data['phone'];
                 $this -> myajaxReturn($r, '[成功]', 0);
             }
-            else $this -> myajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
+            else $this -> myajaxReturn(null, '无效的邀请码，请重试！', 1);
         }
         else {
-            $this -> myajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
+            $this -> myajaxReturn(null, '无效的邀请码，请重试！', 1);
         }
     }
     
     public function ajax_bind_luckycode() {  //验证邀请码
     
-        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '[错误]还未登录，无权限。', 2);  //无权限处理
+        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '还未登录，无权限。', 2);  //无权限处理
         
         $code = I('post.code');
         $email = I('post.email', '', false);
@@ -134,11 +134,11 @@ class SettingController extends BaseController {
         $oj = \OJLoginInterface::getLoginUser();
         sleep(1);
         if(strlen($code) != 16)
-            $this -> myajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
+            $this -> myajaxReturn(null, '无效的邀请码，请重试！', 1);
         else if(!preg_match('/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,5}$/', $email))
-            $this -> myajaxReturn(null, '[错误]E-mail格式不正确！请重试。', 1);
+            $this -> myajaxReturn(null, 'E-mail格式不正确！请重试。', 1);
         else if(strlen($phone) < 8 || strlen($phone) > 11)
-            $this -> myajaxReturn(null, '[错误]联系电话格式不正确！请重试。', 1);
+            $this -> myajaxReturn(null, '联系电话格式不正确！请重试。', 1);
         else {
             $personDB = M('Person');
             $c['luckycode'] = $code;
@@ -152,13 +152,13 @@ class SettingController extends BaseController {
                     if($personDB -> where('uid = '.$data['uid']) -> limit(1) -> save($data))
                         $this -> myajaxReturn(null, '[成功]', 0);
                     else {
-                        $this -> myajaxReturn(null, '[错误]绑定失败，请刷新后重试。', 0);
+                        $this -> myajaxReturn(null, '绑定失败，请刷新后重试。', 0);
                     }
                 }
-                else $this -> myajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
+                else $this -> myajaxReturn(null, '无效的邀请码，请重试！', 1);
             }
             else {
-                $this -> myajaxReturn(null, '[错误]无效的邀请码，请重试！', 1);
+                $this -> myajaxReturn(null, '无效的邀请码，请重试！', 1);
             }
         }
     }
@@ -216,15 +216,15 @@ class SettingController extends BaseController {
     public function ajax_load_person() {  //返回所有队员列表
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $personDB = M('Person');
             $data = $personDB -> field('uid, chsname, sex, email, phone, grade, ojaccount, group, luckycode') -> where('uid > 0') -> order('uid ASC') -> select();
             if($data === false) {
-                $this -> myajaxReturn(null, '[错误]数据库错误。', 1);
+                $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === 0) {
-                $this -> myajaxReturn(null, '[错误]没有队员信息。', 2);
+                $this -> myajaxReturn(null, '没有队员信息。', 2);
             }
             else {
                 for($i = 0; $i < count($data); $i++) {
@@ -241,14 +241,14 @@ class SettingController extends BaseController {
     public function ajax_get_person() {  //获取一名队员详细信息
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $personDB = M('Person');
             $uid = intval(I('get.uid'));
-            if($uid < 0) $this -> myajaxReturn(null, '[错误]UID无效。', 1);
+            if($uid < 0) $this -> myajaxReturn(null, 'UID无效。', 1);
             $data = $personDB -> where('uid = '.$uid) -> find();
-            if($data === false) $this -> myajaxReturn(null, '[错误]数据库错误。', 2);
-            else if(!$data) $this -> myajaxReturn(null, '[错误]UID无效。', 1);
+            if($data === false) $this -> myajaxReturn(null, '数据库错误。', 2);
+            else if(!$data) $this -> myajaxReturn(null, 'UID无效。', 1);
             else {
                 $this -> myajaxReturn($data, '[成功]', 0);
             }
@@ -257,7 +257,7 @@ class SettingController extends BaseController {
     
     public function ajax_del_person() {  //删除用户
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $list = I('get.uid');
             $uids = explode(',', $list);
@@ -267,10 +267,10 @@ class SettingController extends BaseController {
                 if(!$this -> del_one_person($uid)) $success ++;
                 else $fail ++;
             }
-            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '[错误]无效的参数。', 2);
-            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '[错误]删除失败。', 1);
+            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
+            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '删除失败。', 1);
             else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功删除'.$success.'名队员，删除失败'.$fail.'名。', 0);
-            else $this -> myajaxReturn(null, '[成功]已成功删除'.$success.'名队员。', 0);
+            else $this -> myajaxReturn(null, '已成功删除'.$success.'名队员。', 0);
         }
     }
     
@@ -302,7 +302,7 @@ class SettingController extends BaseController {
     
     public function ajax_sendinv() {  //发送邀请函
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $list = I('get.uid');
             $uids = explode(',', $list);
@@ -314,10 +314,10 @@ class SettingController extends BaseController {
                 else if(!$ret) $success ++;
                 else $fail ++;
             }
-            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '[错误]无效的参数。', 2);
-            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '[错误]发送邮件失败。', 1);
+            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
+            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '发送邮件失败。', 1);
             else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功发送'.$success.'封邀请邮件，失败'.$fail.'封。', 0);
-            else $this -> myajaxReturn(null, '[成功]已成功发送'.$success.'封邀请邮件。', 0);
+            else $this -> myajaxReturn(null, '已成功发送'.$success.'封邀请邮件。', 0);
         }
     }
     
@@ -359,10 +359,10 @@ class SettingController extends BaseController {
     public function ajax_add_person() {  //队员管理-添加一名队员
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $tmp = intval(I('post.nowuid'));
-            if($tmp != 9999) $this -> myajaxReturn(null, '[错误]无效的参数。', 2);
+            if($tmp != 9999) $this -> myajaxReturn(null, '无效的参数。', 2);
             $data['chsname'] = I('post.chsname', '<ERROR NAME>', false);
             $data['engname'] = I('post.engname', '', false) == '' ? null : I('post.engname', '', false);
             $data['email'] = I('post.email', '', false) == '' ? null : I('post.email', '', false);
@@ -390,9 +390,9 @@ class SettingController extends BaseController {
             }
             else {
                 if(false === ($tmp = $personDB -> add()))
-                    $this -> myajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                    $this -> myajaxReturn(null, '写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                 else 
-                  $this -> myajaxReturn($tmp.'-'.$data['chsname'].'-'.$data['engname'], '[成功]新增用户“'.$data['chsname'].'”，UID:'.$tmp, 0);
+                  $this -> myajaxReturn($tmp.'-'.$data['chsname'].'-'.$data['engname'], '新增用户“'.$data['chsname'].'”，UID:'.$tmp, 0);
             }
         }
     }
@@ -400,10 +400,10 @@ class SettingController extends BaseController {
     public function ajax_modify_person() {  //队员管理-修改一名队员
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $uid = intval(I('post.nowuid'));
-            if($uid == 9999 || $uid <= 0) $this -> myajaxReturn(null, '[错误]无效的UID。', 2);
+            if($uid == 9999 || $uid <= 0) $this -> myajaxReturn(null, '无效的UID。', 2);
             
             $data['chsname'] = I('post.chsname', '<ERROR NAME>', false);
             $data['engname'] = I('post.engname', '', false) == '' ? null : I('post.engname', '', false);
@@ -431,7 +431,7 @@ class SettingController extends BaseController {
             }
             else {  //自动验证成功
                 if(false === $personDB -> where('uid='.$uid) -> limit(1) -> save($data)) {
-                    $this -> myajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                    $this -> myajaxReturn(null, '写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                 }
                 else {
                     $this -> myajaxReturn(null, '[成功]', 0);
@@ -459,15 +459,15 @@ class SettingController extends BaseController {
     public function ajax_load_contest() {  //AJAX获取比赛信息列表
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $contestDB = D('Contest');
             $data = $contestDB -> field('cid, holdtime, site, university, type, medal, team, pic1, pic2') -> where('cid > 0') -> order('holdtime DESC, cid DESC') -> select();
             if($data === false) {
-                $this -> myajaxReturn(null, '[错误]数据库错误。', 1);
+                $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === null) {
-                $this -> myajaxReturn(null, '[错误]没有比赛信息。', 2);
+                $this -> myajaxReturn(null, '没有比赛信息。', 2);
             }
             else {
                 for($i = 0; $i < count($data); $i++) {
@@ -482,14 +482,14 @@ class SettingController extends BaseController {
 
     public function ajax_get_contest() {  //获取一条比赛获奖记录信息
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $contestDB = D('Contest');
             $cid = intval(I('get.cid'));
-            if($cid <= 0) $this -> myajaxReturn(null, '[错误]CID无效。', 1);
+            if($cid <= 0) $this -> myajaxReturn(null, 'CID无效。', 1);
             $data = $contestDB -> relation(true) -> where('cid = '.$cid) -> find();
-            if($data === false) $this -> myajaxReturn(null, '[错误]数据库错误。', 2);
-            else if(!$data) $this -> myajaxReturn(null, '[错误]CID无效。', 1);
+            if($data === false) $this -> myajaxReturn(null, '数据库错误。', 2);
+            else if(!$data) $this -> myajaxReturn(null, 'CID无效。', 1);
             else $this -> myajaxReturn($data, '[成功]', 0);
         }
     }
@@ -497,12 +497,12 @@ class SettingController extends BaseController {
     public function ajax_get_typeaheaddata() {  //自动完成数据
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $personDB = M('Person');
             $data = $personDB -> field('uid, chsname, engname') -> where('`group` <> 9') -> order('uid ASC') -> select();
             if($data === false) {
-                $this -> myajaxReturn(null, '[错误]数据库错误。', 1);
+                $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === null) {
                 $this -> myajaxReturn('[]', '[提示]系统中没有用户。', 0);
@@ -523,7 +523,7 @@ class SettingController extends BaseController {
     
         //使用iframe模拟AJAX上传图片，导致该函数无法使用myajaxReturn，请注意。
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $upload = new \Think\Upload();  //实例化上传类
             $upload -> maxSize = 2097152;  //设置附件上传大小
@@ -533,7 +533,7 @@ class SettingController extends BaseController {
             $upload -> autoSub = false;
             $info = $upload -> upload();
             if(!$info) {  //上传错误提示错误信息
-                echo json_encode(array('info' => ('[错误]'.$upload -> getError()), 'status' => 1));
+                echo json_encode(array('info' => (''.$upload -> getError()), 'status' => 1));
             }
             else {  //上传成功
                 $fileinfo = current($info);
@@ -541,23 +541,23 @@ class SettingController extends BaseController {
                 $data['filename'] = $newphoto;
                 $data['id'] = intval(I('post.id'));
 
-                echo json_encode(array('data' => $data, 'info' => '[成功]上传成功，文件大小'.sprintf("%.2lf", intval($fileinfo['size'])/1024).'KB。', 'status' => 0));
+                echo json_encode(array('data' => $data, 'info' => '上传成功，文件大小'.sprintf("%.2lf", intval($fileinfo['size'])/1024).'KB。', 'status' => 0));
             }
         }
     }
     
     public function ajax_add_contest() {  //添加获奖记录
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $tmp = intval(I('post.nowcid'));
-            if($tmp != 9999) $this -> myajaxReturn(null, '[错误]无效的参数。', 2);
+            if($tmp != 9999) $this -> myajaxReturn(null, '无效的参数。', 2);
             
             if(false === strtotime(I('post.holdtime', '', false)))
-                $this -> myajaxReturn(null, '[错误]日期格式不对！', 1);
+                $this -> myajaxReturn(null, '日期格式不对！', 1);
             if(strtotime(I('post.holdtime', '', false)) >= strtotime('2037-12-31') 
                 || strtotime(I('post.holdtime', '', false)) < strtotime('1960-1-1')) {
-                $this -> myajaxReturn(null, '[错误]日期范围不太对！', 1);
+                $this -> myajaxReturn(null, '日期范围不太对！', 1);
             }
             $data['holdtime'] = I('post.holdtime', '', false);
             
@@ -575,21 +575,21 @@ class SettingController extends BaseController {
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
-            if(!$res) $this -> myajaxReturn(null, '[错误]Leader的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
+            if(!$res) $this -> myajaxReturn(null, 'Leader的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['leader'] = $c['uid'];
             
             $plist = explode('-', I('post.teamer1'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
-            if(!$res) $this -> myajaxReturn(null, '[错误]Teamer1的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
+            if(!$res) $this -> myajaxReturn(null, 'Teamer1的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['teamer1'] = $c['uid'];
             
             $plist = explode('-', I('post.teamer2'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
-            if(!$res) $this -> myajaxReturn(null, '[错误]Teamer2的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
+            if(!$res) $this -> myajaxReturn(null, 'Teamer2的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['teamer2'] = $c['uid'];
             
             $data['pic1'] = strcmp(substr(I('post.pic1_fn'), 0, 7), 'upload/') == 0 ? I('post.pic1_fn') : null;
@@ -606,9 +606,9 @@ class SettingController extends BaseController {
             }
             else {
                 if(false === ($tmp = $contestDB -> add()))
-                    $this -> myajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                    $this -> myajaxReturn(null, '写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                 else
-                  $this -> myajaxReturn(null, '[成功]新增获奖记录“'.$data['team'].'”，CID:'.$tmp, 0);
+                  $this -> myajaxReturn(null, '新增获奖记录“'.$data['team'].'”，CID:'.$tmp, 0);
             }
         }
     }
@@ -616,7 +616,7 @@ class SettingController extends BaseController {
     public function ajax_del_contest() {  //删除获奖记录
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $list = I('get.cid', '', false);
             $delpic = intval(I('get.delpic'));
@@ -627,10 +627,10 @@ class SettingController extends BaseController {
                 if(!$this -> del_one_contest($cid, $delpic)) $success ++;
                 else $fail ++;
             }
-            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '[错误]无效的参数。', 2);
-            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '[错误]无效的CID。', 1);
+            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
+            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '无效的CID。', 1);
             else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功删除'.$success.'条获奖记录，删除失败'.$fail.'条。', 0);
-            else $this -> myajaxReturn(null, '[成功]已成功删除'.$success.'条获奖记录。', 0);
+            else $this -> myajaxReturn(null, '已成功删除'.$success.'条获奖记录。', 0);
         }
     }
     
@@ -661,16 +661,16 @@ class SettingController extends BaseController {
     public function ajax_modify_contest() {  //修改获奖记录
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $cid = intval(I('post.nowcid'));
-            if($cid == 9999 || $cid <= 0) $this -> myajaxReturn(null, '[错误]无效的CID。', 2);
+            if($cid == 9999 || $cid <= 0) $this -> myajaxReturn(null, '无效的CID。', 2);
             
             if(false === strtotime(I('post.holdtime', '', false)))
-                $this -> myajaxReturn(null, '[错误]日期格式不对！', 1);
+                $this -> myajaxReturn(null, '日期格式不对！', 1);
             if(strtotime(I('post.holdtime', '', false)) >= strtotime('2037-12-31')
             || strtotime(I('post.holdtime', '', false)) < strtotime('1960-1-1')) {
-                $this -> myajaxReturn(null, '[错误]日期范围不太对！', 1);
+                $this -> myajaxReturn(null, '日期范围不太对！', 1);
             }
             $data['holdtime'] = I('post.holdtime', '', false);
             
@@ -688,21 +688,21 @@ class SettingController extends BaseController {
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
-            if(!$res) $this -> myajaxReturn(null, '[错误]Leader的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
+            if(!$res) $this -> myajaxReturn(null, 'Leader的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['leader'] = $c['uid'];
             
             $plist = explode('-', I('post.teamer1'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
-            if(!$res) $this -> myajaxReturn(null, '[错误]Teamer1的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
+            if(!$res) $this -> myajaxReturn(null, 'Teamer1的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['teamer1'] = $c['uid'];
             
             $plist = explode('-', I('post.teamer2'));
             $c['uid'] = intval($plist[0]);
             $c['chsname'] = $plist[1];
             $res = $personDB -> where($c) -> find();
-            if(!$res) $this -> myajaxReturn(null, '[错误]Teamer2的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
+            if(!$res) $this -> myajaxReturn(null, 'Teamer2的格式不对耶，请用“uid-中文姓名”酱紫的。', 1);
             else $data['teamer2'] = $c['uid'];
             
             $data['pic1'] = strcmp(substr(I('post.pic1_fn'), 0, 7), 'upload/') == 0 ? I('post.pic1_fn') : null;
@@ -719,7 +719,7 @@ class SettingController extends BaseController {
             }
             else {  //自动验证成功
                 if(false === $contestDB -> where('cid='.$cid) -> limit(1) -> save($data)) {
-                    $this -> myajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                    $this -> myajaxReturn(null, '写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                 }
                 else {
                     $this -> myajaxReturn(null, '[成功]', 0);
@@ -743,7 +743,7 @@ class SettingController extends BaseController {
     public function ajax_flushconfig() {  //更新参数缓存
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $this -> init();
             $this -> myajaxReturn(null, null, 0);
@@ -753,12 +753,12 @@ class SettingController extends BaseController {
     public function ajax_getsetting() {  //获取所有参数信息
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $settingDB = M('Setting');
             $data = $settingDB -> order('k ASC') -> select();
             if(!$data) {
-                $this -> myajaxReturn(null, '[错误]获取参数错误，请重试。', 2);
+                $this -> myajaxReturn(null, '获取参数错误，请重试。', 2);
             }
             else {
                 $this -> myajaxReturn($data, '[成功]', 0);
@@ -769,12 +769,12 @@ class SettingController extends BaseController {
     public function ajax_savesetting() {  //保存一个参数
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $c['k'] = I('post.k', '', false);
             $settingDB = M('Setting');
             $data = $settingDB -> where($c) -> find();
-            if(!$data) $this -> myajaxReturn(null, '[错误]参数键值错误！', 1);  //无效的K值或者查询错误
+            if(!$data) $this -> myajaxReturn(null, '参数键值错误！', 1);  //无效的K值或者查询错误
             if($data['type'] == 0) {  //bool型，非0-是，0-否
                 if(intval(I('post.v')) == 0) $dat = '0';
                 else $dat = '1';
@@ -788,12 +788,12 @@ class SettingController extends BaseController {
                 if(!$dat) $dat = null;
             }
             if(false === $settingDB -> where($c) -> setField('v', $dat)) {
-                $this -> myajaxReturn(null, '[错误]保存参数错误，请重试！', 2);
+                $this -> myajaxReturn(null, '保存参数错误，请重试！', 2);
             }
             else {
                 $this -> setconfig($c['k'], $dat);
                 $c['v'] = $dat;
-                $this -> myajaxReturn($c, '[成功]保存参数 ['.$c['k'].'] 成功！参数缓存已更新。', 0);
+                $this -> myajaxReturn($c, '保存参数 ['.$c['k'].'] 成功！参数缓存已更新。', 0);
             }
         }
     }
@@ -818,7 +818,7 @@ class SettingController extends BaseController {
     public function ajax_get_unlink_filename() {  //获取未引用的文件
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             //获取upload目录下所有文件
             $handler = opendir('upload');
@@ -894,7 +894,7 @@ class SettingController extends BaseController {
     public function ajax_del_photos() {  //删除多个图片文件
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $photos = I('post.photos', '', false);
             $safe = true;
@@ -907,7 +907,7 @@ class SettingController extends BaseController {
                     $photos[$i] = iconv('UTF-8', 'GBK', $photos[$i]);
                 }
             }
-            if(!$safe) $this -> myajaxReturn(null, '[错误]文件名有误，请重试。', 1);
+            if(!$safe) $this -> myajaxReturn(null, '文件名有误，请重试。', 1);
             else {
                 $succ = 0;
                 $fail = 0;
@@ -940,7 +940,7 @@ class SettingController extends BaseController {
     public function ajax_get_oj_list() {  //获取OJ列表
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $ojhistoryDB = M('Ojhistory');
             $data = $ojhistoryDB -> field('vid, mainname') -> order('sortid DESC') -> select();
@@ -954,10 +954,10 @@ class SettingController extends BaseController {
     public function ajax_get_oj_detail() {  //获取某版本OJ的详细信息
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $vid = intval(I('get.vid'));
-            if($vid <= 0) $this -> myajaxReturn(null, '[错误]无效的VID，请检查。', 1);
+            if($vid <= 0) $this -> myajaxReturn(null, '无效的VID，请检查。', 1);
             else {
                 $ojhistoryDB = M('Ojhistory');
                 $data = $ojhistoryDB -> where('vid='.$vid) -> find();
@@ -981,7 +981,7 @@ class SettingController extends BaseController {
                 }
                 
                 if($data) $this -> myajaxReturn($data, '[成功]', 0);
-                else $this -> myajaxReturn(null, '[错误]无效的VID，请检查。', 1);
+                else $this -> myajaxReturn(null, '无效的VID，请检查。', 1);
             }
         }
     }
@@ -989,24 +989,24 @@ class SettingController extends BaseController {
     public function ajax_add_oj() {  //添加一条OJ记录
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $ojhistoryDB = M('Ojhistory');
             $data['sortid'] = 10;
             $data['mainname'] = '新建版本（请在后台修改）';
             $k = $ojhistoryDB -> data($data) -> add();
             if($k) $this -> myajaxReturn($k, '[成功]', 0);
-            else $this -> myajaxReturn(null, '[错误]创建新OJ历史记录错误，请重试。', 2);
+            else $this -> myajaxReturn(null, '创建新OJ历史记录错误，请重试。', 2);
         }
     }
     
     public function ajax_del_oj() {  //删除一条OJ记录
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $vid = intval(I('get.vid'));
-            if($vid <= 0) $this -> myajaxReturn(null, '[错误]无效的VID，请检查。', 1);
+            if($vid <= 0) $this -> myajaxReturn(null, '无效的VID，请检查。', 1);
             else {
                 $ojhistoryDB = M('Ojhistory');
                 if($ojhistoryDB -> where('vid='.$vid) -> delete()) {
@@ -1025,10 +1025,10 @@ class SettingController extends BaseController {
     public function ajax_modify_oj() {  //保存一条OJ历史的修改
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $vid = intval(I('post.vid'));
-            if($vid <= 0) $this -> myajaxReturn(null, '[错误]无效的VID参数。', 1);
+            if($vid <= 0) $this -> myajaxReturn(null, '无效的VID参数。', 1);
             else {
                 $data['sortid'] = intval(I('post.sortid'));
                 $data['mainname'] = I('post.mainname', '', false);
@@ -1061,7 +1061,7 @@ class SettingController extends BaseController {
                 }
                 else {  //自动验证成功
                     if(false === $ojhistoryDB -> where('vid='.$vid) -> limit(1) -> save($data)) {
-                        $this -> myajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                        $this -> myajaxReturn(null, '写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                     }
                     else {
                         $this -> myajaxReturn(htmlspecialchars($data['mainname']), '[成功]', 0);
@@ -1075,7 +1075,7 @@ class SettingController extends BaseController {
     public function ajax_get_img_list() {  //获取图片文件名列表
 
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             //获取upload目录下所有文件
             $handler = opendir('upload');
@@ -1106,15 +1106,15 @@ class SettingController extends BaseController {
     public function ajax_load_news() {  //返回所有新闻列表
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $newsDB = D('News');
             $data = $newsDB -> relation(true) -> field('nid, title, author, createtime, category, permission, top') -> order('nid DESC') -> select();
             if($data === false) {
-                $this -> myajaxReturn(null, '[错误]数据库错误。', 1);
+                $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === 0) {
-                $this -> myajaxReturn(null, '[错误]没有队员信息。', 2);
+                $this -> myajaxReturn(null, '没有队员信息。', 2);
             }
             else {
                 for($i = 0; $i < count($data); $i++) {
@@ -1129,14 +1129,14 @@ class SettingController extends BaseController {
     public function ajax_get_news() {  //获取一条新闻详细信息
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $newsDB = D('News');
             $nid = intval(I('get.nid'));
-            if($nid < 0) $this -> myajaxReturn(null, '[错误]NID无效。', 1);
+            if($nid < 0) $this -> myajaxReturn(null, 'NID无效。', 1);
             $data = $newsDB -> relation(true) -> where('nid = '.$nid) -> find();
-            if($data === false) $this -> myajaxReturn(null, '[错误]数据库错误。', 2);
-            else if(!$data) $this -> myajaxReturn(null, '[错误]NID无效。', 1);
+            if($data === false) $this -> myajaxReturn(null, '数据库错误。', 2);
+            else if(!$data) $this -> myajaxReturn(null, 'NID无效。', 1);
             else {
                 $this -> myajaxReturn($data, '[成功]', 0);
             }
@@ -1146,7 +1146,7 @@ class SettingController extends BaseController {
     public function ajax_del_news() {  //删除新闻
         
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $list = I('get.nid');
             $nids = explode(',', $list);
@@ -1156,10 +1156,10 @@ class SettingController extends BaseController {
                 if(!$this -> del_one_news($nid)) $success ++;
                 else $fail ++;
             }
-            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '[错误]无效的参数。', 2);
-            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '[错误]无效的NID。', 1);
+            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
+            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '无效的NID。', 1);
             else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功删除'.$success.'条新闻，删除失败'.$fail.'条。', 0);
-            else $this -> myajaxReturn(null, '[成功]已成功删除'.$success.'条新闻。', 0);
+            else $this -> myajaxReturn(null, '已成功删除'.$success.'条新闻。', 0);
         }
     }
     
@@ -1183,10 +1183,10 @@ class SettingController extends BaseController {
     public function ajax_modify_news() {  //新闻管理-修改一条新闻
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $nid = intval(I('post.nownid'));
-            if($nid == 9999 || $nid <= 0) $this -> myajaxReturn(null, '[错误]无效的NID。', 2);
+            if($nid == 9999 || $nid <= 0) $this -> myajaxReturn(null, '无效的NID。', 2);
     
             $data['title'] = I('post.title', '', false);
             $data['category'] = I('post.category', '', false);
@@ -1201,7 +1201,7 @@ class SettingController extends BaseController {
             }
             else {  //自动验证成功
                 if(false === $newsDB -> where('nid='.$nid) -> limit(1) -> save($data)) {
-                    $this -> myajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                    $this -> myajaxReturn(null, '写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                 }
                 else {
                     $this -> myajaxReturn(null, '[成功]', 0);
@@ -1213,10 +1213,10 @@ class SettingController extends BaseController {
     public function ajax_add_news() {  //新闻管理-添加一条新闻
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $tmp = intval(I('post.nownid'));
-            if($tmp != 9999) $this -> myajaxReturn(null, '[错误]无效的参数。', 2);
+            if($tmp != 9999) $this -> myajaxReturn(null, '无效的参数。', 2);
             
             $data['title'] = I('post.title', '', false);
             $data['category'] = I('post.category', '', false);
@@ -1232,9 +1232,9 @@ class SettingController extends BaseController {
             }
             else {
                 if(false === ($tmp = $newsDB -> add()))
-                    $this -> myajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                    $this -> myajaxReturn(null, '写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                 else
-                  $this -> myajaxReturn($tmp, '[成功]添加新闻成功，NID:'.$tmp, 0);
+                  $this -> myajaxReturn($tmp, '添加新闻成功，NID:'.$tmp, 0);
             }
         }
     }
@@ -1242,12 +1242,12 @@ class SettingController extends BaseController {
     public function ajax_get_category() {  //自动提示的类别
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $newsDB = M('News');
             $data = $newsDB -> distinct(true) -> field('category') -> select();
             if($data === false) {
-                $this -> myajaxReturn(null, '[错误]数据库错误。', 1);
+                $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === null) {
                 $this -> myajaxReturn('[]', '[提示]系统中没有分类。', 0);
@@ -1269,7 +1269,7 @@ class SettingController extends BaseController {
     public function ajax_get_person_modal() {  //个人展示窗口数据
         
         $uid = intval(I('get.uid'));
-        if($uid <= 0) $this -> myajaxReturn(null, '[错误]UID参数不正确。', 1);
+        if($uid <= 0) $this -> myajaxReturn(null, 'UID参数不正确。', 1);
         else {
             $arrayStr = array('一个人的单程旅途，一个人的朝朝暮暮，一个人的韶华倾负。 [系统随机]',
             '妙笔难书一纸愁肠，苍白的誓言，终究抵不过岁月的遗忘。 [系统随机]',
@@ -1284,7 +1284,7 @@ class SettingController extends BaseController {
             );
             $personDB = M('Person');
             $data = $personDB -> field('chsname, engname, email, phone, address, grade, introduce, detail, photo') -> where('uid = '.$uid.' AND `group` < 2') -> find();  //获取个人信息
-            if(!$data) $this -> myajaxReturn(null, '[错误]UID参数不正确。', 1);
+            if(!$data) $this -> myajaxReturn(null, 'UID参数不正确。', 1);
             else {
                 $data['chsname'] = htmlspecialchars($data['chsname']);
                 $data['engname'] = htmlspecialchars($data['engname']);
@@ -1326,15 +1326,15 @@ class SettingController extends BaseController {
     public function ajax_load_activity() {  //AJAX获取活动报名列表
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $activitylistDB = M('Activitylist');
             $data = $activitylistDB -> field('aid, title, deadline, isinner, ispublic, isneedreview') -> order('aid DESC') -> select();
             if($data === false) {
-                $this -> myajaxReturn(null, '[错误]数据库错误。', 1);
+                $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === null) {
-                $this -> myajaxReturn(null, '[错误]没有活动报名信息。', 2);
+                $this -> myajaxReturn(null, '没有活动报名信息。', 2);
             }
             else {
                 $activitydataDB = M('Activitydata');
@@ -1362,14 +1362,14 @@ class SettingController extends BaseController {
     
     public function ajax_get_activity() {  //获取一条活动信息
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $activitylistDB = D('Activitylist');
             $aid = intval(I('get.aid'));
-            if($aid <= 0) $this -> myajaxReturn(null, '[错误]AID无效。', 1);
+            if($aid <= 0) $this -> myajaxReturn(null, 'AID无效。', 1);
             $data = $activitylistDB -> relation(true) -> where('aid = '.$aid) -> find();
-            if($data === false) $this -> myajaxReturn(null, '[错误]数据库错误。', 2);
-            else if(!$data) $this -> myajaxReturn(null, '[错误]AID无效。', 1);
+            if($data === false) $this -> myajaxReturn(null, '数据库错误。', 2);
+            else if(!$data) $this -> myajaxReturn(null, 'AID无效。', 1);
             else {
                 if($data['adminuid'] == 0) $data['admin_detail'] = null;
                 $this -> myajaxReturn($data, '[成功]', 0);
@@ -1379,16 +1379,16 @@ class SettingController extends BaseController {
     
     public function ajax_add_activity() {  //添加一条活动记录
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $tmp = intval(I('post.nowaid'));
-            if($tmp != 9999) $this -> myajaxReturn(null, '[错误]无效的参数。', 2);
+            if($tmp != 9999) $this -> myajaxReturn(null, '无效的参数。', 2);
     
             if(false === strtotime(I('post.deadline', '', false)))
-                $this -> myajaxReturn(null, '[错误]日期格式不对！', 1);
+                $this -> myajaxReturn(null, '日期格式不对！', 1);
             if(strtotime(I('post.deadline', '', false)) >= strtotime('2037-12-31')
             || strtotime(I('post.deadline', '', false)) < strtotime('1960-1-1')) {
-                $this -> myajaxReturn(null, '[错误]日期范围不太对！', 1);
+                $this -> myajaxReturn(null, '日期范围不太对！', 1);
             }
             $data['deadline'] = I('post.deadline', '', false);
     
@@ -1397,7 +1397,7 @@ class SettingController extends BaseController {
             $data['addtime'] = date("Y-m-d H:i:s");
             
             if(null === $this -> explain_reg_rule(I('post.form', '', false))) {
-                $this -> myajaxReturn(null, '[错误]注册信息格式不对:(', 1);
+                $this -> myajaxReturn(null, '注册信息格式不对:(', 1);
             }
             else {
                 $data['form'] = I('post.form', '', false);
@@ -1421,9 +1421,9 @@ class SettingController extends BaseController {
             }
             else {
                 if(false === ($tmp = $activitylistDB -> add()))
-                    $this -> myajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                    $this -> myajaxReturn(null, '写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                 else
-                  $this -> myajaxReturn(null, '[成功]新增活动，AID:'.$tmp, 0);
+                  $this -> myajaxReturn(null, '新增活动，AID:'.$tmp, 0);
             }
         }
     }
@@ -1431,7 +1431,7 @@ class SettingController extends BaseController {
     public function ajax_del_activity() {  //删除活动记录
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $list = I('get.aid', '', false);
             $aids = explode(',', $list);
@@ -1441,10 +1441,10 @@ class SettingController extends BaseController {
                 if(!$this -> del_one_activity($aid)) $success ++;
                 else $fail ++;
             }
-            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '[错误]无效的参数。', 2);
-            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '[错误]无效的AID。', 1);
+            if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
+            else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '无效的AID。', 1);
             else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功删除'.$success.'条活动记录，删除失败'.$fail.'条。', 0);
-            else $this -> myajaxReturn(null, '[成功]已成功删除'.$success.'条活动记录。', 0);
+            else $this -> myajaxReturn(null, '已成功删除'.$success.'条活动记录。', 0);
         }
     }
     
@@ -1471,16 +1471,16 @@ class SettingController extends BaseController {
     public function ajax_modify_activity() {  //修改获奖记录
     
         if(!session('goldbirds_islogin') || intval(session('goldbirds_group')) < 1)  //无权限处理
-            $this -> myajaxReturn(null, '[错误]无权限。', 3);
+            $this -> myajaxReturn(null, '无权限。', 3);
         else {
             $aid = intval(I('post.nowaid'));
-            if($aid == 9999 || $aid <= 0) $this -> myajaxReturn(null, '[错误]无效的参数AID。', 2);
+            if($aid == 9999 || $aid <= 0) $this -> myajaxReturn(null, '无效的参数AID。', 2);
     
             if(false === strtotime(I('post.deadline', '', false)))
-                $this -> myajaxReturn(null, '[错误]日期格式不对！', 1);
+                $this -> myajaxReturn(null, '日期格式不对！', 1);
             if(strtotime(I('post.deadline', '', false)) >= strtotime('2037-12-31')
             || strtotime(I('post.deadline', '', false)) < strtotime('1960-1-1')) {
-                $this -> myajaxReturn(null, '[错误]日期范围不太对！', 1);
+                $this -> myajaxReturn(null, '日期范围不太对！', 1);
             }
             $data['deadline'] = I('post.deadline', '', false);
     
@@ -1489,7 +1489,7 @@ class SettingController extends BaseController {
             $data['addtime'] = date("Y-m-d H:i:s");
             
             if(null === $this -> explain_reg_rule(I('post.form', '', false))) {
-                $this -> myajaxReturn(null, '[错误]注册信息格式不对:(', 1);
+                $this -> myajaxReturn(null, '注册信息格式不对:(', 1);
             }
             else {
                 $data['form'] = I('post.form', '', false);
@@ -1513,7 +1513,7 @@ class SettingController extends BaseController {
             }
             else {  //自动验证成功
                 if(false === $activitylistDB -> where('aid='.$aid) -> limit(1) -> save($data)) {
-                    $this -> myajaxReturn(null, '[错误]写入数据库出错，请检查数据格式或数据库是否正常。', 1);
+                    $this -> myajaxReturn(null, '写入数据库出错，请检查数据格式或数据库是否正常。', 1);
                 }
                 else {
                     $this -> myajaxReturn(null, '[成功]', 0);

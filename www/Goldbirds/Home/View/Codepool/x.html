@@ -37,15 +37,15 @@
   						var $spy = $(this).scrollspy('refresh');
 					});
 					prettyPrint();
-					alert("[成功]你的代码提交到码池了！");
+					alert("成功", "你的代码提交到码池了！", "success");
 				}
 				else {
 					$('#verify-img').attr('src', '?z=codepool-verify-t-'+Math.random());
-					alert(data.info, "error");
+					alert("错误", data.info, "error");
 				}
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		});
 		<?php if($issamelogin == 1) echo '$("#appendcode").show(); $("#tags li").eq(-1).show();'; ?>

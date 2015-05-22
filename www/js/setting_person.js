@@ -64,10 +64,10 @@ $(function () {
 		else
 		{
 			var n = $("#data-table input:checked").length;
-			if(!n) { alert("[错误]请选择一个队员来进行编辑操作。", "error"); return false; }
-			var id = $('#data-table').find("input:checked").first().attr("id");
+			if(!n) { alert("提示","请选择一个队员来进行编辑操作。", "info"); return false; }
+			var id = $('#data-table').find("tbody input:checked").first().attr("id");
 			set_person_modal("2", parseInt(id));
-			if($("#data-table input:checked").length > 1) alert("[提示]你选择了多名队员，只会编辑第一个选中的队员哦~");
+			if($("#data-table input:checked").length > 1) alert("提示","你选择了多名队员，只会编辑第一个选中的队员哦~","info");
 		}
         $(target).modal("show");
 	    return false;
@@ -97,12 +97,12 @@ $(function () {
 			data:{id:0},
 			success:function(data)
 			{
-				 if(data.status == 0) { $('#face_show').attr("src", data.data.filename); alert(data.info); }
-				 else alert(data.info, "error");
+				 if(data.status == 0) { $('#face_show').attr("src", data.data.filename); alert("成功",data.info,"success"); }
+				 else alert("错误",data.info, "error");
 			},
 			error:function(data, status, e)
 			{
-				alert("[错误]请检查网络联接。", "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			}
 		});
 	});
@@ -117,21 +117,21 @@ $(function () {
 		if($('#nowuid').val() == '9999') {
 			$.post("?z=setting-ajax_add_person", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert(data.info); $('#person-modal').modal('hide'); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功",data.info,"success"); $('#person-modal').modal('hide'); reFresh(); }
+				else alert("错误",data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 		else {
 			$.post("?z=setting-ajax_modify_person", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert("[成功]修改队员信息成功！"); $('#person-modal').modal('hide'); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功","修改队员信息成功！","success"); $('#person-modal').modal('hide'); reFresh(); }
+				else alert("错误",data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 	});
@@ -156,7 +156,7 @@ function reFresh() {
 		$("#data-table").trigger("update");
 	})
 	.fail(function() {
-		alert('[错误]请检查网络连接。', "error");
+		alert("提示", '你已中断请求，或网络连接异常。', "info");
 	});
 }
 
@@ -194,11 +194,11 @@ function set_person_modal(func, uid) {  //0-查看,1-增加,2-修改
 				}
 			}
 			else {
-				alert(data.info, "error");
+				alert("错误",data.info, "error");
 			}
 		})
 		.fail(function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 	else {  //1 - 新增
@@ -227,7 +227,7 @@ function set_person_modal(func, uid) {  //0-查看,1-增加,2-修改
 function del_checked(){
 	var n=$("#data-table input:checked").length;
 	if(!n){
-		alert('[错误]请先选择待删除的队员。', "error");
+		alert('提示','请先选择待删除的队员。', "info");
 		return false;
 	}
 	var list=$("#data-table input:checked").map(function() {
@@ -240,11 +240,11 @@ function del_person(uids) {
 	if(confirm("[提示]你确定要删除队员吗？如果该队员包含在某个队伍中，则删除后将使用UID：0的空用户替代。")) {
 		$.getJSON("?z=setting-ajax_del_person", {uid:uids})
 		.done( function(data) {
-			if(data.status == 0) { alert(data.info); reFresh(); }
-			else alert(data.info, "error");
+			if(data.status == 0) { alert("成功",data.info,"success"); reFresh(); }
+			else alert("错误",data.info, "error");
 		})
 		.fail( function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 }
@@ -252,7 +252,7 @@ function del_person(uids) {
 function sendinv_checked(){
 	var n=$("#data-table input:checked").length;
 	if(!n){
-		alert('[错误]请先选择待发送邀请邮件的队员。', "error");
+		alert('提示','请先选择待发送邀请邮件的队员。', "info");
 		return false;
 	}
 	var list=$("#data-table input:checked").map(function() {
@@ -265,11 +265,11 @@ function sendinv_person(uids) {
 	if(confirm("[提示]你确定要发送邀请邮件吗？已经关联OJ账号的用户不会重复发送。")) {
 		$.getJSON("?z=setting-ajax_sendinv", {uid:uids})
 		.done( function(data) {
-			if(data.status == 0) { alert(data.info); reFresh(); }
-			else alert(data.info, "error");
+			if(data.status == 0) { alert("成功",data.info,"success"); reFresh(); }
+			else alert("错误",data.info, "error");
 		})
 		.fail( function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 }

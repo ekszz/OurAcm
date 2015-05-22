@@ -16,51 +16,51 @@ $(function () {
 		$.getJSON("?z=setting-ajax_add_oj", null)
 		.done( function(data) {
 			if(data.status == 0) {
-				alert('[成功]已新增OJ历史版本。VID='+data.data+'。');
+				alert('成功','已新增OJ历史版本。VID='+data.data+'。', "success");
 				$('#vid').append('<option value="'+ data.data +'">新建版本（请在后台修改）</option>');
 				$('#vid option').last().prop('selected', true);
 				changevid();
 			}
-			else { alert('[失败]请重试！', 'error'); }
+			else { alert('错误', '操作失败，请重试！', 'error'); }
 		})
 		.fail( function() {
-			alert("[错误]请检查网络连接。", "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	});
 	
 	$('#btn-del').click(function(){
 		if($('#vid option:selected').length != 1) {
-			alert("[错误]请先选择一张待删除的图片。", "error");
+			alert("提示","请先选择一张待删除的图片。", "info");
 		}
 		else if(confirm("[提示]你确定要删除这条OJ历史记录吗？VID="+$('#vid option:selected').val())) {
 			$.getJSON("?z=setting-ajax_del_oj", {vid:$('#vid option:selected').val()})
 			.done( function(data) {
 				if(data.status == 0) {
-					alert('[成功]已删除OJ历史版本。VID='+data.data+'。如果本条记录有关联图片，请到“图片管理”模块清理图片。');
+					alert('成功','已删除OJ历史版本。VID='+data.data+'。如果本条记录有关联图片，请到“图片管理”模块清理图片。',"success");
 					$('#vid option:selected').remove();
 					changevid();
 				}
-				else { alert('[失败]请重试！', 'error'); }
+				else { alert('错误','操作失败，请重试！', 'error'); }
 			})
 			.fail( function() {
-				alert("[错误]请检查网络连接。", "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 	});
 	
 	$('#title').blur(function(){  //title失去焦点事件
-		alert("[提示]暂存“照片标题”，最终修改完成后点击“保存所有照片修改”提交到服务器。");
+		alert("提示","暂存“照片标题”，最终修改完成后点击“保存所有照片修改”提交到服务器。","info");
 		titles[parseInt($('#photo option:selected').val())] = $('#title').val();
 	});
 	
 	$('#desc').blur(function(){  //title失去焦点事件
-		alert("[提示]暂存“照片描述”，最终修改完成后点击“保存所有照片修改”提交到服务器。");
+		alert("提示","暂存“照片描述”，最终修改完成后点击“保存所有照片修改”提交到服务器。","info");
 		descs[parseInt($('#photo option:selected').val())] = $('#desc').val();
 	});
 	
 	$('#btn-photo-del').click(function(){
 		if($('#photo option:selected').length != 1) {
-			alert("[错误]请先选择一张待删除的图片。", "error");
+			alert("提示","请先选择一张待删除的图片。", "info");
 		}
 		else {
 			photos[parseInt($('#photo option:selected').val())] = null;
@@ -68,7 +68,7 @@ $(function () {
 			descs[parseInt($('#photo option:selected').val())] = null;
 			$('#photo option:selected').remove();
 			changephoto();
-			alert("[提示]暂存设置，最终修改完成后点击“保存所有照片修改”提交到服务器后方才生效。");
+			alert("提示","暂存设置，最终修改完成后点击“保存所有照片修改”提交到服务器后方才生效。","info");
 		}
 	});
 	
@@ -85,12 +85,12 @@ $(function () {
 			descs:descs
 		})
 		.done(function (data) {
-			if(data.status == 0) { $('#vid option:selected').first().html(data.data); alert("[提示]保存成功！"); }
-			else alert(data.info, "error");
+			if(data.status == 0) { $('#vid option:selected').first().html(data.data); alert("成功","保存成功！","success"); }
+			else alert("错误",data.info, "error");
 			$('#btn-save').prop('disabled', false);
 		})
 		.fail(function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 			$('#btn-save').prop('disabled', false);
 		});
 	});
@@ -115,10 +115,10 @@ $(function () {
 					$('#photo-select-view').attr('src', 'img/nopic.jpg');
 				}
 			}
-			else { alert('[错误]获取图片列表失败，请重试！', 'error'); }
+			else { alert('错误','获取图片列表失败，请重试！', 'error'); }
 		})
 		.fail( function() {
-			alert("[错误]请检查网络连接。", "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 		$('#photo-modal').modal();
 	});
@@ -138,15 +138,15 @@ $(function () {
 					 titles[titles.length] = null;
 					 descs[descs.length] = null;
 					 $('#photo option').last().prop('selected', true);
-					 alert(data.info);
+					 alert('成功',data.info,'success');
 					 changephoto();
 					 $('#photo-modal').modal('hide');
 				 }
-				 else { alert(data.info, "error"); }
+				 else { alert('错误',data.info, "error"); }
 			},
 			error:function(data, status, e)
 			{
-				alert("[错误]请检查网络联接。", "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			}
 		});
 	});
@@ -157,7 +157,7 @@ $(function () {
 	
 	$('#btn-choose').click(function(){
 		if($('#exists_fn option:selected').length != 1) {
-			alert("[错误]请先选择一张图片。", "error");
+			alert("提示","请先选择一张图片。", "info");
 		}
 		else {
 			$('#photo').append('<option value="'+photos.length+'">'+$('#exists_fn option:selected').first().val()+'</option>');
@@ -165,7 +165,7 @@ $(function () {
 			titles[titles.length] = null;
 			descs[descs.length] = null;
 			$('#photo option').last().prop('selected', true);
-			alert('[提示]已添加图片upload/'+$('#exists_fn option:selected').first().val());
+			alert('提示','已添加图片upload/'+$('#exists_fn option:selected').first().val(),'info');
 			changephoto();
 			$('#photo-modal').modal('hide');
 		}
@@ -190,7 +190,7 @@ function loadvid() {  //加载OJ列表
 			changevid();
 		},
 		error:function() {
-			alert("[错误]请检查网络连接。", "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		}
 	});
 }
@@ -226,7 +226,7 @@ function changevid() {  //根据VID加载详细内容
 				changephoto();
 			},
 			error:function() {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			}
 		});
 	}

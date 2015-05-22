@@ -28,11 +28,11 @@
 			cache:false,
 			data:params,
 			success:function(msg){
-				if(msg.status == 0) alert("[完成]修改个人信息成功！");
-				else alert(msg.info, "error");
+				if(msg.status == 0) alert("成功", "修改个人信息成功！", "success");
+				else alert("错误", msg.info, "error");
 			},
 			error:function(msg){
-				alert("[错误]请检查网络连接。");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			}
 		});
 	}
@@ -44,12 +44,12 @@
 			dataType:"json",
 			success:function(data)
 			{
-				 if(data.status == 0) { $("#photo-view").attr("src", data.data); alert(data.info); }
-				 else alert(data.info, "error");
+				 if(data.status == 0) { $("#photo-view").attr("src", data.data); alert("成功", data.info, "success"); }
+				 else alert("错误", data.info, "error");
 			},
 			error:function(data)
 			{
-				alert("[错误]请检查网络联接。", "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			}
 		});
 		return false;

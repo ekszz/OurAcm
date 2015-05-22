@@ -47,11 +47,11 @@
 				page = p_page;
 			}
 			else {
-				alert(data.info, "error");
+				alert("错误", data.info, "error");
 			}
 		})
 		.fail(function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 	
@@ -65,7 +65,7 @@
 	}
 	
 	function go_newer() {
-		if(page == 0) { alert("[错误]-_____-这已经是第一页了。", "error"); }
+		if(page == 0) { alert("提示", "-_____-这已经是第一页了。", "info"); }
 		else loadnews(page - 1);
 	}
 	

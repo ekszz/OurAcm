@@ -65,10 +65,10 @@ $(function () {
 		else
 		{
 			var n = $("#data-table input:checked").length;
-			if(!n) { alert("[错误]请选择一条获奖记录来进行编辑操作。", "error"); return false; }
-			var id = $('#data-table').find("input:checked").first().attr("id");
+			if(!n) { alert("提示","请选择一条获奖记录来进行编辑操作。", "info"); return false; }
+			var id = $('#data-table').find("tbody input:checked").first().attr("id");
 			set_contest_modal("2", parseInt(id));
-			if($("#data-table input:checked").length > 1) alert("[提示]你选择了多条获奖记录，只会编辑第一条选中的记录哦~");
+			if($("#data-table input:checked").length > 1) alert("提示", "你选择了多条获奖记录，只会编辑第一条选中的记录哦~","info");
 		}
 		$(target).modal("show");
 		return false;
@@ -110,12 +110,12 @@ $(function () {
 			data:{id:$(this).attr('id').substr(3,1)},
 			success:function(data)
 			{
-				 if(data.status == 0) { $('#pic'+data.data.id+'_show').attr("src", data.data.filename); alert(data.info); }
-				 else alert(data.info, "error");
+				 if(data.status == 0) { $('#pic'+data.data.id+'_show').attr("src", data.data.filename); alert("成功",data.info,"success"); }
+				 else alert("错误",data.info, "error");
 			},
 			error:function(data, status, e)
 			{
-				alert("[错误]请检查网络联接。", "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			}
 		});
 	});
@@ -131,21 +131,21 @@ $(function () {
 		if($('#nowcid').val() == '9999') {
 			$.post("?z=setting-ajax_add_contest", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert(data.info); $('#contest-modal').modal('hide'); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功",data.info,"success"); $('#contest-modal').modal('hide'); reFresh(); }
+				else alert("错误", data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 		else {
 			$.post("?z=setting-ajax_modify_contest", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert("[成功]修改获奖记录成功！"); $('#contest-modal').modal('hide'); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功","修改获奖记录成功！","success"); $('#contest-modal').modal('hide'); reFresh(); }
+				else alert("错误", data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 	});
@@ -161,16 +161,16 @@ $(function () {
 		$.post("?z=setting-ajax_add_person", form_data)
 		.done(function (data) {
 			if(data.status == 0) { 
-				alert(data.info);
+				alert("成功",data.info,"success");
 				$('#person-modal').modal('hide');
 				$('#contest-modal').modal('show');
 				$($('#result_pos').val()).val(data.data);  //写入调用位置
 				typeahead_data.push(data.data);  //自动完成同步更新
 			}
-			else alert(data.info, "error");
+			else alert("错误", data.info, "error");
 		})
 		.fail(function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	});
 			
@@ -183,10 +183,10 @@ $(function () {
 			$('#teamer1').typeahead({source:typeahead_data});
 			$('#teamer2').typeahead({source:typeahead_data});
 		}
-		else alert(data.info, "error");
+		else alert("错误",data.info, "error");
 	})
 	.fail( function() {
-		alert("[错误]获取自动完成数据出错，请检查网络连接。", "error");
+		alert("提示", '获取自动完成数据出错。你已中断请求，或网络连接异常。', "info");
 	});
 			
 }); //END OF $()init.
@@ -219,7 +219,7 @@ function reFresh() {  //reload table
 		$("#data-table").trigger("update");
 	})
 	.fail(function() {
-		alert('[错误]请检查网络连接。', "error");
+		alert("提示", '你已中断请求，或网络连接异常。', "info");
 	});
 }  //END OF reFresh()
 		
@@ -266,11 +266,11 @@ function set_contest_modal(func, cid) {  //填充modal中的数据，0-查看,1-
 				}
 			}
 			else {
-				alert(data.info, "error");
+				alert("错误",data.info, "error");
 			}
 		})
 		.fail(function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 	else {  //1 - 新增
@@ -305,7 +305,7 @@ function set_contest_modal(func, cid) {  //填充modal中的数据，0-查看,1-
 function del_checked(){  //删除多个选中的队员
 	var n=$("#data-table input:checked").length;
 	if(!n){
-		alert('[错误]请先选择待删除的获奖记录。', "error");
+		alert("提示",'请先选择待删除的获奖记录。', "info");
 		return false;
 	}
 	var list=$("#data-table input:checked").map(function() {
@@ -319,21 +319,21 @@ function del_contest(cids) {  //删除获奖记录具体操作
 		if(confirm("[提示]你是否需要删除与该获奖记录相关联的照片？")) {  //同时删除照片
 			$.getJSON("?z=setting-ajax_del_contest", {cid:cids, delpic:"1"})
 			.done( function(data) {
-				if(data.status == 0) { alert(data.info); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功", data.info, "success"); reFresh(); }
+				else alert("错误", data.info, "error");
 			})
 			.fail( function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 		else {  //保留照片
 			$.getJSON("?z=setting-ajax_del_contest", {cid:cids})
 			.done( function(data) {
-				if(data.status == 0) { alert(data.info); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功",data.info,"success"); reFresh(); }
+				else alert("错误",data.info, "error");
 			})
 			.fail( function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 	}

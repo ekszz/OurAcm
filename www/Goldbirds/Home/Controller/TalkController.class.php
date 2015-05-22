@@ -82,18 +82,18 @@ class TalkController extends BaseController {
     
     public function ajax_postnewtalk() {  //AJAX提交新talk
         
-        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '[错误]你还未登录。', 1);
+        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '你还未登录。', 1);
         else {  //已登录
             $verify = new \Think\Verify();
             if(!($verify -> check(I('post.verify', '', false))))
-                $this -> myajaxReturn(null, '[错误]验证码错误。', 1);
+                $this -> myajaxReturn(null, '验证码错误。', 1);
             
             $title = I('post.title', '', false);
-            if(strlen($title) < TalkController::$var_title_minlen) $this -> myajaxReturn(null, '[错误]标题长度不能小于'.TalkController::$var_title_minlen.'。', 2);
-            if(strlen($title) > TalkController::$var_title_maxlen) $this -> myajaxReturn(null, '[错误]标题长度不能大于'.TalkController::$var_title_maxlen.'。', 2);
+            if(strlen($title) < TalkController::$var_title_minlen) $this -> myajaxReturn(null, '标题长度不能小于'.TalkController::$var_title_minlen.'。', 2);
+            if(strlen($title) > TalkController::$var_title_maxlen) $this -> myajaxReturn(null, '标题长度不能大于'.TalkController::$var_title_maxlen.'。', 2);
             
             $content = I('post.content', '', false);
-            if(strlen($content) > TalkController::$var_content_maxlen) $this -> myajaxReturn(null, '[错误]内容太长了-_-', 2);
+            if(strlen($content) > TalkController::$var_content_maxlen) $this -> myajaxReturn(null, '内容太长了-_-', 2);
             if(strlen($content) == 0) $content = null;
             
             $pid = intval(I('post.pid', '', false));
@@ -101,31 +101,31 @@ class TalkController extends BaseController {
             
             if($this -> addtalk($title, \OJLoginInterface::getLoginUser(), $content, $pid))
                 $this -> myajaxReturn($this -> loadlastesttalk(), '[成功]', 0);
-            else $this -> myajaxReturn(null, '[错误]提交失败。', 3);
+            else $this -> myajaxReturn(null, '提交失败。', 3);
         }
     }
     
     public function ajax_replytalk() {  //回复talk
         
-        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '[错误]你还未登录。', 1);
+        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '你还未登录。', 1);
         else {  //已登录
             $verify = new \Think\Verify();
             if(!($verify -> check(I('post.verify', '', false))))
-                $this -> myajaxReturn(null, '[错误]验证码错误。', 1);
+                $this -> myajaxReturn(null, '验证码错误。', 1);
         
             $title = I('post.title', '', false);
-            if(strlen($title) < TalkController::$var_title_minlen) $this -> myajaxReturn(null, '[错误]标题长度不能小于'.TalkController::$var_title_minlen.'。', 2);
-            if(strlen($title) > TalkController::$var_title_maxlen) $this -> myajaxReturn(null, '[错误]标题长度不能大于'.TalkController::$var_title_maxlen.'。', 2);
+            if(strlen($title) < TalkController::$var_title_minlen) $this -> myajaxReturn(null, '标题长度不能小于'.TalkController::$var_title_minlen.'。', 2);
+            if(strlen($title) > TalkController::$var_title_maxlen) $this -> myajaxReturn(null, '标题长度不能大于'.TalkController::$var_title_maxlen.'。', 2);
         
             $content = I('post.content', '', false);
-            if(strlen($content) > TalkController::$var_content_maxlen) $this -> myajaxReturn(null, '[错误]内容太长了-_-', 2);
+            if(strlen($content) > TalkController::$var_content_maxlen) $this -> myajaxReturn(null, '内容太长了-_-', 2);
             if(strlen($content) == 0) $content = null;
         
             $tid = intval(I('post.tid', '', false));
         
             if($this -> addson($tid, $title, \OJLoginInterface::getLoginUser(), $content))
                 $this -> myajaxReturn(null, '[成功]', 0);
-            else $this -> myajaxReturn(null, '[错误]回复失败。', 3);
+            else $this -> myajaxReturn(null, '回复失败。', 3);
         }
     }
     

@@ -12,9 +12,9 @@ class ActivitylistModel extends RelationModel{
         )
     );
     protected $_validate = array(
-        array('ispublic', array(0,1), '[错误]是否公开注册信息参数异常:(', self::EXISTS_VALIDATE, 'in', self::MODEL_BOTH),
-        array('isinner', array(0,1), '[错误]是否队内可见参数异常:(', self::EXISTS_VALIDATE, 'in', self::MODEL_BOTH),
-        array('isneedreview', array(0,1), '[错误]是否需要审核参数异常:(', self::EXISTS_VALIDATE, 'in', self::MODEL_BOTH),
-        array('title', '1,199', '[错误]标题也太不正常了吧= =', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
+        array('ispublic', array(0,1), '是否公开注册信息参数异常:(', self::EXISTS_VALIDATE, 'in', self::MODEL_BOTH),
+        array('isinner', array(0,1), '是否队内可见参数异常:(', self::EXISTS_VALIDATE, 'in', self::MODEL_BOTH),
+        array('isneedreview', array(0,1), '是否需要审核参数异常:(', self::EXISTS_VALIDATE, 'in', self::MODEL_BOTH),
+        array('title', '1,199', '标题也太不正常了吧= =', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
     );
 }

@@ -14,11 +14,11 @@ function flushConfig() {  //刷新缓存
 	$('#btn-flushconfig').attr('disabled', true);
 	$.getJSON("?z=setting-ajax_flushconfig", null)
 	.done( function(data) {
-		if(data.status == 0) { alert('[成功]操作已执行！'); $('#btn-flushconfig').removeAttr('disabled'); }
-		else { alert('[失败]请重试！', 'error'); $('#btn-flushconfig').removeAttr('disabled'); }
+		if(data.status == 0) { alert('成功','操作已执行！','success'); $('#btn-flushconfig').removeAttr('disabled'); }
+		else { alert('错误','操作失败，请重试！', 'error'); $('#btn-flushconfig').removeAttr('disabled'); }
 	})
 	.fail( function() {
-		alert("[错误]请检查网络连接。", "error");
+		alert("提示", '你已中断请求，或网络连接异常。', "info");
 		$('#btn-flushconfig').removeAttr('disabled');
 	});
 }
@@ -27,11 +27,11 @@ function saveConfig() {  //保存参数
 	$('#btn-saveconfig').attr('disabled', true);
 	$.post("?z=setting-ajax_savesetting", {k:$('#k').val(), v:(setting_var[$('#k').val()].type == "0" ? $("input[name='value1']:checked").val() : $('#value2').val())})
 	.done( function(data) {
-		if(data.status == 0) { setting_var[data.data.k].v = data.data.v; alert(data.info); $('#btn-saveconfig').removeAttr('disabled'); }
-		else { alert(data.info, 'error'); $('#btn-saveconfig').removeAttr('disabled'); }
+		if(data.status == 0) { setting_var[data.data.k].v = data.data.v; alert("成功",data.info,"success"); $('#btn-saveconfig').removeAttr('disabled'); }
+		else { alert("错误",data.info, 'error'); $('#btn-saveconfig').removeAttr('disabled'); }
 	})
 	.fail( function() {
-		alert("[错误]请检查网络连接。", "error");
+		alert("提示", '你已中断请求，或网络连接异常。', "info");
 		$('#btn-saveconfig').removeAttr('disabled');
 	});
 }
@@ -48,10 +48,10 @@ function getsetting() {  //从服务端获取所有数据到本地数据，同�
 					setting_var[data.data[i].k] = data.data[i];
 				}
 			}
-			else { alert(data.info, 'error'); }
+			else { alert("错误", data.info, 'error'); }
 		},
 		error:function() {
-			alert("[错误]请检查网络连接。", "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		}
 	});
 }

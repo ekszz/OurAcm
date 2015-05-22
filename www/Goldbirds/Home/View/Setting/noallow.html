@@ -12,7 +12,7 @@
 				$.post("?z=setting-ajax_verify_luckycode", {code:$('#luckycode').val()})
 				.done(function (data) {
 					if(data.status == 0) {
-						alert('[成功]有效的邀请码！请核对邀请码下方的信息无误后，点击“绑定”按钮绑定！注意：一个邀请码只能绑定一个OnlineJudge账号哦！');
+						alert("提示", '有效的邀请码！请核对邀请码下方的信息无误后，点击“绑定”按钮绑定！注意：一个邀请码只能绑定一个OnlineJudge账号哦！', "info");
 						$('#result').html('<p><br />邀请码对应的用户信息： <strong>'+data.data.code+'</strong><br />当前待绑定OnlineJudge账号：<strong>'+data.data.oj+'</strong> [ 注意：绑定后不能更改绑定的OJ账号 ]<br />请核对或补充下方信息后，点击“绑定”按钮进行绑定：<br /></p>');
 						$('#submit-btn').hide();
 						$('#bind-btn').show();
@@ -21,21 +21,21 @@
 						$('#detail').show();
 					}
 					else {
-						alert(data.info, "error");
+						alert("错误", data.info, "error");
 						$('#luckycode').removeAttr('readonly');
 						$('#submit-btn').removeAttr('disabled');
 					}
 				})
 				.fail(function () {
-					alert('[错误]请检查网络连接。', "error");
+					alert("提示", '你已中断请求，或网络连接异常。', "info");
 				});
 			});
 			$('#bind-btn').on('click', null, function() {
 				var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,5}$/;
 				var email = $('#email').val();
 				var phone = $('#phone').val();
-				if(!reg.test(email)) alert('[错误]E-mail格式不正确！请重试。', 'error');
-				else if(phone.length < 8 || phone.length > 11 || isNaN(phone)) alert('[错误]联系电话格式不正确！请重试。', 'error');
+				if(!reg.test(email)) alert("错误", 'E-mail格式不正确！请重试。', 'error');
+				else if(phone.length < 8 || phone.length > 11 || isNaN(phone)) alert('错误', '联系电话格式不正确！请重试。', 'error');
 				else {
 					$('#bind-btn').attr('disabled', true);
 					$.post("?z=setting-ajax_bind_luckycode", {code:$('#luckycode').val(), email:email, phone:phone})
@@ -44,15 +44,15 @@
 							$('#bind-btn').html('已绑定');
 							$('#email').prop('readonly', true);
 							$('#phone').prop('readonly', true);
-							alert('[成功]绑定成功！刷新本页面可进入个人信息设置。');
+							alert('成功', '绑定成功！刷新本页面可进入个人信息设置。', 'success');
 						}
 						else {
-							alert(data.info, "error");
+							alert("错误", data.info, "error");
 							$('#bind-btn').removeAttr('disabled');
 						}
 					})
 					.fail(function () {
-						alert('[错误]请检查网络连接。', "error");
+						alert("提示", '你已中断请求，或网络连接异常。', "info");
 					});
 				}
 			});
