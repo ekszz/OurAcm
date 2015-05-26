@@ -142,7 +142,7 @@ function reFresh() {
 	$.getJSON("?z=setting-ajax_load_person", null)
 	.done(function(data) {
 		var reshtml = "";
-		$.each(data.data, function(i, vo) {
+		if(data.data) $.each(data.data, function(i, vo) {
 			reshtml = reshtml + '<tr><td><label style="padding-right:15px"><input type="checkbox" id="' + vo.uid + '" data-id="id"></label></td><td>' + vo.uid + '</td><td>' + vo.chsname + '</td><td>';
 			reshtml = reshtml + (vo.sex == 1 ? '女':'男');
 			reshtml = reshtml + '</td><td>' + (vo.email == null?'':vo.email) + '</td><td>' + (vo.phone == null?'':vo.phone) + '</td><td>' + (vo.grade == null?'':vo.grade) + '</td> <td>' + (vo.ojaccount == null?'':vo.ojaccount) + '</td><td>';

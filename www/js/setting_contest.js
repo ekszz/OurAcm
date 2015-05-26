@@ -195,7 +195,7 @@ function reFresh() {  //reload table
 	$.getJSON("?z=setting-ajax_load_contest", null)
 	.done(function(data) {
 		var reshtml = "";
-		$.each(data.data, function(i, vo) {
+		if(data.data) $.each(data.data, function(i, vo) {
 			reshtml = reshtml + '<tr><td><label style="padding-right:15px"><input type="checkbox" id="' + vo.cid + '" data-id="id"></label></td><td>' + vo.cid + '</td><td>' + vo.holdtime + '</td><td>' + vo.site + '</td><td>' + vo.university + '</td><td>';
 			if(vo.type == 0) reshtml = reshtml + 'WF';
 			else if(vo.type == 1) reshtml = reshtml + 'R';

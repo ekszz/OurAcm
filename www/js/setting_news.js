@@ -159,7 +159,7 @@ function reFresh() {
 	$.getJSON("?z=setting-ajax_load_news", null)
 	.done(function(data) {
 		var reshtml = "";
-		$.each(data.data, function(i, vo) {
+		if(data.data) $.each(data.data, function(i, vo) {
 			reshtml = reshtml + '<tr><td><label style="padding-right:15px"><input type="checkbox" id="' + vo.nid + '" data-id="id"></label></td><td>' + vo.nid + '</td><td>' + vo.category + '</td><td>';
 			reshtml = reshtml + (vo.permission == 0 ? '':' <span class="label label-info">内</span>') + (vo.top == 1 ? ' <span class="label label-success">顶</span>':'') + (isnew(vo.createtime) ? ' <span class="label label-warning">新</span>':'');
 			reshtml = reshtml + '</td><td>' + (vo.title.length>20?(vo.title.substr(0,20) + '...'):vo.title) + '</td><td>' + vo.author_detail.chsname + '</td><td>' + vo.createtime;
