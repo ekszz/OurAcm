@@ -269,7 +269,7 @@ class SettingController extends BaseController {
             }
             if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
             else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '删除失败。', 1);
-            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功删除'.$success.'名队员，删除失败'.$fail.'名。', 0);
+            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '已成功删除'.$success.'名队员，删除失败'.$fail.'名。', 0);
             else $this -> myajaxReturn(null, '已成功删除'.$success.'名队员。', 0);
         }
     }
@@ -316,7 +316,7 @@ class SettingController extends BaseController {
             }
             if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
             else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '发送邮件失败。', 1);
-            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功发送'.$success.'封邀请邮件，失败'.$fail.'封。', 0);
+            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '已成功发送'.$success.'封邀请邮件，失败'.$fail.'封。', 0);
             else $this -> myajaxReturn(null, '已成功发送'.$success.'封邀请邮件。', 0);
         }
     }
@@ -505,7 +505,7 @@ class SettingController extends BaseController {
                 $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === null) {
-                $this -> myajaxReturn('[]', '[提示]系统中没有用户。', 0);
+                $this -> myajaxReturn('[]', '系统中没有用户。', 0);
             }
             else {
                 $retstr = array();
@@ -629,7 +629,7 @@ class SettingController extends BaseController {
             }
             if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
             else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '无效的CID。', 1);
-            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功删除'.$success.'条获奖记录，删除失败'.$fail.'条。', 0);
+            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '已成功删除'.$success.'条获奖记录，删除失败'.$fail.'条。', 0);
             else $this -> myajaxReturn(null, '已成功删除'.$success.'条获奖记录。', 0);
         }
     }
@@ -920,7 +920,7 @@ class SettingController extends BaseController {
                     }
                     else $fail++;
                 }                
-                $this -> myajaxReturn(null, '[提示]成功删除'.$succ.'文件，失败'.$fail.'个。', 0);
+                $this -> myajaxReturn(null, '成功删除'.$succ.'文件，失败'.$fail.'个。', 0);
             }
         }
     }
@@ -1158,7 +1158,7 @@ class SettingController extends BaseController {
             }
             if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
             else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '无效的NID。', 1);
-            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功删除'.$success.'条新闻，删除失败'.$fail.'条。', 0);
+            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '已成功删除'.$success.'条新闻，删除失败'.$fail.'条。', 0);
             else $this -> myajaxReturn(null, '已成功删除'.$success.'条新闻。', 0);
         }
     }
@@ -1250,7 +1250,7 @@ class SettingController extends BaseController {
                 $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === null) {
-                $this -> myajaxReturn('[]', '[提示]系统中没有分类。', 0);
+                $this -> myajaxReturn('[]', '系统中没有分类。', 0);
             }
             else {
                 $retstr = array();
@@ -1443,7 +1443,7 @@ class SettingController extends BaseController {
             }
             if($success == 0 && $fail == 0) $this -> myajaxReturn(null, '无效的参数。', 2);
             else if($fail != 0 && $success == 0) $this -> myajaxReturn(null, '无效的AID。', 1);
-            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '[提示]已成功删除'.$success.'条活动记录，删除失败'.$fail.'条。', 0);
+            else if($fail != 0 && $success != 0) $this -> myajaxReturn(null, '已成功删除'.$success.'条活动记录，删除失败'.$fail.'条。', 0);
             else $this -> myajaxReturn(null, '已成功删除'.$success.'条活动记录。', 0);
         }
     }
