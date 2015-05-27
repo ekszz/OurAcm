@@ -57,7 +57,6 @@
 				}
 			});
 		});
-		function fakesubmit() {return false;}
     </script>
   </head>
 
@@ -83,9 +82,9 @@
     </div>
     <div class="row">
       <div class="col-xs-12 text-center">
-          <form class="form-inline">
+          <form class="form-inline" onSubmit="return false;">
     		<div class="input-group"><input class="form-control" id="luckycode" type="text" placeholder="在此输入邀请码">
-            <span class="input-group-btn"><button class="btn btn-warning" style="display:none" type="button" id="bind-btn">绑定</button><button class="btn btn-primary" type="submit" id="submit-btn" onSubmit="return fakesubmit();">Go! Go! Go!</button></span>
+            <span class="input-group-btn"><button class="btn btn-warning" style="display:none" type="button" id="bind-btn">绑定</button><button class="btn btn-primary" type="submit" id="submit-btn">Go! Go! Go!</button></span>
             </div>
     	  </form>
       </div>
