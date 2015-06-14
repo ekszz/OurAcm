@@ -32,7 +32,30 @@ class CodepoolController extends BaseController {
     }
     
     public function index() {  //提交页面
-
+        
+        if($this -> logincheck() > 0) {     //已登录，显示历史提交
+            $ojaccount = \OJLoginInterface::getLoginUser();
+            $this -> assign('url', '');
+            
+            $Codepool = M('Codepool');
+            $c['ojaccount'] = $ojaccount;
+            $codes = $Codepool -> field('codeid, k, submittime, tag') -> where($c) -> order('submittime DESC') -> select();
+            $res = array();
+            $hash = array();
+            foreach ($codes as $code) {
+                if(array_key_exists($code['k'], $hash)) {   //已经出现过了
+                    $res[$hash[$code['k']]]['tag'] .= (' / '.htmlspecialchars($code['tag']));
+                } else {
+                    $id = count($res);
+                    $hash[$code['k']] = $id;
+                    $res[$id]['k'] = $code['k'];
+                    $res[$id]['tag'] = ($code['tag'] == null ? '代码'.sprintf('%06d', $code['codeid']) : htmlspecialchars($code['tag']));
+                    $res[$id]['submittime'] = $code['submittime'];
+                }
+            }
+            $this -> assign('codes', $res);
+        }
+        else $this -> assign('url', \OJLoginInterface::getLoginURL());
         $this -> commonassign();
         $this -> display('index');
     }
