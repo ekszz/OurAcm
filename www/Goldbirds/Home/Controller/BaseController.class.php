@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 
-define(ZEROSTRING, '########FUCKZEROSTRING########');
+define("ZEROSTRING", '########FUCKZEROSTRING########');
 
 class BaseController extends Controller {
 
