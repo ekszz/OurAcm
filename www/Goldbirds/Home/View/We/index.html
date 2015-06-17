@@ -43,8 +43,8 @@
           <?php foreach($data as $k => $d) {
           	echo '<li><a href="#'.$k.'"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '.$d['title'].'</a></li>';
           } ?>
-          <li><a href="?z=coach"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 教练团队</a></li>
-          <li><a href="?z=oj"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> OnlineJudge历史</a></li>
+          <?php if(!$module_disable_coach) { ?><li><a href="?z=coach"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 教练团队</a></li><?php } ?>
+          <?php if(!$module_disable_ojhistory) { ?><li><a href="?z=oj"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> OnlineJudge历史</a></li><?php } ?>
         </ul>
       </div>
       <div class="col-xs-12 col-sm-9">

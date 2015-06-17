@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class NewsController extends BaseController {
     
+    protected $module_name = 'NEWS';
+    
     public function index() {
         
         $newsDB = D('News');

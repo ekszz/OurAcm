@@ -40,12 +40,12 @@
     <div class="row">
       <div class="col-xs-12 col-sm-3 bs-docs-sidebar">
         <ul class="nav bs-docs-sidenav">
-          <li><a href="?z=we"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> ACM-ICPC集训队简介</a></li>
+          <?php if(!$module_disable_we) { ?><li><a href="?z=we"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> ACM-ICPC集训队简介</a></li><?php } ?>
           <li class="selected"><a href="?z=coach"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 教练团队</a></li>
           <?php foreach($data as $d) {
           	echo '<li><a href="#'.substr($d['id'], 0, 6).'"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> '.$d['chsname'].'&nbsp;&nbsp;'.$d['engname'].'</a></li>';
           } ?>
-          <li><a href="?z=oj"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> OnlineJudge历史</a></li>
+          <?php if(!$module_disable_ojhistory) { ?><li><a href="?z=oj"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> OnlineJudge历史</a></li><?php } ?>
         </ul>
       </div>
       <div class="col-xs-12 col-sm-9">

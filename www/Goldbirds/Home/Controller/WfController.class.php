@@ -2,6 +2,9 @@
 namespace Home\Controller;
 
 class WfController extends BaseController {
+    
+    protected $module_name = 'WF';
+    
     public function index() {  //酷炫版视图
         if(intval($this -> getconfig('config_contest_default_show')) == 0) $this -> data();
         else $this -> cool();

@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class RegionalController extends BaseController {
     
+    protected $module_name = 'REGIONAL';
+    
     public function index() {
         if(intval($this -> getconfig('config_contest_default_show')) == 0) $this -> data();
         else $this -> cool();

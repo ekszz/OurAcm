@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class CodepoolController extends BaseController {
     
+    protected $module_name = 'CODEPOOL';
+    
     private function safe_check($ip) {  //检测IP是否提交量过大
         
         $codepoolDB = M('Codepool');

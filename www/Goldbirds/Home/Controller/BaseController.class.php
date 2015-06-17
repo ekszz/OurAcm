@@ -2,7 +2,11 @@
 namespace Home\Controller;
 use Think\Controller;
 
+define(ZEROSTRING, '########FUCKZEROSTRING########');
+
 class BaseController extends Controller {
+
+    protected static $module = array('ACTIVITY', 'COACH', 'CODEPOOL', 'NEWS', 'OJHISTORY', 'REGIONAL', 'TALK', 'WE', 'WF');
     
     protected function _initialize() {
         define('GOLDBIRDS_VER', '0.9.0');
@@ -11,6 +15,13 @@ class BaseController extends Controller {
             if(get_magic_quotes_gpc()) {
                 $_GET = BaseController::stripslashesRecursive($_GET);
                 $_POST = BaseController::stripslashesRecursive($_POST);
+            }
+        }
+        
+        //是否停用模块判断
+        if(in_array($this -> module_name, BaseController::$module)) {
+            if($this -> getconfig('module_disable_'.strtolower($this -> module_name)) == 1) {
+                redirect('?z=index', 5, '[提示] 该模块已被管理员停用，5秒后跳转至首页...');
             }
         }
     }
@@ -31,12 +42,14 @@ class BaseController extends Controller {
         $configDB = M('Setting');
         $data = $configDB -> field('k, v') -> select();
         foreach($data as $d) {
-            S($d['k'], $d['v']);  //不理解为啥TP缓存F方法要判断0长度的字符串无效?
+            if($d['v'] !== null && strlen($d['v']) > 0) S($d['k'], $d['v']);  //不理解为啥TP缓存F方法要判断0长度的字符串无效?谁能告诉我到底怎么缓存空字符串...
+            else S($d['k'], ZEROSTRING);
         }
     }
     
     protected function getconfig($key) {  //获取某个参数
         $data = S($key);
+        if(strcmp($data, ZEROSTRING) == 0) $data = '';
         if($data === false) { $this -> init(); $data = S($key); }  //增加一次容错重试
         if($data === false) return null;
         else return $data;
@@ -50,6 +63,15 @@ class BaseController extends Controller {
         $this -> assign('GOLDBIRDS_VER_DIS', GOLDBIRDS_VER_DIS);
         $this -> assign('config_title', $this -> getconfig('config_title'));
         $this -> assign('footer_additional_code', $this -> getconfig('footer_additional_code'));
+        $this -> assign('module_disable_activity', $this -> getconfig('module_disable_activity'));
+        $this -> assign('module_disable_coach', $this -> getconfig('module_disable_coach'));
+        $this -> assign('module_disable_codepool', $this -> getconfig('module_disable_codepool'));
+        $this -> assign('module_disable_news', $this -> getconfig('module_disable_news'));
+        $this -> assign('module_disable_ojhistory', $this -> getconfig('module_disable_ojhistory'));
+        $this -> assign('module_disable_regional', $this -> getconfig('module_disable_regional'));
+        $this -> assign('module_disable_talk', $this -> getconfig('module_disable_talk'));
+        $this -> assign('module_disable_we', $this -> getconfig('module_disable_we'));
+        $this -> assign('module_disable_wf', $this -> getconfig('module_disable_wf'));
     }
     
     protected function logincheck() {  //检测是否本系统已登录，并进行相应处理

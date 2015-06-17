@@ -18,7 +18,12 @@
   </div>
   <div class="container">
     <p>
-		<a href="?z=we" class="btn btn-success btn-large">我们</a> <a href="?z=wf" class="btn btn-danger btn-large">全球总决赛</a> <a href="?z=regional" class="btn btn-warning btn-large">区域赛</a> <a href="?z=news" class="btn btn-primary btn-large">新闻中心</a> <a href="?z=coach" class="btn btn-primary btn-large">教练团队</a> <a href="?z=oj" class="btn btn-primary btn-large">OJ历史</a>
+		<?php if(!$module_disable_we) { ?><a href="?z=we" class="btn btn-success btn-large">我们</a><?php } ?>
+		<?php if(!$module_disable_wf) { ?><a href="?z=wf" class="btn btn-danger btn-large">全球总决赛</a><?php } ?>
+		<?php if(!$module_disable_regional) { ?><a href="?z=regional" class="btn btn-warning btn-large">区域赛</a><?php } ?>
+		<?php if(!$module_disable_news) { ?><a href="?z=news" class="btn btn-primary btn-large">新闻中心</a><?php } ?>
+		<?php if(!$module_disable_coach) { ?><a href="?z=coach" class="btn btn-primary btn-large">教练团队</a><?php } ?>
+		<?php if(!$module_disable_ojhistory) { ?><a href="?z=oj" class="btn btn-primary btn-large">OJ历史</a><?php } ?>
     </p>
   </div>
   <div id="particles-js" class="hidden-phone"></div>

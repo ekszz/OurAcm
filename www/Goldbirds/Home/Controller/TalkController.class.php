@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class TalkController extends BaseController {
     
+    protected $module_name = 'TALK';
+    
     private $talk_idx;  //递规生成Talk列表用
     private $talk_arr;
     

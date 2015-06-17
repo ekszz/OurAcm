@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class ActivityController extends BaseController {
 
+    protected $module_name = 'ACTIVITY';
+    
     public function index() {
         
         $this -> commonassign();

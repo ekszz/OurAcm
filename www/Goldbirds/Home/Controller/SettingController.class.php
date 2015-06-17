@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class SettingController extends BaseController {
     
+    protected $module_name = 'SETTING';
+    
     public function index() {  //默认处理方法，未登录显示未登录页面，已登录显示个人信息profile页面
         
         $this -> profile();
@@ -29,7 +31,7 @@ class SettingController extends BaseController {
         $condition['uid'] = session('goldbirds_uid');
         $data = $personDB -> where($condition) -> find();
         
-        $this -> assign('lock_person_introduce', intval($this -> getconfig('lock_person_introduce')));
+        $this -> assign('config_lock_person_introduce', intval($this -> getconfig('config_lock_person_introduce')));
         $this -> assign('data', $data);
         $this -> display('profile');
     }
@@ -781,11 +783,11 @@ class SettingController extends BaseController {
             }
             else if($data['type'] == 1) {  //文本-转义
                 $dat = I('post.v', '', 'htmlspecialchars');
-                if(!$dat) $dat = null;
+                if(!$dat) $dat = '';
             }
             else {  //文本-不转义
                 $dat = I('post.v', '', false);
-                if(!$dat) $dat = null;
+                if(!$dat) $dat = '';
             }
             if(false === $settingDB -> where($c) -> setField('v', $dat)) {
                 $this -> myajaxReturn(null, '保存参数错误，请重试！', 2);

@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class OjController extends BaseController {
     
+    protected $module_name = 'OJHISTORY';
+    
     public function index() {
         
         $ojhistoryDB = M('Ojhistory');
