@@ -31,7 +31,7 @@ OurAcm
 2、将www文件夹下所有文件拷贝到服务器的HTTP服务目录下；  
 3、修改服务器上/Goldbirds/Home/Common/function.php中的7个OnlineJudge接口；  
 4、修改服务器上/Goldbirds/Home/Conf/config.php中的数据库配置选项；  
-5、请确保服务器上/upload、/Goldbirds/Runtime（该文件夹首次访问时会创建）这2个目录具有写权限；  
+5、请确保服务器上/upload、/Goldbirds/Runtime（该文件夹首次访问时会创建）这2个目录具有写权限（注意SELinux等防护软件可能导致该目录没有写权限）；  
 6、访问index.php尝试能否正常访问；  
 7、登录OnlineJudge，并访问index.php?z=setting，以邀请码"iloveacmiloveacm"关联带管理权的OnlineJudge账户；  
 8、关联后，点击"个人中心"，可在里面进行相应配置管理。  
