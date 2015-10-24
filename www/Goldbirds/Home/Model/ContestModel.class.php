@@ -31,7 +31,7 @@ class ContestModel extends RelationModel{
         array('title', '1,32', '附加奖项太长了，请试试简写。', self::VALUE_VALIDATE, 'length', self::MODEL_BOTH),
         array('ranking', '1,300', '排名好像不太对。', self::VALUE_VALIDATE, 'between', self::MODEL_BOTH),
         array('team', '1,16', '队伍名称暴长啊:(', self::EXISTS_VALIDATE, 'length', self::MODEL_BOTH),
-        array('pic1', '1,255', '照片1的路径暴长啊:(', self::EXISTS_VALIDATE, 'length', self::MODEL_BOTH),
-        array('pic2', '1,255', '照片1的路径暴长啊:(', self::EXISTS_VALIDATE, 'length', self::MODEL_BOTH),
+        array('pic1', '0,255', '照片1的路径暴长啊:(', self::EXISTS_VALIDATE, 'length', self::MODEL_BOTH),
+        array('pic2', '0,255', '照片2的路径暴长啊:(', self::EXISTS_VALIDATE, 'length', self::MODEL_BOTH),
     );
 }

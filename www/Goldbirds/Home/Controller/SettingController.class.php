@@ -715,6 +715,9 @@ class SettingController extends BaseController {
                 $data['pic2'] = null;
             }
             
+            if($data['pic1'] === null) $data['pic1'] = array('exp', 'null');
+            if($data['pic2'] === null) $data['pic2'] = array('exp', 'null');
+            
             $contestDB = D('Contest');
             if(!$contestDB -> create($data)) {  //自动验证失败
                 $this -> myajaxReturn(null, $contestDB -> getError(), 1);
