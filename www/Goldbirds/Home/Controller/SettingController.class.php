@@ -41,17 +41,17 @@ class SettingController extends BaseController {
         if(!session('goldbirds_islogin')) $this -> myajaxReturn(null, '还未登录，无权限。', 2);  //无权限处理
         
         $personDB = D('Person');
-        if(I('post.email', '', false) === '') $data['email'] = null;
+        if(I('post.email', '', false) === '') $data['email'] = array('exp', 'null');
         else if(strlen(I('post.email', '', false)) > 0) $data['email'] = I('post.email', '', false);
-        if(I('post.phone', '', false) === '') $data['phone'] = null;
+        if(I('post.phone', '', false) === '') $data['phone'] = array('exp', 'null');
         else if(strlen(I('post.phone', '', false)) > 0) $data['phone'] = I('post.phone', '', false);
-        if(I('post.address', '', false) === '') $data['address'] = null;
+        if(I('post.address', '', false) === '') $data['address'] = array('exp', 'null');
         else if(strlen(I('post.address', '', false)) > 0) $data['address'] = I('post.address', '', false);
         if(!intval($this -> getconfig('config_lock_person_introduce'))) {
-            if(I('post.introduce', '', false) === '') $data['introduce'] = null;
+            if(I('post.introduce', '', false) === '') $data['introduce'] = array('exp', 'null');
             else if(strlen(I('post.introduce', '', false)) > 0) $data['introduce'] = I('post.introduce', '', false);
         }
-        if(I('post.detail', '', false) === '') $data['detail'] = null;
+        if(I('post.detail', '', false) === '') $data['detail'] = array('exp', 'null');
         else if(strlen(I('post.detail', '', false)) > 0) $data['detail'] = I('post.detail', '', false);
         
         if(!$personDB -> create($data)) {  //自动验证失败
@@ -366,25 +366,25 @@ class SettingController extends BaseController {
             $tmp = intval(I('post.nowuid'));
             if($tmp != 9999) $this -> myajaxReturn(null, '无效的参数。', 2);
             $data['chsname'] = I('post.chsname', '<ERROR NAME>', false);
-            $data['engname'] = I('post.engname', '', false) == '' ? null : I('post.engname', '', false);
-            $data['email'] = I('post.email', '', false) == '' ? null : I('post.email', '', false);
-            $data['phone'] = I('post.phone', '', false) == '' ? null : I('post.phone', '', false);
-            $data['address'] = I('post.address', '', false) == '' ? null : I('post.address', '', false);
+            $data['engname'] = I('post.engname', '', false) == '' ? array('exp', 'null') : I('post.engname', '', false);
+            $data['email'] = I('post.email', '', false) == '' ? array('exp', 'null') : I('post.email', '', false);
+            $data['phone'] = I('post.phone', '', false) == '' ? array('exp', 'null') : I('post.phone', '', false);
+            $data['address'] = I('post.address', '', false) == '' ? array('exp', 'null') : I('post.address', '', false);
             if(intval(I('post.sex')) == 1) $data['sex'] = 1;
             else $data['sex'] = 0;
             $tmp = intval(I('post.grade'));
             if($tmp > 1950 && $tmp < 2100) $data['grade'] = $tmp;
-            else $data['grade'] = null;
-            $data['introduce'] = I('post.introduce', '', false) == '' ? null : I('post.introduce', '', false);
-            $data['detail'] = I('post.detail', '', false) == '' ? null : I('post.detail', '', false);
-            $data['ojaccount'] = I('post.ojaccount') == '' ? null : I('post.ojaccount');
+            else $data['grade'] = array('exp', 'null');
+            $data['introduce'] = I('post.introduce', '', false) == '' ? array('exp', 'null') : I('post.introduce', '', false);
+            $data['detail'] = I('post.detail', '', false) == '' ? array('exp', 'null') : I('post.detail', '', false);
+            $data['ojaccount'] = I('post.ojaccount') == '' ? array('exp', 'null') : I('post.ojaccount');
             $tmp = intval(I('post.group'));
             if($tmp == 0 || $tmp == 1 || $tmp == 2 || $tmp == 9) $data['group'] = $tmp;
             else $data['group'] = 0;
             srand((double)microtime()*1000000);
             $data['luckycode'] = substr(md5('goldbirds'.'_xzz'.$data['chsname'].rand()), 10, 16);
             
-            $data['photo'] = strcmp(substr(I('post.face_fn'), 0, 7), 'upload/') == 0 ? I('post.face_fn') : null;
+            $data['photo'] = strcmp(substr(I('post.face_fn'), 0, 7), 'upload/') == 0 ? I('post.face_fn') : array('exp', 'null');
             
             $personDB = D('Person');
             if(!$personDB -> create($data)) {
@@ -408,23 +408,23 @@ class SettingController extends BaseController {
             if($uid == 9999 || $uid <= 0) $this -> myajaxReturn(null, '无效的UID。', 2);
             
             $data['chsname'] = I('post.chsname', '<ERROR NAME>', false);
-            $data['engname'] = I('post.engname', '', false) == '' ? null : I('post.engname', '', false);
-            $data['email'] = I('post.email', '', false) == '' ? null : I('post.email', '', false);
-            $data['phone'] = I('post.phone', '', false) == '' ? null : I('post.phone', '', false);
-            $data['address'] = I('post.address', '', false) == '' ? null : I('post.address', '', false);
+            $data['engname'] = I('post.engname', '', false) == '' ? array('exp', 'null') : I('post.engname', '', false);
+            $data['email'] = I('post.email', '', false) == '' ? array('exp', 'null') : I('post.email', '', false);
+            $data['phone'] = I('post.phone', '', false) == '' ? array('exp', 'null') : I('post.phone', '', false);
+            $data['address'] = I('post.address', '', false) == '' ? array('exp', 'null') : I('post.address', '', false);
             if(intval(I('post.sex')) == 1) $data['sex'] = 1;
             else $data['sex'] = 0;
             $tmp = intval(I('post.grade'));
             if($tmp > 1950 && $tmp < 2100) $data['grade'] = $tmp;
-            else $data['grade'] = null;
-            $data['introduce'] = I('post.introduce', '', false) == '' ? null : I('post.introduce', '', false);
-            $data['detail'] = I('post.detail', '', false) == '' ? null : I('post.detail', '', false);
-            $data['ojaccount'] = I('post.ojaccount') == '' ? null : I('post.ojaccount');
+            else $data['grade'] = array('exp', 'null');
+            $data['introduce'] = I('post.introduce', '', false) == '' ? array('exp', 'null') : I('post.introduce', '', false);
+            $data['detail'] = I('post.detail', '', false) == '' ? array('exp', 'null') : I('post.detail', '', false);
+            $data['ojaccount'] = I('post.ojaccount') == '' ? array('exp', 'null') : I('post.ojaccount');
             $tmp = intval(I('post.group'));
             if($tmp == 0 || $tmp == 1 || $tmp == 2 || $tmp == 9) $data['group'] = $tmp;
             else $data['group'] = 0;
             
-            $data['photo'] = strcmp(substr(I('post.face_fn'), 0, 7), 'upload/') == 0 ? I('post.face_fn') : null;
+            $data['photo'] = strcmp(substr(I('post.face_fn'), 0, 7), 'upload/') == 0 ? I('post.face_fn') : array('exp', 'null');
             
             
             $personDB = D('Person');
@@ -569,8 +569,8 @@ class SettingController extends BaseController {
             $data['type'] = (intval(I('post.type')) >= 0 && intval(I('post.type')) <= 2) ? intval(I('post.type')) : 1;
             $data['medal'] = (intval(I('post.medal')) >= 0 && intval(I('post.medal')) <= 4) ? intval(I('post.medal')) : 3;
             if($data['type'] == 0 && $data['medal'] == 4) $data['medal'] = 3;
-            $data['ranking'] = I('post.ranking', '', false) == '' ? null : I('post.ranking', '', false);
-            $data['title'] = I('post.title', '', false) == '' ? null : I('post.title', '', false);
+            $data['ranking'] = I('post.ranking', '', false) == '' ? array('exp', 'null') : I('post.ranking', '', false);
+            $data['title'] = I('post.title', '', false) == '' ? array('exp', 'null') : I('post.title', '', false);
             
             $personDB = M('Person');
             $plist = explode('-', I('post.leader'));
@@ -599,8 +599,11 @@ class SettingController extends BaseController {
             
             if($data['pic1'] === null && $data['pic2'] !== null) {
                 $data['pic1'] = $data['pic2'];
-                $data['pic2'] = null;
+                $data['pic2'] = array('exp', 'null');
             }
+            
+            if($data['pic1'] === null) $data['pic1'] = array('exp', 'null');
+            if($data['pic2'] === null) $data['pic2'] = array('exp', 'null');
             
             $contestDB = D('Contest');
             if(!$contestDB -> create($data)) {
@@ -682,8 +685,8 @@ class SettingController extends BaseController {
             $data['type'] = (intval(I('post.type')) >= 0 && intval(I('post.type')) <= 2) ? intval(I('post.type')) : 1;
             $data['medal'] = (intval(I('post.medal')) >= 0 && intval(I('post.medal')) <= 4) ? intval(I('post.medal')) : 3;
             if($data['type'] == 0 && $data['medal'] == 4) $data['medal'] = 3;
-            $data['ranking'] = I('post.ranking', '', false) == '' ? null : I('post.ranking', '', false);
-            $data['title'] = I('post.title', '', false) == '' ? null : I('post.title', '', false);
+            $data['ranking'] = I('post.ranking', '', false) == '' ? array('exp', 'null') : I('post.ranking', '', false);
+            $data['title'] = I('post.title', '', false) == '' ? array('exp', 'null') : I('post.title', '', false);
             
             $personDB = M('Person');
             $plist = explode('-', I('post.leader'));
@@ -1037,8 +1040,8 @@ class SettingController extends BaseController {
             else {
                 $data['sortid'] = intval(I('post.sortid'));
                 $data['mainname'] = I('post.mainname', '', false);
-                $data['devname'] = I('post.devname', '', false) == '' ? null : I('post.devname', '', false);
-                $data['introduce'] = I('post.introduce', '', false) == '' ? null : I('post.introduce', '', false);
+                $data['devname'] = I('post.devname', '', false) == '' ? array('exp', 'null') : I('post.devname', '', false);
+                $data['introduce'] = I('post.introduce', '', false) == '' ? array('exp', 'null') : I('post.introduce', '', false);
                 $photos = I('post.photos', '', false);
                 $titles = I('post.titles', '', false);
                 $descs = I('post.descs', '', false);
@@ -1056,9 +1059,9 @@ class SettingController extends BaseController {
                     if($titles[$i]) $data['titles'] .= base64_encode($titles[$i]);
                     if($descs[$i]) $data['descs'] .= base64_encode($descs[$i]);
                 }
-                if(!$data['photos']) { $data['photos'] = null; $data['titles'] = null; $data['descs'] = null; }
-                if(!$data['titles']) $data['titles'] = null;
-                if(!$data['descs']) $data['descs'] = null;
+                if(!$data['photos']) { $data['photos'] = array('exp', 'null'); $data['titles'] = array('exp', 'null'); $data['descs'] = array('exp', 'null'); }
+                if(!$data['titles']) $data['titles'] = array('exp', 'null');
+                if(!$data['descs']) $data['descs'] = array('exp', 'null');
                 
                 $ojhistoryDB = D('Ojhistory');
                 if(!$ojhistoryDB -> create($data)) {  //自动验证失败
@@ -1195,7 +1198,7 @@ class SettingController extends BaseController {
     
             $data['title'] = I('post.title', '', false);
             $data['category'] = I('post.category', '', false);
-            $data['content'] = I('post.content', '', false) == '' ? null : I('post.content', '', false);
+            $data['content'] = I('post.content', '', false) == '' ? array('exp', 'null') : I('post.content', '', false);
             $data['author'] = intval(session('goldbirds_uid'));
             $data['top'] = (I('post.top', '', false) ? 1 : 0);
             $data['permission'] = (I('post.permission', '', false) ? 1 : 0);
@@ -1225,7 +1228,7 @@ class SettingController extends BaseController {
             
             $data['title'] = I('post.title', '', false);
             $data['category'] = I('post.category', '', false);
-            $data['content'] = I('post.content', '', false) == '' ? null : I('post.content', '', false);
+            $data['content'] = I('post.content', '', false) == '' ? array('exp', 'null') : I('post.content', '', false);
             $data['author'] = intval(session('goldbirds_uid'));
             $data['createtime'] = date("Y-m-d H:i:s");
             $data['top'] = (I('post.top', false) ? 1 : 0);
@@ -1398,7 +1401,7 @@ class SettingController extends BaseController {
             $data['deadline'] = I('post.deadline', '', false);
     
             $data['title'] = I('post.title', '', false);
-            $data['desc'] = I('post.content', '', false) == '' ? null : I('post.content', '', false);
+            $data['desc'] = I('post.content', '', false) == '' ? array('exp', 'null') : I('post.content', '', false);
             $data['addtime'] = date("Y-m-d H:i:s");
             
             if(null === $this -> explain_reg_rule(I('post.form', '', false))) {
@@ -1490,7 +1493,7 @@ class SettingController extends BaseController {
             $data['deadline'] = I('post.deadline', '', false);
     
             $data['title'] = I('post.title', '', false);
-            $data['desc'] = I('post.content', '', false) == '' ? null : I('post.content', '', false);
+            $data['desc'] = I('post.content', '', false) == '' ? array('exp', 'null') : I('post.content', '', false);
             $data['addtime'] = date("Y-m-d H:i:s");
             
             if(null === $this -> explain_reg_rule(I('post.form', '', false))) {

@@ -151,9 +151,9 @@ class TalkController extends BaseController {
         $data['ptid'] = 0;
         $data['ojaccount'] = $ojaccount;
         $data['title'] = $title;
-        $data['content'] = $content;
+        $data['content'] = $content === null ? array('exp', 'null') : $content;
         $data['createtime'] = date("Y-m-d H:i:s");
-        $data['problemid'] = (intval($pid) == 0 ? null : intval($pid));
+        $data['problemid'] = (intval($pid) == 0 ? array('exp', 'null') : intval($pid));
         $data['lft'] = 1;
         $data['rgt'] = 2;
         $data['ip'] = get_client_ip();
@@ -192,9 +192,9 @@ class TalkController extends BaseController {
         $data['ptid'] = intval($p['ptid']);
         $data['ojaccount'] = $ojaccount;
         $data['title'] = $title;
-        $data['content'] = $content;
+        $data['content'] = $content === null ? array('exp', 'null') : $content;
         $data['createtime'] = date("Y-m-d H:i:s");
-        $data['problemid'] = (intval($p['problemid']) == 0 ? null : intval($p['problemid']));
+        $data['problemid'] = (intval($p['problemid']) == 0 ? array('exp', 'null') : intval($p['problemid']));
         $data['lft'] = intval($p['lft']) + 1;
         $data['rgt'] = intval($p['lft']) + 2;
         $data['ip'] = get_client_ip();
