@@ -230,7 +230,7 @@ class ActivityController extends BaseController {
         
         if($this -> logincheck() == 0) $this -> myajaxReturn(null, '请先登录OJ。', 5);  //未登录，非法操作
         
-        $aid = I('post.aid');
+        $aid = intval(I('post.aid'));
         if($aid <= 0) $this -> myajaxReturn(null, '无效的AID参数。', 1);
         
         $activitylistDB = M('Activitylist');
