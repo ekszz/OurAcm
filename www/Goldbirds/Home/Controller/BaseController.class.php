@@ -9,8 +9,8 @@ class BaseController extends Controller {
     protected static $module = array('ACTIVITY', 'COACH', 'CODEPOOL', 'NEWS', 'OJHISTORY', 'REGIONAL', 'TALK', 'WE', 'WF');
     
     protected function _initialize() {
-        define('GOLDBIRDS_VER', '0.9.0');
-        define('GOLDBIRDS_VER_DIS', '0.9.0 Trunk');
+        define('GOLDBIRDS_VER', '1.0.0');
+        define('GOLDBIRDS_VER_DIS', '1.0.0');
         if(version_compare(PHP_VERSION, '5.4.0') < 0) {  //PHP 5.4版本以下，判断magic_quotes_gpc是否打开，打开则关闭
             if(get_magic_quotes_gpc()) {
                 $_GET = BaseController::stripslashesRecursive($_GET);

@@ -1,8 +1,10 @@
 OurAcm  
 ======  
+
+> 青春散场，记忆永恒。
+
   
 优雅简洁的ACM-ICPC队伍风采展示系统，基于Bootstrap和ThinkPHP！  
-演示地址：http://acm.fzu.edu.cn/ouracm/
   
 * 简洁优雅的界面  
 * 支持WF、Regional等类型的ACM-ICPC比赛展示  
@@ -22,8 +24,7 @@ OurAcm
   
 建议使用PHP 5.3+环境，MySQL 5.1+数据库。  
 浏览器支持Chrome、Firefox、IE10+等；不支持IE低版本，使用这些旧版本浏览器访问，会跳转至提示页面。  
-注意：因ThinkPHP 3.2.3需要PHP的php_pdo_mysql扩展，如果服务器不支持，请将ThinkPHP替换为旧版本的ThinkPHP 3.2.2版本。  
-  
+
   
 部署说明  
 ========  
