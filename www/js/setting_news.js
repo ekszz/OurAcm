@@ -88,10 +88,10 @@ $(function () {
 		else
 		{
 			var n = $("#data-table input:checked").length;
-			if(!n) { alert("[错误]请选择一条新闻来进行编辑操作。", "error"); return false; }
-			var id = $('#data-table').find("input:checked").first().attr("id");
+			if(!n) { alert("错误","请选择一条新闻来进行编辑操作。", "error"); return false; }
+			var id = $('#data-table').find("tbody input:checked").first().attr("id");
 			set_news_modal("2", parseInt(id));
-			if($("#data-table input:checked").length > 1) alert("[提示]你选择了多条新闻，只会编辑第一条选中的新闻哦~");
+			if($("#data-table input:checked").length > 1) alert("提示","你选择了多条新闻，只会编辑第一条选中的新闻哦~","info");
 		}
         $(target).modal("show");
 	    return false;
@@ -108,21 +108,21 @@ $(function () {
 		if($('#nownid').val() == '9999') {
 			$.post("?z=setting-ajax_add_news", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert(data.info); addcategory($('#category').val()); $('#news-modal').modal('hide'); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功",data.info,"success"); addcategory($('#category').val()); $('#news-modal').modal('hide'); reFresh(); }
+				else alert("错误",data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 		else {
 			$.post("?z=setting-ajax_modify_news", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert("[成功]修改该新闻成功！"); addcategory($('#category').val()); $('#news-modal').modal('hide'); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功","修改该新闻成功！","success"); addcategory($('#category').val()); $('#news-modal').modal('hide'); reFresh(); }
+				else alert("错误",data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 	});
@@ -133,10 +133,10 @@ $(function () {
 			for(var i=0;i<data.data.length;i++) { typeahead_data[i] = data.data[i]; }
 			$('#category').typeahead({source:typeahead_data});
 		}
-		else alert(data.info, "error");
+		else alert("错误", data.info, "error");
 	})
 	.fail( function() {
-		alert("[错误]获取自动完成数据出错，请检查网络连接。", "error");
+		alert("提示", '获取自动完成数据出错。你已中断请求，或网络连接异常。', "info");
 	});
 });
 
@@ -159,7 +159,7 @@ function reFresh() {
 	$.getJSON("?z=setting-ajax_load_news", null)
 	.done(function(data) {
 		var reshtml = "";
-		$.each(data.data, function(i, vo) {
+		if(data.data) $.each(data.data, function(i, vo) {
 			reshtml = reshtml + '<tr><td><label style="padding-right:15px"><input type="checkbox" id="' + vo.nid + '" data-id="id"></label></td><td>' + vo.nid + '</td><td>' + vo.category + '</td><td>';
 			reshtml = reshtml + (vo.permission == 0 ? '':' <span class="label label-info">内</span>') + (vo.top == 1 ? ' <span class="label label-success">顶</span>':'') + (isnew(vo.createtime) ? ' <span class="label label-warning">新</span>':'');
 			reshtml = reshtml + '</td><td>' + (vo.title.length>20?(vo.title.substr(0,20) + '...'):vo.title) + '</td><td>' + vo.author_detail.chsname + '</td><td>' + vo.createtime;
@@ -169,7 +169,7 @@ function reFresh() {
 		$("#data-table").trigger("update");
 	})
 	.fail(function() {
-		alert('[错误]请检查网络连接。', "error");
+		alert("提示", '你已中断请求，或网络连接异常。', "info");
 	});
 }
 
@@ -195,11 +195,11 @@ function set_news_modal(func, nid) {  //0-查看,1-增加,2-修改
 				}
 			}
 			else {
-				alert(data.info, "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			}
 		})
 		.fail(function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert('请检查网络连接。', "error");
 		});
 	}
 	else {  //1 - 新增
@@ -218,7 +218,7 @@ function set_news_modal(func, nid) {  //0-查看,1-增加,2-修改
 function del_checked(){
 	var n=$("#data-table input:checked").length;
 	if(!n){
-		alert('[错误]请先选择待删除的新闻。', "error");
+		alert('提示','请先选择待删除的新闻。', "info");
 		return false;
 	}
 	var list=$("#data-table input:checked").map(function() {
@@ -231,11 +231,11 @@ function del_news(nids) {
 	if(confirm("[提示]你确定要删除选择的新闻吗？")) {
 		$.getJSON("?z=setting-ajax_del_news", {nid:nids})
 		.done( function(data) {
-			if(data.status == 0) { alert(data.info); reFresh(); }
-			else alert(data.info, "error");
+			if(data.status == 0) { alert("成功", data.info, "success"); reFresh(); }
+			else alert("错误", data.info, "error");
 		})
 		.fail( function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 }

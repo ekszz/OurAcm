@@ -88,10 +88,10 @@ $(function () {
 		else
 		{
 			var n = $("#data-table input:checked").length;
-			if(!n) { alert("[错误]请选择一条活动来进行编辑操作。", "error"); return false; }
-			var id = $('#data-table').find("input:checked").first().attr("id");
+			if(!n) { alert("提示", "请选择一条活动来进行编辑操作。", "info"); return false; }
+			var id = $('#data-table').find("tbody input:checked").first().attr("id");
 			set_activity_modal("2", parseInt(id));
-			if($("#data-table input:checked").length > 1) alert("[提示]你选择了多条活动，只会编辑第一条选中的活动哦~");
+			if($("#data-table input:checked").length > 1) alert("提示","你选择了多条活动，只会编辑第一条选中的活动哦~","info");
 		}
         $(target).modal("show");
 	    return false;
@@ -108,21 +108,21 @@ $(function () {
 		if($('#nowaid').val() == '9999') {
 			$.post("?z=setting-ajax_add_activity", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert(data.info); $('#activity-modal').modal('hide'); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功",data.info,"success"); $('#activity-modal').modal('hide'); reFresh(); }
+				else alert("错误", data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 		else {
 			$.post("?z=setting-ajax_modify_activity", form_data)
 			.done(function (data) {
-				if(data.status == 0) { alert("[成功]修改该活动成功！"); $('#activity-modal').modal('hide'); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功","修改该活动成功！","success"); $('#activity-modal').modal('hide'); reFresh(); }
+				else alert("错误",data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 	});
@@ -133,10 +133,10 @@ $(function () {
 			for(var i=0;i<data.data.length;i++) { typeahead_data[i] = data.data[i]; }
 			$('#admin').typeahead({source:typeahead_data});
 		}
-		else alert(data.info, "error");
+		else alert("错误", data.info, "error");
 	})
 	.fail( function() {
-		alert("[错误]获取自动完成数据出错，请检查网络连接。", "error");
+		alert("提示", '你已中断请求，或网络连接异常。', "info");
 	});
 });
 
@@ -155,7 +155,7 @@ function reFresh() {
 		$("#data-table").trigger("update");
 	})
 	.fail(function() {
-		alert('[错误]请检查网络连接。', "error");
+		alert("提示", '你已中断请求，或网络连接异常。', "info");
 	});
 }
 
@@ -185,16 +185,16 @@ function set_activity_modal(func, aid) {  //0-查看,1-增加,2-修改
 				}
 			}
 			else {
-				alert(data.info, "error");
+				alert("错误", data.info, "error");
 			}
 		})
 		.fail(function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 	else {  //1 - 新增
 		$('#nowaid').val(9999);
-		$('#deadline').val('2014-8-8 23:59:59');
+		$('#deadline').val(null);
 		$('#title').val(null);
 		$('#admin').val(null);
 		editor.html('');
@@ -211,7 +211,7 @@ function set_activity_modal(func, aid) {  //0-查看,1-增加,2-修改
 function del_checked(){
 	var n=$("#data-table input:checked").length;
 	if(!n){
-		alert('[错误]请先选择待删除的活动。', "error");
+		alert('提示', '请先选择待删除的活动。', "info");
 		return false;
 	}
 	var list=$("#data-table input:checked").map(function() {
@@ -224,11 +224,11 @@ function del_activity(aids) {
 	if(confirm("[提示]你确定要删除选择的活动吗？这将同时删除用户的注册信息。")) {
 		$.getJSON("?z=setting-ajax_del_activity", {aid:aids})
 		.done( function(data) {
-			if(data.status == 0) { alert(data.info); reFresh(); }
-			else alert(data.info, "error");
+			if(data.status == 0) { alert("成功", data.info,"success"); reFresh(); }
+			else alert("错误", data.info, "error");
 		})
 		.fail( function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 }

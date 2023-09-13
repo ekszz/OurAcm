@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class WeController extends BaseController {
     
+    protected $module_name = 'WE';
+    
     public function index() {
         
         $empty = true;

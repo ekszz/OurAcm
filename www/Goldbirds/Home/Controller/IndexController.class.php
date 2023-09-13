@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class IndexController extends BaseController {
     
+    protected $module_name = 'HOME';
+    
     public function index() {
         $this -> assign('home_chs_header', $this -> getconfig('home_chs_header'));
         $this -> assign('home_eng_header', $this -> getconfig('home_eng_header'));

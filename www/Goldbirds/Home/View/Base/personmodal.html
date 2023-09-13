@@ -41,10 +41,10 @@
 					$('#p_contest').html(conteststr);
 					$('#person-modal').modal();
 				}
-				else alert(data.info, "error");
+				else alert("错误", data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		});
 	});

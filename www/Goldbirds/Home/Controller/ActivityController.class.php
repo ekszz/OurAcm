@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class ActivityController extends BaseController {
 
+    protected $module_name = 'ACTIVITY';
+    
     public function index() {
         
         $this -> commonassign();
@@ -28,10 +30,10 @@ class ActivityController extends BaseController {
             }
             
             if($data === false) {
-                $this -> myajaxReturn(null, '[错误]数据库错误。', 1);
+                $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === null) {
-                $this -> myajaxReturn(null, '[成功]暂时没有活动报名信息。', 0);
+                $this -> myajaxReturn(null, '暂时没有活动报名信息。', 0);
             }
             else {
                 $activitydataDB = M('Activitydata');
@@ -53,11 +55,11 @@ class ActivityController extends BaseController {
         }
         else {  //仅自己报名的
             
-            if($this -> logincheck() == 0) $this -> myajaxReturn(null, '[错误]你在OJ上还未登录，请先登录。', 1);  //OJ未登录
+            if($this -> logincheck() == 0) $this -> myajaxReturn(null, '你在OJ上还未登录，请先登录。', 1);  //OJ未登录
             
             $activitydataDB = M('Activitydata');
             $myaid = $activitydataDB -> field('aid, state') -> where('ojaccount = "'.\OJLoginInterface::getLoginUser().'"') -> select();
-            if(!$myaid) $this -> myajaxReturn(null, '[成功]无数据。', 0);
+            if(!$myaid) $this -> myajaxReturn(null, '无数据。', 0);
 
             $aidstr = '';
             $aidstr .= $myaid[0]['aid'];
@@ -69,10 +71,10 @@ class ActivityController extends BaseController {
             $data = $activitylistDB -> field('aid, title, deadline, isinner, ispublic, isneedreview, desc, adminuid') -> where('aid IN ('.$aidstr.')') -> order('aid DESC') -> select();
             
             if($data === false) {
-                $this -> myajaxReturn(null, '[错误]数据库错误。', 1);
+                $this -> myajaxReturn(null, '数据库错误。', 1);
             }
             else if($data === null) {
-                $this -> myajaxReturn(null, '[提示]暂时没有活动报名信息。', 2);
+                $this -> myajaxReturn(null, '暂时没有活动报名信息。', 2);
             }
             else {
                 $activitydataDB = M('Activitydata');
@@ -101,16 +103,16 @@ class ActivityController extends BaseController {
 
     public function ajax_get_registeform() {  //生成注册表单（如已注册，则附带返回注册信息）
         
-        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '[错误]请先登录OJ。', 5);  //未登录，非法操作
+        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '请先登录OJ。', 5);  //未登录，非法操作
         
         $aid = intval(I('get.aid'));
-        if($aid <= 0) $this -> myajaxReturn(null, '[错误]无效的AID参数。', 1);
+        if($aid <= 0) $this -> myajaxReturn(null, '无效的AID参数。', 1);
         
         //获取活动信息
         $activitylistDB = M('Activitylist');
         $data = $activitylistDB -> field('title, form, deadline, isinner, isneedreview') -> where('aid = '.$aid) -> find();
-        if(!$data) $this -> myajaxReturn(null, '[错误]获取注册表单格式出错:(', 2);
-        if($data['isinner'] == 1 && $this -> logincheck() != 2) $this -> myajaxReturn(null, '[错误]没有权限。', 6);  //内部活动，非法操作
+        if(!$data) $this -> myajaxReturn(null, '获取注册表单格式出错:(', 2);
+        if($data['isinner'] == 1 && $this -> logincheck() != 2) $this -> myajaxReturn(null, '没有权限。', 6);  //内部活动，非法操作
         
         //加载自定义类
         Vendor('ActivityFormClass.activity');
@@ -119,13 +121,13 @@ class ActivityController extends BaseController {
         
         if($rule[0]['classname'] != null && class_exists($rule[0]['classname']) && method_exists($rule[0]['classname'], 'buildpage')) {  //使用自定义类中的buildpage生成页面
             if(false === eval('$ret["form"] = '.$rule[0]['classname'].'::buildpage();'))
-                $this -> myajaxReturn(null, '[错误]生成注册表单出错:(', 4);
+                $this -> myajaxReturn(null, '生成注册表单出错:(', 4);
             else {
                 //获取注册信息
                 $activitydataDB = M('Activitydata');
                 $regdata = $activitydataDB -> field('data, state') -> where('aid = '.$aid.' AND ojaccount = "'.\OJLoginInterface::getLoginUser().'"') -> order('adid DESC') -> find();
                 if(!$regdata) {  //未注册
-                    if(time() > strtotime($data['deadline'])) $this -> myajaxReturn(null, '[错误]你已经错过了报名时间了 -__-', 3);  //超过deadline
+                    if(time() > strtotime($data['deadline'])) $this -> myajaxReturn(null, '你已经错过了报名时间了 -__-', 3);  //超过deadline
                     $ret['data'] = null;
                     $retstr = '[成功]';
                 }
@@ -138,12 +140,12 @@ class ActivityController extends BaseController {
                     //是否已通过审核
                     if($data['isneedreview'] == 1 && $regdata['state'] == 2) {
                         $ret['readonly'] = 1;
-                        $retstr = '[提示]你已通过审核，不能修改报名信息。<br />如果你确实需要修改报名信息，请联系比赛组织者 : )';
+                        $retstr = '你已通过审核，不能修改报名信息。<br />如果你确实需要修改报名信息，请联系比赛组织者 : )';
                     }
                     else {
                         if(time() > strtotime($data['deadline'])) {  //已注册，且超过报名时间
                             $ret['readonly'] = 1;
-                            $retstr = '[提示]活动报名已截止啦~ 不能修改信息了。 : )';
+                            $retstr = '活动报名已截止啦~ 不能修改信息了。 : )';
                         }
                         else {
                             $ret['readonly'] = 0;
@@ -185,7 +187,7 @@ class ActivityController extends BaseController {
                         $htmlstr .= ('<span class="'.$rule[$i]['class'].'">'.$rule[$i]['dis'].'</span>');
                         break;
                     default:
-                        $this -> myajaxReturn(null, '[错误]系统错误，无效的活动表单规则字符串。', 6);
+                        $this -> myajaxReturn(null, '系统错误，无效的活动表单规则字符串。', 6);
                 }
             }
             $ret['form'] = $htmlstr;
@@ -194,7 +196,7 @@ class ActivityController extends BaseController {
             $activitydataDB = M('Activitydata');
             $regdata = $activitydataDB -> field('data, state') -> where('aid = '.$aid.' AND ojaccount = "'.\OJLoginInterface::getLoginUser().'"') -> order('adid DESC') -> find();
             if(!$regdata) {  //未注册
-                if(time() > strtotime($data['deadline'])) $this -> myajaxReturn(null, '[错误]你已经错过了报名时间了 -__-', 3);  //超过deadline
+                if(time() > strtotime($data['deadline'])) $this -> myajaxReturn(null, '你已经错过了报名时间了 -__-', 3);  //超过deadline
                 $ret['data'] = null;
                 $retstr = '[成功]';
             }
@@ -207,12 +209,12 @@ class ActivityController extends BaseController {
                 //是否已通过审核
                 if($data['isneedreview'] == 1 && $regdata['state'] == 2) {
                     $ret['readonly'] = 1;
-                    $retstr = '[提示]你已通过审核，不能修改报名信息。<br />如果你确实需要修改报名信息，请联系比赛组织者 : )';
+                    $retstr = '你已通过审核，不能修改报名信息。<br />如果你确实需要修改报名信息，请联系比赛组织者 : )';
                 }
                 else {
                     if(time() > strtotime($data['deadline'])) {  //已注册，且超过报名时间
                         $ret['readonly'] = 1;
-                        $retstr = '[提示]活动报名已截止啦~ 不能修改信息了。 : )';
+                        $retstr = '活动报名已截止啦~ 不能修改信息了。 : )';
                     }
                     else {
                         $ret['readonly'] = 0;
@@ -226,36 +228,36 @@ class ActivityController extends BaseController {
     
     public function ajax_save_regdata() {  //提交注册信息
         
-        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '[错误]请先登录OJ。', 5);  //未登录，非法操作
+        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '请先登录OJ。', 5);  //未登录，非法操作
         
-        $aid = I('post.aid');
-        if($aid <= 0) $this -> myajaxReturn(null, '[错误]无效的AID参数。', 1);
+        $aid = intval(I('post.aid'));
+        if($aid <= 0) $this -> myajaxReturn(null, '无效的AID参数。', 1);
         
         $activitylistDB = M('Activitylist');
         $activity = $activitylistDB -> where('aid = '.$aid) -> find();
         
         //合法性检查
-        if(!$activity) $this -> myajaxReturn(null, '[错误]无效的AID参数。', 1);
-        if($activity['isinner'] == 1 && $this -> logincheck() != 2) $this -> myajaxReturn(null, '[错误]没有权限。', 6);  //内部活动，非法操作
-        if(time() > strtotime($activity['deadline'])) $this -> myajaxReturn(null, '[错误]报名时间已截止。', 2);  //时间已截止
+        if(!$activity) $this -> myajaxReturn(null, '无效的AID参数。', 1);
+        if($activity['isinner'] == 1 && $this -> logincheck() != 2) $this -> myajaxReturn(null, '没有权限。', 6);  //内部活动，非法操作
+        if(time() > strtotime($activity['deadline'])) $this -> myajaxReturn(null, '报名时间已截止。', 2);  //时间已截止
         
         $activitydataDB = M('Activitydata');
         $regdata = $activitydataDB -> where('aid = '.$aid.' AND ojaccount = "'.\OJLoginInterface::getLoginUser().'"') -> find();
         if(!$regdata) {  //注册
             $postdata = I('post.regdata', false, '');  //传进的是数组
             $datastr = '';
-            if(count($postdata) < 1) $this -> myajaxReturn(null, '[错误]无效的请求数据。', 3);
+            if(count($postdata) < 1) $this -> myajaxReturn(null, '无效的请求数据。', 3);
             
             //调用自定义类进行输入数据合法性校验
             $rule = $this -> explain_reg_rule($activity['form']);
-            if($rule === null) $this -> myajaxReturn(null, '[错误]系统错误，无效的活动规则字符串。', 9);
+            if($rule === null) $this -> myajaxReturn(null, '系统错误，无效的活动规则字符串。', 9);
             if($rule[0]['classname'] != null) {
                 Vendor('ActivityFormClass.activity');
                 $checkres = null;
                 if(!class_exists($rule[0]['classname']) || !method_exists($rule[0]['classname'], 'checkdata') 
                 || false === eval('$checkres = '.$rule[0]['classname'].'::checkdata($postdata);') 
                 || (!(is_string($checkres)) && !is_array($checkres)) )
-                    $this -> myajaxReturn(null, '[错误]系统错误，无效的自定义活动类。', 7);  //自定义类不合法
+                    $this -> myajaxReturn(null, '系统错误，无效的自定义活动类。', 7);  //自定义类不合法
                 
                 if(is_string($checkres)) $this -> myajaxReturn(null, $checkres, 8);
                 else $postdata = $checkres;
@@ -272,32 +274,32 @@ class ActivityController extends BaseController {
             else $d['state'] = 2;
             $d['regtime'] = date('Y-m-d H:i:s',time());
             if($activitydataDB -> add($d)) {
-                $this -> myajaxReturn(null, '[成功]报名活动成功！', 0);
+                $this -> myajaxReturn(null, '报名活动成功！', 0);
             }
             else {
-                $this -> myajaxReturn(null, '[错误]报名活动失败！', 4);
+                $this -> myajaxReturn(null, '报名活动失败！', 4);
             }
          }
         else {  //修改
             if($activity['isneedreview'] == 1 && $regdata['state'] == 2) 
-                $this -> myajaxReturn(null, '[错误]你已通过审核，无法修改报名信息。如果确实需要修改，请联系管理员。', 7);
+                $this -> myajaxReturn(null, '你已通过审核，无法修改报名信息。如果确实需要修改，请联系管理员。', 7);
             
             $adid = $regdata['adid'];
             
             $postdata = I('post.regdata', false, '');  //传进的是数组
             $datastr = '';
-            if(count($postdata) < 1) $this -> myajaxReturn(null, '[错误]无效的请求数据。', 3);
+            if(count($postdata) < 1) $this -> myajaxReturn(null, '无效的请求数据。', 3);
             
             //调用自定义类进行输入数据合法性校验
             $rule = $this -> explain_reg_rule($activity['form']);
-            if($rule === null) $this -> myajaxReturn(null, '[错误]系统错误，无效的活动规则字符串。', 9);
+            if($rule === null) $this -> myajaxReturn(null, '系统错误，无效的活动规则字符串。', 9);
             if($rule[0]['classname'] != null) {
                 Vendor('ActivityFormClass.activity');
                 $checkres = null;
                 if(!class_exists($rule[0]['classname']) || !method_exists($rule[0]['classname'], 'checkdata')
                 || false === eval('$checkres = '.$rule[0]['classname'].'::checkdata($postdata);')
                 || (!(is_string($checkres)) && !is_array($checkres)) )
-                    $this -> myajaxReturn(null, '[错误]系统错误，无效的自定义活动类。', 7);  //自定义类不合法
+                    $this -> myajaxReturn(null, '系统错误，无效的自定义活动类。', 7);  //自定义类不合法
             
                 if(is_string($checkres)) $this -> myajaxReturn(null, $checkres, 8);
                 else $postdata = $checkres;
@@ -313,10 +315,10 @@ class ActivityController extends BaseController {
             else $d['state'] = 2;
             $result = $activitydataDB -> where('adid = '.$adid.' AND ojaccount = "'.\OJLoginInterface::getLoginUser().'"') -> save($d);
             if($result !== false) {
-                $this -> myajaxReturn(null, '[成功]修改活动报名信息成功！', 0);
+                $this -> myajaxReturn(null, '修改活动报名信息成功！', 0);
             }
             else {
-                $this -> myajaxReturn(null, '[错误]修改活动报名信息失败！', 4);
+                $this -> myajaxReturn(null, '修改活动报名信息失败！', 4);
             }
         }
         
@@ -325,7 +327,7 @@ class ActivityController extends BaseController {
     public function ajax_get_desc() {  //获取活动详情
         
         $aid = intval(I('get.aid'));
-        if($aid <= 0) $this -> myajaxReturn(null, '[错误]无效的AID参数。', 1);
+        if($aid <= 0) $this -> myajaxReturn(null, '无效的AID参数。', 1);
         
         $activitylistDB = M('Activitylist');
         if($this -> logincheck() == 2) {  //队员，已登录
@@ -336,10 +338,10 @@ class ActivityController extends BaseController {
         }
         
         if($data === false) {
-            $this -> myajaxReturn(null, '[错误]数据库错误。', 2);
+            $this -> myajaxReturn(null, '数据库错误。', 2);
         }
         else if($data === null) {
-            $this -> myajaxReturn(null, '[错误]无效的AID参数。', 1);
+            $this -> myajaxReturn(null, '无效的AID参数。', 1);
         }
         else {
             $data['title'] = htmlspecialchars($data['title']);
@@ -350,19 +352,19 @@ class ActivityController extends BaseController {
     public function ajax_load_contestants() {  //获取参赛人员名单
         
         $aid = intval(I('get.aid'));
-        if($aid <= 0) $this -> myajaxReturn(null, '[错误]无效的AID参数。', 1);
+        if($aid <= 0) $this -> myajaxReturn(null, '无效的AID参数。', 1);
         
         $activitylistDB = M('Activitylist');
         $activity = $activitylistDB -> field('title, form, adminuid, ispublic, isinner, isneedreview') -> where('aid = '.$aid) -> find();
-        if(!$activity) $this -> myajaxReturn(null, '[错误]无效的AID参数。', 1);  //没有数据或数据库错误
+        if(!$activity) $this -> myajaxReturn(null, '无效的AID参数。', 1);  //没有数据或数据库错误
         
         //权限检查
-        if($activity['isinner'] == 1 && $this -> logincheck() < 2) $this -> myajaxReturn(null, '[错误]无效的AID参数', 1); //没有权限，返回无效AID参数
+        if($activity['isinner'] == 1 && $this -> logincheck() < 2) $this -> myajaxReturn(null, '无效的AID参数', 1); //没有权限，返回无效AID参数
         if($activity['ispublic'] == 0 && ($this -> logincheck() < 2 || (session('goldbirds_group') < 1 && session('goldbirds_uid') != $activity['adminuid'])))
-            $this -> myajaxReturn(null, '[错误]你没有权限查看已报名的人员名单。', 2);
+            $this -> myajaxReturn(null, '你没有权限查看已报名的人员名单。', 2);
         
         $rule = $this -> explain_reg_rule($activity['form']);
-        if(null === $rule) $this -> myajaxReturn(null, '[错误]系统错误，无效的活动规则字符串。', 3);
+        if(null === $rule) $this -> myajaxReturn(null, '系统错误，无效的活动规则字符串。', 3);
         
         if($this -> logincheck() == 2 && (session('goldbirds_group') > 0 || session('goldbirds_uid') == $activity['adminuid'])) $ret['isadmin'] = 1;
         else $ret['isadmin'] = 0;
@@ -441,61 +443,61 @@ class ActivityController extends BaseController {
         
         $adid = intval(I('get.adid'));
         $state = (intval(I('get.state')) == 2 ? 2 : 1);
-        if($adid <= 0) $this -> myajaxReturn(null, '[错误]无效的ADID参数。', 1);
-        if($this -> logincheck() < 2) $this -> myajaxReturn(null, '[错误]没有权限。', 2);
+        if($adid <= 0) $this -> myajaxReturn(null, '无效的ADID参数。', 1);
+        if($this -> logincheck() < 2) $this -> myajaxReturn(null, '没有权限。', 2);
         
         $activitydataDB = M('Activitydata');
         $contestant = $activitydataDB -> where('adid = '.$adid) -> field('aid') -> find();
-        if(!$contestant) $this -> myajaxReturn(null, '[错误]无效的ADID参数。', 1);
+        if(!$contestant) $this -> myajaxReturn(null, '无效的ADID参数。', 1);
         
         $aid = $contestant['aid'];
         $activitylistDB = M('Activitylist');
         $activity = $activitylistDB -> field('isneedreview, adminuid') -> where('aid = '.$aid) -> find();
-        if(!$activity) $this -> myajaxReturn(null, '[错误]未找到该场活动的报名信息，请检查。', 3);
+        if(!$activity) $this -> myajaxReturn(null, '未找到该场活动的报名信息，请检查。', 3);
         
-        if($activity['isneedreview'] == 0) $this -> myajaxReturn(null, '[错误]本活动无需审核。', 4);
-        if(session('goldbirds_group') < 1 && $activity['adminuid'] != session('goldbirds_uid')) $this -> myajaxReturn(null, '[错误]没有权限。', 2);
+        if($activity['isneedreview'] == 0) $this -> myajaxReturn(null, '本活动无需审核。', 4);
+        if(session('goldbirds_group') < 1 && $activity['adminuid'] != session('goldbirds_uid')) $this -> myajaxReturn(null, '没有权限。', 2);
         
         $d['state'] = $state;
         $res = $activitydataDB -> where('adid = '. $adid) -> save($d);
-        if($res === false) $this -> myajaxReturn(null, '[错误]审核该参与者失败，请重试。ADID='.$adid, 5);
+        if($res === false) $this -> myajaxReturn(null, '审核该参与者失败，请重试。ADID='.$adid, 5);
         else $this -> myajaxReturn($adid, '[成功]', 0);
     }
     
     public function ajax_del_contestant() {  //删除某条注册信息
         
         $adid = intval(I('get.adid'));
-        if($adid <= 0) $this -> myajaxReturn(null, '[错误]无效的ADID参数。', 1);
-        if($this -> logincheck() < 2) $this -> myajaxReturn(null, '[错误]没有权限。', 2);
+        if($adid <= 0) $this -> myajaxReturn(null, '无效的ADID参数。', 1);
+        if($this -> logincheck() < 2) $this -> myajaxReturn(null, '没有权限。', 2);
         
         $activitydataDB = M('Activitydata');
         $contestant = $activitydataDB -> where('adid = '.$adid) -> field('aid') -> find();
-        if(!$contestant) $this -> myajaxReturn(null, '[错误]无效的ADID参数。', 1);
+        if(!$contestant) $this -> myajaxReturn(null, '无效的ADID参数。', 1);
         
         $aid = $contestant['aid'];
         $activitylistDB = M('Activitylist');
         $activity = $activitylistDB -> field('adminuid') -> where('aid = '.$aid) -> find();
-        if(!$activity) $this -> myajaxReturn(null, '[错误]未找到该场活动的报名信息，请检查。', 3);
+        if(!$activity) $this -> myajaxReturn(null, '未找到该场活动的报名信息，请检查。', 3);
 
-        if(session('goldbirds_group') < 1 && $activity['adminuid'] != session('goldbirds_uid')) $this -> myajaxReturn(null, '[错误]没有权限。', 2);
+        if(session('goldbirds_group') < 1 && $activity['adminuid'] != session('goldbirds_uid')) $this -> myajaxReturn(null, '没有权限。', 2);
         
         $res = $activitydataDB -> where('adid = '. $adid) -> delete();
-        if(!$res) $this -> myajaxReturn(null, '[错误]审核该参与者失败，请重试。ADID='.$adid, 5);
+        if(!$res) $this -> myajaxReturn(null, '审核该参与者失败，请重试。ADID='.$adid, 5);
         else $this -> myajaxReturn(null, '[成功]', 0);
     }
     
     public function export_contestants() {  //导出注册信息文件
         
         $aid = intval(I('get.aid'));
-        if($aid <= 0) $this -> myajaxReturn(null, '[错误]无效的AID参数。', 1);
-        if($this -> logincheck() < 2) echo '[错误]没有权限。';
+        if($aid <= 0) $this -> myajaxReturn(null, '无效的AID参数。', 1);
+        if($this -> logincheck() < 2) echo '没有权限。';
         else {
             $activitylistDB = M('Activitylist');
             $activity = $activitylistDB -> field('adminuid, form') -> where('aid = '.$aid) -> find();
-            if(!$activity) echo '[错误]查询比赛信息出错。';
+            if(!$activity) echo '查询比赛信息出错。';
             else {
-                if(session('goldbirds_group') < 1 && $activity['adminuid'] != session('goldbirds_uid')) echo '[错误]没有权限。';
-                else if(null === ($rule = $this -> explain_reg_rule($activity['form']))) echo '[错误]解析活动规则字符串失败。';
+                if(session('goldbirds_group') < 1 && $activity['adminuid'] != session('goldbirds_uid')) echo '没有权限。';
+                else if(null === ($rule = $this -> explain_reg_rule($activity['form']))) echo '解析活动规则字符串失败。';
                 else {
                     $file = ''; //文件内容
                     $activitydataDB = M('Activitydata');

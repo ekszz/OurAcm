@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class NewsController extends BaseController {
     
+    protected $module_name = 'NEWS';
+    
     public function index() {
         
         $newsDB = D('News');
@@ -30,7 +32,7 @@ class NewsController extends BaseController {
     public function ajaxload() {
         
         if(!IS_POST)
-            $this -> myajaxReturn(null, '[错误]参数不正确。', 1);
+            $this -> myajaxReturn(null, '参数不正确。', 1);
         else {
             $PAGE = 10;  //每页显示数量
             
@@ -46,7 +48,7 @@ class NewsController extends BaseController {
                     $data = $newsDB -> field('nid, title, content, createtime, category, top, permission') -> where($cstr.' AND permission=0') -> select();
                 else
                   $data = $newsDB -> relation(true) -> where($cstr) -> select();
-                if(false === $data) $this -> myajaxReturn(null, '[错误]读取数据库出错，请重试。', 2);
+                if(false === $data) $this -> myajaxReturn(null, '读取数据库出错，请重试。', 2);
                 else if($data) {
                     for($i = 0; $i < count($data); $i++) {
                         $data[$i]['title'] = htmlspecialchars($data[$i]['title']);
@@ -65,8 +67,8 @@ class NewsController extends BaseController {
                         $data = $newsDB -> relation(true) -> where($c) -> order('top DESC, nid DESC') -> limit(($page * $PAGE) . ',' . $PAGE) -> select();
                     }
                     if($data) $this -> myajaxReturn($data, '[成功]', 0);
-                    else if($data === false) $this -> myajaxReturn(null, '[错误]读取数据库出错，请重试。', 2);
-                    else $this -> myajaxReturn(null, '[错误]没有数据了>.<', 1);
+                    else if($data === false) $this -> myajaxReturn(null, '读取数据库出错，请重试。', 2);
+                    else $this -> myajaxReturn(null, '没有数据了>.<', 1);
                 } 
             }
             else {  //根据page和category参数来
@@ -86,8 +88,8 @@ class NewsController extends BaseController {
                     }
                     $this -> myajaxReturn($data, '[成功]', 0);
                 }
-                else if($data === false) $this -> myajaxReturn(null, '[错误]读取数据库出错，请重试。', 2);
-                else $this -> myajaxReturn(null, '[错误]没有数据了>.<', 1);
+                else if($data === false) $this -> myajaxReturn(null, '读取数据库出错，请重试。', 2);
+                else $this -> myajaxReturn(null, '没有数据了>.<', 1);
             }
         }
     }

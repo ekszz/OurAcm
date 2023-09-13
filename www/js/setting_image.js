@@ -14,13 +14,13 @@ $(function () {
 				 if(data.status == 0) {
 					 $('#upload-res').html(data.info + "文件名：" + data.data.filename);
 					 $('#unlink').append('<option value="'+data.data.filename.substr(7)+'">'+data.data.filename.substr(7)+'</option>');
-					 alert(data.info);
+					 alert("成功", data.info, "success");
 				 }
-				 else { $('#upload-res').html(data.info); alert(data.info, "error"); }
+				 else { $('#upload-res').html(data.info); alert("错误", data.info, "error"); }
 			},
 			error:function(data, status, e)
 			{
-				alert("[错误]请检查网络联接。", "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			}
 		});
 	});
@@ -57,15 +57,15 @@ $(function () {
 			}
 			$.post("?z=setting-ajax_del_photos", {photos:todel})
 			.done(function (data) {
-				if(data.status == 0) { alert(data.info); reFresh(); }
-				else alert(data.info, "error");
+				if(data.status == 0) { alert("成功",data.info,"success"); reFresh(); }
+				else alert("错误",data.info, "error");
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		}
 		else {
-			alert("[错误]无待删除图片，请先将待删除的图片移到右框中。", "error");
+			alert("提示","无待删除图片，请先将待删除的图片移到右框中。", "info");
 		}
 	});
 });
@@ -80,6 +80,6 @@ function reFresh() {
 		}
 	})
 	.fail(function() {
-		alert('[错误]请检查网络连接。', "error");
+		alert("提示", '你已中断请求，或网络连接异常。', "info");
 	});
 }

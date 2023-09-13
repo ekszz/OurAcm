@@ -245,8 +245,17 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
   margin-bottom: 0;
   color: #fff;
 }
+@media (min-width: 768px) {
+	.masthead h1 {
+		font-size: 80px;
+	}
+}
+@media (max-width: 767px) {
+	.masthead h1 {
+		font-size: 60px;
+	}
+}
 .masthead h1 {
-  font-size: 80px;
   line-height: 1;
   letter-spacing: -2px;
 }
@@ -1741,4 +1750,38 @@ blockquote {
 .carousel-caption h4 {
 	font-weight: bold;
 	font-size: 18px;
+}
+@media (min-width: 768px) {
+	.media-text-right {
+		text-align:right;
+	}
+	.media-pull-right {
+		float: right !important;
+	}
+}
+@media (max-width: 767px) {
+  .hidden-desktop {
+    display: inherit !important;
+  }
+  .visible-desktop {
+    display: none !important;
+  }
+  .visible-phone {
+    display: inherit !important;
+  }
+  .hidden-phone {
+    display: none !important;
+  }
+  .width-full {
+	width: 100% !important;
+  }
+}
+#particles-js {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+	wdith: 100%;
 }

@@ -76,13 +76,13 @@ $(function () {
 	   	$.getJSON("?z=activity-ajax_del_contestant-adid-" + $(this).data("adid"), null)
 		.done(function(data) {
 			if(data.status == 0) {
-				alert('[提示]删除成功！');
+				alert("成功", '删除成功！', "success");
 				load_contestants(now_aid);
 			}
-			else alert(data.info, "error");
+			else alert("错误", data.info, "error");
 		})
 		.fail(function() {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	    return false;
 	});
@@ -91,11 +91,11 @@ $(function () {
 		var form_data = $('#activity-form').serialize();
 		$.post("?z=activity-ajax_save_regdata", form_data)
 		.done(function (data) {
-			if(data.status == 0) { alert(data.info); $('#activity-modal').modal('hide'); reFresh(1); }
-			else alert(data.info, "error");
+			if(data.status == 0) { alert("成功", data.info, "success"); $('#activity-modal').modal('hide'); reFresh(1); }
+			else alert("错误", data.info, "error");
 		})
 		.fail(function () {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	});
 	
@@ -108,10 +108,10 @@ $(function () {
 				$('.btn-ables .btn-enable[data-adid=' + data.data + ']').addClass('btn-success disabled');
 				$('.btn-ables .btn-disable[data-adid=' + data.data + ']').removeClass('btn-warning disabled');
 			}
-			else alert(data.info, "error");
+			else alert("错误", data.info, "error");
 		})
 		.fail(function() {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	});
 
@@ -124,10 +124,10 @@ $(function () {
 				$('.btn-ables .btn-disable[data-adid=' + data.data + ']').addClass('btn-warning disabled');
 				$('.btn-ables .btn-enable[data-adid=' + data.data + ']').removeClass('btn-success disabled');
 			}
-			else alert(data.info, "error");
+			else alert("错误", data.info, "error");
 		})
 		.fail(function() {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	});
 });
@@ -143,7 +143,7 @@ function reFresh(type) {
 		$('#data-table tbody').html(null);
 		$.getJSON("?z=activity-ajax_load_activity-type-0", null)
 		.done(function(data) {
-			if(data.status != 0) { alert(data.info, "error"); return ;}
+			if(data.status != 0) { alert("错误", data.info, "error"); return ;}
 			var reshtml = "";
 			if(data.data == null) {
 				$('#data-table tbody').html('<tr><td colspan="4">暂时没有活动信息</td></tr>');
@@ -159,7 +159,7 @@ function reFresh(type) {
 			$("#data-table").trigger("update");
 		})
 		.fail(function() {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 	else {
@@ -169,7 +169,7 @@ function reFresh(type) {
 		$('#data-table tbody').html(null);
 		$.getJSON("?z=activity-ajax_load_activity-type-1", null)
 		.done(function(data) {
-			if(data.status != 0) { alert(data.info, "error"); return ;}
+			if(data.status != 0) { alert("错误", data.info, "error"); return ;}
 			var reshtml = "";
 			if(data.data == null) {
 				$('#data-table tbody').html('<tr><td colspan="4">你暂时还未参加任何活动</td></tr>');
@@ -191,14 +191,14 @@ function reFresh(type) {
 			$("#data-table").trigger("update");
 		})
 		.fail(function() {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 }
 function load_contestants() {
 	$.getJSON("?z=activity-ajax_load_contestants-aid-" + now_aid, null)
 	.done(function(data) {
-		if(data.status != 0) { alert(data.info, "error"); return ; }
+		if(data.status != 0) { alert("错误", data.info, "error"); return ; }
 		$('#header-title').html('“' + data.data.title + '”的报名情况');
 		var accept = 0;
 		var total = 0;
@@ -243,14 +243,14 @@ function load_contestants() {
 		$('#header-title').html('“' + data.data.title + '”的报名情况 <i>（人数：' + accept + '/' + total + '）</i>');
 	})
 	.fail(function() {
-		alert('[错误]请检查网络连接。', "error");
+		alert("提示", '你已中断请求，或网络连接异常。', "info");
 	});
 }
 function set_activity_modal(target, func, aid) {
 	if(func == 0) {  //查看活动详情
 		$.getJSON("?z=activity-ajax_get_desc-aid-" + aid, null)
 		.done(function(data) {
-			if(data.status != 0) alert(data.info, "error");
+			if(data.status != 0) alert("错误", data.info, "error");
 			else {
 				$('#activity-modal-title').html(data.data.title);
 				$('#activity-modal-body').html(data.data.desc);
@@ -259,13 +259,13 @@ function set_activity_modal(target, func, aid) {
 			}
 		})
 		.fail(function() {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 	else if(func == 1) {  //注册表单
 		$.getJSON("?z=activity-ajax_get_registeform-aid-" + aid, null)
 		.done(function(data) {
-			if(data.status != 0) alert(data.info, "error");
+			if(data.status != 0) alert("错误", data.info, "error");
 			else {
 				$('#activity-modal-title').html('报名 - ' + data.data.title);
 				$('#activity-modal-body').html(data.data.form + '<input type="hidden" name="aid" value="' + aid + '" />');
@@ -273,11 +273,11 @@ function set_activity_modal(target, func, aid) {
 				if(data.data.data != null) {  //已有注册数据
 					if(data.data.readonly == 1) {  //已通过审核
 						$('#activity-btn-submit').addClass('hide');
-						alert(data.info);
+						alert("提示", data.info, "info");
 						$.each($('#activity-modal-body [name="regdata[]"]'), function(i, v) { $(this).val(data.data.data[i]); $(this).prop('disabled', true); });
 					}
 					else {
-						alert('[提示]你已报名过，这里可以修改报名信息！');
+						alert("提示", '你已报名过，这里可以修改报名信息！', "info");
 						$.each($('#activity-modal-body [name="regdata[]"]'), function(i, v) { $(this).val(data.data.data[i]); });
 					}
 				}
@@ -285,7 +285,7 @@ function set_activity_modal(target, func, aid) {
 			}
 		})
 		.fail(function() {
-			alert('[错误]请检查网络连接。', "error");
+			alert("提示", '你已中断请求，或网络连接异常。', "info");
 		});
 	}
 }

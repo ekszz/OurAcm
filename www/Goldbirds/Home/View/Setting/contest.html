@@ -1,18 +1,21 @@
 <include file="Base:header" />
 <include file="Base:include" />
     <link href="css/theme.bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="css/setting.css" rel="stylesheet">
     <script src="js/jquery.tablesorter.min.js"></script>
     <script src="js/jquery.tablesorter.widgets.min.js"></script>
     <script src="js/jquery.tablesorter.pager.js"></script>
     <script src="js/bootstrap3-typeahead.min.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
     <script src="js/ajaxfileupload.js"></script>
     <script src="js/setting_common.js"></script>
 	<script type="text/javascript">
 	$(function(){ $("#navbar>li:nth-child(9)").addClass("active"); $("#setting-bar li:nth-child(5)").addClass("active"); });
 	$(function(){
 		var $window = $(window);
-			$('.bs-docs-sidenav').affix({
+		if($window.width() >= 768) $('.bs-docs-sidenav').affix({
 		        offset: {
 		            top: function () { return $window.width() <= 980 ? 290 : 210 }
 		          , bottom: 270
@@ -23,6 +26,9 @@
       			.click(function(e) {
         			e.preventDefault()
       		});
+		$('#holdtime').datetimepicker({
+       		format: 'YYYY-MM-DD'
+      	});
 	});
 	</script>
     <script src="js/setting_contest.js"></script>
@@ -48,7 +54,7 @@
     ================================================== -->
     <div class="row">
       <include file="commonbar" />
-      <div class="col-xs-9 content">
+      <div class="col-xs-12 col-sm-9 content">
 		<div class="page-header">
             <h1>获奖记录列表</h1>
         </div>
@@ -115,7 +121,7 @@
   	<div class="modal-body">
     	<div class="form-group">
 			<label for="holdtime" class="col-xs-2 control-label"><span data-trigger="hover" data-content="比赛类型为“0-WF”时，将比赛日期设置为未来时间，即表示该记录为“WF已晋级，但未比赛”类型。" data-placement="bottom" data-toggle="popover" data-original-title="帮助" data-container="body">比赛日期*</span></label>
-            <div class="col-xs-4"><input type="text" class="form-control" id="holdtime" name="holdtime" placeholder="格式：2013-01-01"></div>
+            <div class="col-xs-4"><input type="text" class="form-control" id="holdtime" name="holdtime" placeholder="2015-01-01"></div>
         	<label for="team" class="col-xs-2 control-label">队伍名*</label>
             <div class="col-xs-4"><input type="text" class="form-control" id="team" name="team" placeholder="建议用英文队名"></div>
         </div>
@@ -225,12 +231,13 @@
             <button class="btn btn-danger" type="button" id="face_del" data-func="del">删除</button></div>
             <input type="hidden" name="nowuid" id="nowuid">
        	 	<input type="hidden" name="face_fn" id="face_fn">
+            <input type="hidden" id="result_pos">
         </div>
   	</div>
     </form>
   	<div class="modal-footer">
     	<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
-    	<button id="btn-submit" type="submit" class="btn btn-primary">保存</button>
+    	<button id="person-btn-submit" type="submit" class="btn btn-primary">保存</button>
   	</div>
   </div></div></div>
 <include file="Base:footer" />

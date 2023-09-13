@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class CodepoolController extends BaseController {
     
+    protected $module_name = 'CODEPOOL';
+    
     private function safe_check($ip) {  //检测IP是否提交量过大
         
         $codepoolDB = M('Codepool');
@@ -32,7 +34,30 @@ class CodepoolController extends BaseController {
     }
     
     public function index() {  //提交页面
-
+        
+        if($this -> logincheck() > 0) {     //已登录，显示历史提交
+            $ojaccount = \OJLoginInterface::getLoginUser();
+            $this -> assign('url', '');
+            
+            $Codepool = M('Codepool');
+            $c['ojaccount'] = $ojaccount;
+            $codes = $Codepool -> field('codeid, k, submittime, tag') -> where($c) -> order('submittime DESC') -> select();
+            $res = array();
+            $hash = array();
+            foreach ($codes as $code) {
+                if(array_key_exists($code['k'], $hash)) {   //已经出现过了
+                    $res[$hash[$code['k']]]['tag'] .= (' / '.htmlspecialchars($code['tag']));
+                } else {
+                    $id = count($res);
+                    $hash[$code['k']] = $id;
+                    $res[$id]['k'] = $code['k'];
+                    $res[$id]['tag'] = ($code['tag'] == null ? '代码'.sprintf('%06d', $code['codeid']) : htmlspecialchars($code['tag']));
+                    $res[$id]['submittime'] = $code['submittime'];
+                }
+            }
+            $this -> assign('codes', $res);
+        }
+        else $this -> assign('url', \OJLoginInterface::getLoginURL());
         $this -> commonassign();
         $this -> display('index');
     }
@@ -55,11 +80,11 @@ class CodepoolController extends BaseController {
             $dat['ojaccount'] = ($this -> logincheck() == 0 ? null : session('goldbirds_oj'));
             
             $verify = new \Think\Verify();
-            if(!($verify -> check(I('post.verify', '', false)))) $this -> myajaxReturn(null, '[错误]验证码错误。', 1);
-            else if(strlen($dat['tag']) > 20) $this -> myajaxReturn(null, '[错误]你提交的标签长度太长了。最长20字节。', 2);
-            else if(!$this -> safe_check(get_client_ip())) $this -> myajaxReturn(null, '[错误]你今日提交的代码太多啦>.<', 4);
-            else if(strlen($dat['code']) > intval($this -> getconfig('codepool_maxlength'))) $this -> myajaxReturn(null, '[错误]你提交的代码长度太长了。', 2);
-            else if(!$dat['code']) $this -> myajaxReturn(null, '[错误]你提交的代码是空的-__-||', 3);
+            if(!($verify -> check(I('post.verify', '', false)))) $this -> myajaxReturn(null, '验证码错误。', 1);
+            else if(strlen($dat['tag']) > 20) $this -> myajaxReturn(null, '你提交的标签长度太长了。最长20字节。', 2);
+            else if(!$this -> safe_check(get_client_ip())) $this -> myajaxReturn(null, '你今日提交的代码太多啦>.<', 4);
+            else if(strlen($dat['code']) > intval($this -> getconfig('codepool_maxlength'))) $this -> myajaxReturn(null, '你提交的代码长度太长了。', 2);
+            else if(!$dat['code']) $this -> myajaxReturn(null, '你提交的代码是空的-__-||', 3);
             else {
                 $codepoolDB = M('Codepool');
                 $codepoolDB -> add($dat);
@@ -71,7 +96,7 @@ class CodepoolController extends BaseController {
             //查询KEY是否已存在
             $c['k'] = $k;
             $ret = $this -> k_check($k);
-            if(!$ret) $this -> myajaxReturn(null, '[错误]无效的KEY。', 5);
+            if(!$ret) $this -> myajaxReturn(null, '无效的KEY。', 5);
             
             $dat['k'] = $k;
             $dat['submittime'] = date('Y-m-d H:i:s', time());
@@ -79,15 +104,15 @@ class CodepoolController extends BaseController {
             $dat['code'] = I('post.code', '', false);
             $dat['ip'] = get_client_ip();
             
-            if($this -> logincheck() == 0 || strcmp(session('goldbirds_oj'), $ret[0]['ojaccount']) != 0) $this -> myajaxReturn(null, '[错误]该代码不是你提交的。', 6);
+            if($this -> logincheck() == 0 || strcmp(session('goldbirds_oj'), $ret[0]['ojaccount']) != 0) $this -> myajaxReturn(null, '该代码不是你提交的。', 6);
             $dat['ojaccount'] = session('goldbirds_oj');
             
             $verify = new \Think\Verify();
-            if(!($verify -> check(I('post.verify', '', false)))) $this -> myajaxReturn(null, '[错误]验证码错误。', 1);
-            else if(strlen($dat['tag']) > 20) $this -> myajaxReturn(null, '[错误]你提交的标签长度太长了。最长20字节。', 2);
-            else if(!$this -> safe_check(get_client_ip())) $this -> myajaxReturn(null, '[错误]你今日提交的代码太多啦>.<', 4);
-            else if(strlen($dat['code']) > intval($this -> getconfig('codepool_maxlength'))) $this -> myajaxReturn(null, '[错误]你提交的代码长度太长了。', 2);
-            else if(!$dat['code']) $this -> myajaxReturn(null, '[错误]你提交的代码是空的-__-||', 3);
+            if(!($verify -> check(I('post.verify', '', false)))) $this -> myajaxReturn(null, '验证码错误。', 1);
+            else if(strlen($dat['tag']) > 20) $this -> myajaxReturn(null, '你提交的标签长度太长了。最长20字节。', 2);
+            else if(!$this -> safe_check(get_client_ip())) $this -> myajaxReturn(null, '你今日提交的代码太多啦>.<', 4);
+            else if(strlen($dat['code']) > intval($this -> getconfig('codepool_maxlength'))) $this -> myajaxReturn(null, '你提交的代码长度太长了。', 2);
+            else if(!$dat['code']) $this -> myajaxReturn(null, '你提交的代码是空的-__-||', 3);
             else {
                 $codepoolDB = M('Codepool');
                 $id = $codepoolDB -> add($dat);
@@ -104,7 +129,7 @@ class CodepoolController extends BaseController {
         $k = I('get.k');
         $res = $this -> k_check($k);
         if(false === $res) {
-            $this -> assign('invalidkey', 'alert("[错误]该URL无效，你需要的资源可能已从地球消失了~~", "error");');
+            $this -> assign('invalidkey', 'alert("Oh, NO !", "该URL无效，你需要的资源可能已从地球消失了~~", "error");');
             $this -> index();
         }
         else {

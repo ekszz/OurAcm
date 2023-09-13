@@ -6,7 +6,7 @@
 	$(function(){
 		$("#navbar>li:nth-child(7)").addClass("active");
 		var $window = $(window);
-		$('.bs-docs-sidenav').affix({
+		if($window.width() >= 768) $('.bs-docs-sidenav').affix({
 		    offset: {
 		        top: function () { return $window.width() <= 980 ? 290 : 210 }
 		      	, bottom: 270
@@ -25,7 +25,7 @@
 			$.post("?z=codepool-ajax_submit", {verify:$('#verify').val(), tag:$('#tag').val(), code:$('#code').val()} )
 			.done(function (data) {
 				if(data.status == 0) {
-					alert("[成功]你的代码提交到码池了！");
+					alert("成功", "你的代码提交到码池了！", "success");
 					$('#url1').attr('href', data.data);
 					$('#url2').html(data.data);
 					$('#moresubmit').removeClass('disabled');
@@ -34,11 +34,11 @@
 				}
 				else {
 					$('#verify-img').attr('src', '?z=codepool-verify-t-'+Math.random());
-					alert(data.info, "error");
+					alert("错误", data.info, "error");
 				}
 			})
 			.fail(function () {
-				alert('[错误]请检查网络连接。', "error");
+				alert("提示", '你已中断请求，或网络连接异常。', "info");
 			});
 		});
 		$('#moresubmit').click(function(e){
@@ -73,13 +73,14 @@
     <!-- Docs nav
     ================================================== -->
     <div class="row">
-      <div class="col-xs-3 bs-docs-sidebar">
+      <div class="col-xs-12 col-sm-3 bs-docs-sidebar">
         <ul class="nav bs-docs-sidenav">
         	<li><a href="#tips"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Tips</a></li>
           	<li><a href="#insertcode"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 提交代码</a></li>
+          	<li><a href="#mycode"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 我的代码</a></li>
         </ul>
       </div>
-      <div class="col-xs-9">
+      <div class="col-xs-12 col-sm-9">
 
         <section id="tips">
           <div class="page-header">
@@ -116,6 +117,40 @@
             </div>
           </div>
         </section>
+        
+        <?php if(!$url) { ?>
+        <section id="mycode">
+          <div class="page-header">
+            <h1>我的代码 <span class="lead">该OJ账号曾经提交过的代码</span></h1>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12 col-sm-12">
+            <?php if(count($codes) == 0) { ?>
+              <div class="alert alert-warning" role="alert">你还没有提交过代码哟~</div>
+            <?php } else { ?>
+              <div class="list-group">
+              	<?php foreach($codes as $c) { ?>
+				  <a href="?z=codepool-x-k-<?php echo $c['k']; ?>" class="list-group-item"><p class="text-danger"><b>Last submit @<?php echo $c['submittime']; ?>.</b></p><span class="text-primary"><b><?php echo $c['tag']; ?></b></span></a>
+				<?php } ?>
+			  </div>
+			<?php } ?>
+            </div>
+          </div>
+        </section>
+        <?php } else { ?>
+        <section id="mycode">
+          <div class="page-header">
+            <h1>我的代码 <span class="lead">登录后，该OJ账户曾经提交过的代码会在这里显示</span></h1>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12 col-sm-10" id="todo">
+              <div class="alert alert-success alert-block">登录OnlineJudge账号后提交的代码，在这里可以列出来哟~<a target="_blank" href="<?php echo $url; ?>" class="btn btn-large btn-success pull-right">登录OnlineJudge</a><br />请点击右方按钮跳转至OnlineJudge登录页面。</div>
+            </div>
+          </div>
+        </section>
+		<?php } ?>
 
       </div>
     </div>

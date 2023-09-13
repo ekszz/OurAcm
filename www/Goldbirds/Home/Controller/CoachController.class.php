@@ -2,6 +2,9 @@
 namespace Home\Controller;
 
 class CoachController extends BaseController {
+    
+    protected $module_name = 'COACH';
+    
     public function index() {
         $personDB = M('Person');
         $this -> commonassign();

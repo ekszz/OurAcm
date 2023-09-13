@@ -3,6 +3,8 @@ namespace Home\Controller;
 
 class TalkController extends BaseController {
     
+    protected $module_name = 'TALK';
+    
     private $talk_idx;  //递规生成Talk列表用
     private $talk_arr;
     
@@ -62,10 +64,11 @@ class TalkController extends BaseController {
             $this -> assign('tid', $tid);
             $this -> assign('title', htmlspecialchars($res['title']));
             $this -> assign('introduce', '<p><span class="text-warning"><strong>'
-                .strlen($res['content']).'B</strong></span> BY <span class="text-primary"><strong>'
-                .htmlspecialchars($res['ojaccount']).'</strong></span> @ <span class="text-muted">'
+                .strlen($res['content']).'B</strong></span> BY <strong>'
+                .(\OJLoginInterface::getUserUrl($res['ojaccount']) == null ? '<span class="text-primary">'.htmlspecialchars($res['ojaccount']).'</span>' : '<a href="'.\OJLoginInterface::getUserUrl($res['ojaccount']).'"><span class="text-primary">'.htmlspecialchars($res['ojaccount']).'</span></a>')
+                .'</strong></span> @ <span class="text-muted">'
                 .$res['createtime'].'</span>'.
-                ($res['problemid'] ? ' IN <span class="text-danger"><strong>Problem '.$res['problemid'].'</strong></span>' : '')
+                ($res['problemid'] ? ' IN <strong>'.(\OJLoginInterface::getProblemUrl($res['problemid']) == null ? '<span class="text-danger">Problem '.$res['problemid'].'</span>' : '<a href="'.\OJLoginInterface::getProblemUrl($res['problemid']).'"><span class="text-danger">Problem '.$res['problemid'].'</span></a>').'</strong>' : '')
                 .(time() - strtotime($res['createtime']) <= TalkController::$var_newlogo_second ? ' <span class="label label-warning">New</span>' : '')
                 .'</p>');
             if($res['content']) $this -> assign('content', '<pre style="font-size:16px">'.htmlspecialchars($res['content']).'</pre>');
@@ -81,18 +84,18 @@ class TalkController extends BaseController {
     
     public function ajax_postnewtalk() {  //AJAX提交新talk
         
-        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '[错误]你还未登录。', 1);
+        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '你还未登录。', 1);
         else {  //已登录
             $verify = new \Think\Verify();
             if(!($verify -> check(I('post.verify', '', false))))
-                $this -> myajaxReturn(null, '[错误]验证码错误。', 1);
+                $this -> myajaxReturn(null, '验证码错误。', 1);
             
             $title = I('post.title', '', false);
-            if(strlen($title) < TalkController::$var_title_minlen) $this -> myajaxReturn(null, '[错误]标题长度不能小于'.TalkController::$var_title_minlen.'。', 2);
-            if(strlen($title) > TalkController::$var_title_maxlen) $this -> myajaxReturn(null, '[错误]标题长度不能大于'.TalkController::$var_title_maxlen.'。', 2);
+            if(strlen($title) < TalkController::$var_title_minlen) $this -> myajaxReturn(null, '标题长度不能小于'.TalkController::$var_title_minlen.'。', 2);
+            if(strlen($title) > TalkController::$var_title_maxlen) $this -> myajaxReturn(null, '标题长度不能大于'.TalkController::$var_title_maxlen.'。', 2);
             
             $content = I('post.content', '', false);
-            if(strlen($content) > TalkController::$var_content_maxlen) $this -> myajaxReturn(null, '[错误]内容太长了-_-', 2);
+            if(strlen($content) > TalkController::$var_content_maxlen) $this -> myajaxReturn(null, '内容太长了-_-', 2);
             if(strlen($content) == 0) $content = null;
             
             $pid = intval(I('post.pid', '', false));
@@ -100,31 +103,31 @@ class TalkController extends BaseController {
             
             if($this -> addtalk($title, \OJLoginInterface::getLoginUser(), $content, $pid))
                 $this -> myajaxReturn($this -> loadlastesttalk(), '[成功]', 0);
-            else $this -> myajaxReturn(null, '[错误]提交失败。', 3);
+            else $this -> myajaxReturn(null, '提交失败。', 3);
         }
     }
     
     public function ajax_replytalk() {  //回复talk
         
-        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '[错误]你还未登录。', 1);
+        if($this -> logincheck() == 0) $this -> myajaxReturn(null, '你还未登录。', 1);
         else {  //已登录
             $verify = new \Think\Verify();
             if(!($verify -> check(I('post.verify', '', false))))
-                $this -> myajaxReturn(null, '[错误]验证码错误。', 1);
+                $this -> myajaxReturn(null, '验证码错误。', 1);
         
             $title = I('post.title', '', false);
-            if(strlen($title) < TalkController::$var_title_minlen) $this -> myajaxReturn(null, '[错误]标题长度不能小于'.TalkController::$var_title_minlen.'。', 2);
-            if(strlen($title) > TalkController::$var_title_maxlen) $this -> myajaxReturn(null, '[错误]标题长度不能大于'.TalkController::$var_title_maxlen.'。', 2);
+            if(strlen($title) < TalkController::$var_title_minlen) $this -> myajaxReturn(null, '标题长度不能小于'.TalkController::$var_title_minlen.'。', 2);
+            if(strlen($title) > TalkController::$var_title_maxlen) $this -> myajaxReturn(null, '标题长度不能大于'.TalkController::$var_title_maxlen.'。', 2);
         
             $content = I('post.content', '', false);
-            if(strlen($content) > TalkController::$var_content_maxlen) $this -> myajaxReturn(null, '[错误]内容太长了-_-', 2);
+            if(strlen($content) > TalkController::$var_content_maxlen) $this -> myajaxReturn(null, '内容太长了-_-', 2);
             if(strlen($content) == 0) $content = null;
         
             $tid = intval(I('post.tid', '', false));
         
             if($this -> addson($tid, $title, \OJLoginInterface::getLoginUser(), $content))
                 $this -> myajaxReturn(null, '[成功]', 0);
-            else $this -> myajaxReturn(null, '[错误]回复失败。', 3);
+            else $this -> myajaxReturn(null, '回复失败。', 3);
         }
     }
     
@@ -148,9 +151,9 @@ class TalkController extends BaseController {
         $data['ptid'] = 0;
         $data['ojaccount'] = $ojaccount;
         $data['title'] = $title;
-        $data['content'] = $content;
+        $data['content'] = $content === null ? array('exp', 'null') : $content;
         $data['createtime'] = date("Y-m-d H:i:s");
-        $data['problemid'] = (intval($pid) == 0 ? null : intval($pid));
+        $data['problemid'] = (intval($pid) == 0 ? array('exp', 'null') : intval($pid));
         $data['lft'] = 1;
         $data['rgt'] = 2;
         $data['ip'] = get_client_ip();
@@ -189,9 +192,9 @@ class TalkController extends BaseController {
         $data['ptid'] = intval($p['ptid']);
         $data['ojaccount'] = $ojaccount;
         $data['title'] = $title;
-        $data['content'] = $content;
+        $data['content'] = $content === null ? array('exp', 'null') : $content;
         $data['createtime'] = date("Y-m-d H:i:s");
-        $data['problemid'] = (intval($p['problemid']) == 0 ? null : intval($p['problemid']));
+        $data['problemid'] = (intval($p['problemid']) == 0 ? array('exp', 'null') : intval($p['problemid']));
         $data['lft'] = intval($p['lft']) + 1;
         $data['rgt'] = intval($p['lft']) + 2;
         $data['ip'] = get_client_ip();
