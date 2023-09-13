@@ -3,9 +3,9 @@ OurAcm
 
 > 青春散场，记忆永恒。
 
-  
+
 优雅简洁的ACM-ICPC队伍风采展示系统，基于Bootstrap和ThinkPHP！  
-  
+
 * 简洁优雅的界面  
 * 支持WF、Regional等类型的ACM-ICPC比赛展示  
 * 酷炫版与表单版两种展示模式  
@@ -21,14 +21,14 @@ OurAcm
   
 系统要求  
 ========  
-  
+
 建议使用PHP 5.3+环境，MySQL 5.1+数据库。  
 浏览器支持Chrome、Firefox、IE10+等；不支持IE低版本，使用这些旧版本浏览器访问，会跳转至提示页面。  
 
-  
+
 部署说明  
 ========  
-  
+
 1. 使用phpmyadmin或其它工具，导入/db目录下对应版本的数据库文件；  
 2. 将www文件夹下所有文件拷贝到服务器的HTTP服务目录下；  
 3. 修改服务器上/Goldbirds/Home/Common/function.php中的7个OnlineJudge接口；  
@@ -37,3 +37,8 @@ OurAcm
 6. 访问index.php尝试能否正常访问；  
 7. 登录OnlineJudge，并访问index.php?z=setting，以邀请码"iloveacmiloveacm"关联带管理权的OnlineJudge账户；  
 8. 关联后，点击"个人中心"，可在里面进行相应配置管理。  
+
+截图
+========  
+
+![SCREENSHOT](SCREENSHOT.png)
